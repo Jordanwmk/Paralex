@@ -1,1 +1,1 @@
-# Parallex
+# Paralex
