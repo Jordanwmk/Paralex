@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>390</y>
+      <w>300</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Schedule
+--
++tasks: List&lt;ScheduledTask&gt;
++estimatedTotal: int
++idleTime: int
++tasksCompleted: bool[]
++numberOfCompletedTasks: int
++doableTasks: List&lt;int&gt;
++generator: Generator
+--
+Responsibilities
+- Data structure that represents a partially 
+completed schedule. </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>210</y>
+      <w>300</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>ScheduledTask
+--
++task: int
++startTime: int
+--
+Responsibilities
+- Data structure that represents a scheduled 
+task in a schedule.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>1780</x>
+      <y>0</y>
+      <w>80</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Interface
+--
+Operation1
+Operation2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLInterface</id>
+    <coordinates>
+      <x>800</x>
+      <y>660</y>
+      <w>360</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Interface&gt;&gt;
+Generator
+--
+generate Children(schedule: Schedule): List&lt;Schedule&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>460</x>
+      <y>660</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Estimator
+--
+
+--
+estimate(schedule:Schedule): int
+--
+Responsibilities
+- Generates the total estimate for the
+current partial schedule.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>900</x>
+      <y>390</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Output
+--
+
+--
+printOutput(schedule:Schedule): void
+printOutput(schedule:Schedule, file: File): void
+--
+Responsibilities
+- Generates the output file containing the 
+optimal schedule.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>150</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Input
+--
+
+--
+parseInput(file: File): Graph
+--
+Responsibilities
+- Takes an input file containing a DAG and
+stores it as a graph.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>80</x>
+      <y>390</y>
+      <w>310</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>Graph
+--
++nodeCosts: int[]
++nodeBottomLevel: int[]
++edgeCosts: int[][]
++adjacencyList: List&lt;int&gt;
+--
+getNodeCost(node:int): int
+getBottomLevel(node:int): int
+getEdgeCost(src:int, dest:int): int
+getChildren(node:int): List&lt;int&gt;
+--
+Responsibilities
+- Data structure storing the DAG from the input
+file.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>290</y>
+      <w>30</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>380</x>
+      <y>490</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>330</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>620</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>580</y>
+      <w>250</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>230.0;90.0;230.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>750</x>
+      <y>470</y>
+      <w>170</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
