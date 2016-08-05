@@ -1,0 +1,6 @@
+<<<<<<< HEAD
+language: java
+=======
+language: java
+install: ant deps
+>>>>>>> master
