@@ -10,6 +10,15 @@ public class Graph {
     private List<Integer>[] adjListChildren;
     private List<Integer>[] adjListDependencies;
 
+    private static Graph instance;
+
+    public static Graph getInstance(){
+        if(instance==null) {
+            instance = new Graph();
+        }
+        return instance;
+    }
+
     int getNodeCost(int node){
         return 0;
     }
