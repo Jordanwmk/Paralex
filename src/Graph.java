@@ -7,12 +7,28 @@ public class Graph {
     private int[] nodeCosts;
     private int[] nodeBL;
     private int[][] edgeCosts;
-    private List<Integer>[] adjList;
+    private List<Integer>[] adjListChildren;
+    private List<Integer>[] adjListDependencies;
 
-    public Graph (int[] nodeCosts, int[] nodeBL, int[][] edgeCosts, List<Integer>[] adjList){
-        this.nodeCosts=nodeCosts;
-        this.nodeBL=nodeBL;
-        this.edgeCosts=edgeCosts;
-        this.adjList=adjList;
+    int getNodeCost(int node){
+        return 0;
     }
+
+    int getBottomLevel(int node){
+        return 0;
+    }
+
+    int getEdgeCost(int src, int dest){
+        return 0;
+    }
+
+    List<Integer> getChildren(int node){
+        return null;
+    }
+
+    List<Integer> getDependencies(int node){
+        return null;
+    }
+
+
 }
