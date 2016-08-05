@@ -21,7 +21,7 @@ private int idleEstimator(int idleTime) {
 	
 }
 
-private int bottomeLevelEstimator(int node) {
+private int bottomLevelEstimator(int node) {
 	//most recent node
 	return graph.getBottomLevel(node) + graph.getCurrentTime();
 	
