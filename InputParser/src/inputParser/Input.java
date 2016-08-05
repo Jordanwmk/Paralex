@@ -19,9 +19,8 @@ public class Input {
     public static void main(String[] args) throws IOException {
 
     	//pass in the input file name
-        Graph g = parseInput("src/test.dot");
-
-
+        Graph g = parseInput("src/test.dot");       
+        
     }
 
 
@@ -77,11 +76,11 @@ public class Input {
 
         
         // Adjacency list
-        ArrayList<ArrayList<Integer>> listOfLists = new ArrayList<ArrayList<Integer>>();
+        ArrayList<ArrayList<Integer>> adjacencyList = new ArrayList<ArrayList<Integer>>();
         
         for (int i = 0; i < numNodes; i++) {
         	ArrayList temp = new ArrayList();
-        	listOfLists.add(temp);
+        	adjacencyList.add(temp);
         	for (int j = 0; j < numNodes; j++) {
         		if (adjacencyMatrix[i][j] != -1){
         			temp.add(j);
@@ -91,14 +90,33 @@ public class Input {
         
         System.out.println("------------------------------");
         
-        for (int i = 0; i < listOfLists.size(); i++){
-            for (int j = 0; j < listOfLists.get(i).size(); j++){
-                System.out.print(listOfLists.get(i).get(j) + ",");
+        for (int i = 0; i < adjacencyList.size(); i++){
+            for (int j = 0; j < adjacencyList.get(i).size(); j++){
+                System.out.print(adjacencyList.get(i).get(j) + ",");
             }
             System.out.println("");
         }
         
+        System.out.println("------------------------------");
+        // Finds all source nodes
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int counter = 0;       
+        for (int k = 0; k < numNodes; k++) {
+        	counter = 0;
+        	for (int i = 0; i < adjacencyList.size(); i++) {
+        		for (int j = 0; j < adjacencyList.get(i).size(); j++) {
 
+        			if ((adjacencyList.get(i).get(j).equals(k) && ( k!= i))) {
+        				counter++;
+        			} else if (i == (numNodes-1) && (counter == 0)) {
+        				list.add(k);
+        			}
+
+        		}
+        	}
+    	}
+        System.out.println(list);
+        
         return inputGraph;
     }
 
