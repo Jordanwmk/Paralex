@@ -18,7 +18,7 @@ public class Input {
     public static void main(String[] args) throws IOException {
 
     	//pass in the input file name
-        Graph g = parseInput("F:\\test.dot");
+        Graph g = parseInput("src/test.dot");
 
 
     }
@@ -34,7 +34,10 @@ public class Input {
         //read in the graph contents from the given fileName
         try {
             fs.begin(fileName);
-            System.out.println("booty");
+
+            while(fs.nextEvents()){
+            	//optional code here
+            }
         } catch( IOException e) {
             e.printStackTrace();
         }
