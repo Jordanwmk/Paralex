@@ -7,6 +7,7 @@ import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 
@@ -62,18 +63,41 @@ public class Input {
         int adjacencyMatrix[][] = new int[numNodes][numNodes];
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("weight")) : 0);
+                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("weight")) : -1);
             }
         }
 
         //printing the adjacency Matrix --- can delete this ---
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                System.out.print(adjacencyMatrix[i][j]);
+                System.out.print(adjacencyMatrix[i][j] + ",");
             }
             System.out.println("");
         }
 
+        
+        // Adjacency list
+        ArrayList<ArrayList<Integer>> listOfLists = new ArrayList<ArrayList<Integer>>();
+        
+        for (int i = 0; i < numNodes; i++) {
+        	ArrayList temp = new ArrayList();
+        	listOfLists.add(temp);
+        	for (int j = 0; j < numNodes; j++) {
+        		if (adjacencyMatrix[i][j] != -1){
+        			temp.add(j);
+        		}
+        	}
+        }
+        
+        System.out.println("------------------------------");
+        
+        for (int i = 0; i < listOfLists.size(); i++){
+            for (int j = 0; j < listOfLists.get(i).size(); j++){
+                System.out.print(listOfLists.get(i).get(j) + ",");
+            }
+            System.out.println("");
+        }
+        
 
         return inputGraph;
     }
