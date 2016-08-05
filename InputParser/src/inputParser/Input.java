@@ -50,21 +50,23 @@ public class Input {
         }
 
 
+        //displaying graph --- can delete this ---
 		for (Node node : inputGraph) {
 		        node.addAttribute("ui.label", node.getId());
 		        node.setAttribute("size", "small");
 		    }
-		
         inputGraph.display();
-
+        
+        //creating the adjacencyMatrix of the input file graph
         int numNodes = inputGraph.getNodeCount();
-        byte adjacencyMatrix[][] = new byte[numNodes][numNodes];
+        int adjacencyMatrix[][] = new int[numNodes][numNodes];
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                adjacencyMatrix[i][j] = (byte) (inputGraph.getNode(i).hasEdgeBetween(j) ? 1 : 0);
+                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("weight")) : 0);
             }
         }
 
+        //printing the adjacency Matrix --- can delete this ---
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
                 System.out.print(adjacencyMatrix[i][j]);
