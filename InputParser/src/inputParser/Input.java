@@ -128,12 +128,22 @@ public class Input {
         System.out.println(sourceNodes.size());
         
         
+        //=============put in method===========
+        //constructing a phantom node to be single source
+        inputGraph.addNode("source1");
+        inputGraph.getNode("source1").addAttribute("weight", "0");
+        //adding it to the adjacency list with edges to real sources
+        adjacencyList.add(sourceNodes);
+        ArrayList singleSource = new ArrayList();
+        singleSource.add(numNodes);
+        
+        
         //need to assign value to g so that bottom level function can access values
         g = inputGraph;
         
         //bottom level generation
-        bottomLevels = new int[numNodes];
-        getbottom(sourceNodes);
+        bottomLevels = new int[numNodes + 1];
+        getbottom(singleSource);
 
         
         //printing out the bottom levels
@@ -149,7 +159,7 @@ public class Input {
     public static int getbottom(ArrayList<Integer> nodes){
 		
     	for (Integer i: nodes){
-    		 System.out.println("-------------START OF NEW CALL-----------------");
+    		System.out.println("-------------START OF NEW CALL-----------------");
     		System.out.println("Im looking at node "+ i +" the value of i is " + i);
     		ArrayList<Integer> children = adjacencyList.get(i);
     		
