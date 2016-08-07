@@ -63,6 +63,7 @@ public class Input {
         
         //finding all of the source nodes
         input.createSourceNodes();
+        input.getInputG().display();      
         
         //creating a phantomSource node
         ArrayList phantomSource = input.createPhantomSource();
@@ -83,6 +84,12 @@ public class Input {
             System.out.print("The bottom level for node index[" + j +"] is " +  input.getBotLevels()[j] +"\n");
         }
         
+        System.out.println("------------------------------");
+        System.out.println("Source nodes for this graph");
+        ArrayList<Integer> srcNodes = input.getSrcNodes();
+        for (int i = 0; i < srcNodes.size(); i ++) {
+        	System.out.print(srcNodes.get(i) + " ");
+        }
     }
 
 	private void readInputGraph(String fileName) throws IOException {
@@ -147,26 +154,23 @@ public class Input {
     	
     	Graph inputGraph = this.getInputG();
         int numNodes = inputGraph.getNodeCount();
-    	
-        // Finds all source nodes
         ArrayList<Integer> sourceNodes = new ArrayList<Integer>();
-        int counter = 0;       
-        for (int k = 0; k < numNodes; k++) {
-        	counter = 0;
-        	for (int i = 0; i < this.getAdjList().size(); i++) {
-        		for (int j = 0; j < this.getAdjList().get(i).size(); j++) {
-        			if ((this.getAdjList().get(i).get(j).equals(k) && ( k!= i))) {
-        				counter++;
-        			} 
+        int [][] matrix = getAdjMatrix();  
+        
+        // Finds all source nodes by checking each column and if it's all -1s then it is a source node     
+        for (int i = 0; i < numNodes; i++) {
+        	int counter = 0;
+        	for (int j = 0; j < numNodes; j++) {
+        		if (matrix[j][i] != -1) {
+        			counter++;
         		}
         	}
-        	if (counter == 0){
-        		sourceNodes.add(k);
+        	if (counter == 0) {
+        		sourceNodes.add(i);
         	}
-    	}
-      
-        this.setSrcNodes(sourceNodes);
+        }
         
+        this.setSrcNodes(sourceNodes);
     }
     
     private ArrayList createPhantomSource (){
