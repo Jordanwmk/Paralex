@@ -11,7 +11,8 @@ import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 
 /**
- * Created by Ben on 8/4/2016.
+ * Created by Ben Mitchell on 8/4/2016.
+ * Edited by Ammar Bagasrawala
  */
 public class Input {
 
@@ -63,6 +64,14 @@ public class Input {
         
         //finding all of the source nodes
         input.createSourceNodes();
+        
+        // Adding labels to the graph so they display
+        for (Node node : input.getInputG()) {
+        	node.addAttribute("ui.label", node.getId());
+        	node.addAttribute("ui.style", "fill-color: red;");
+        }
+        
+        
         input.getInputG().display();      
         
         //creating a phantomSource node
