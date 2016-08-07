@@ -1,14 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.DefaultGraph;
-import org.graphstream.graph.implementations.MultiGraph;
-import org.graphstream.graph.implementations.SingleGraph;
+
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
@@ -21,44 +22,52 @@ import org.graphstream.ui.view.Viewer;
  */
 public class VFrame{
 
-	private static Graph graph = new SingleGraph("Tutorial 1");
+	private JFrame mainFrame;
+	private JPanel contentPane;
+	private Graph graph;
 
-    public static class MyFrame extends JFrame
-    {
-        private static final long serialVersionUID = 8394236698316485656L;
+	// Should be removed before merging into master
+	public static void main (String[] args) {
+		VFrame frame = new VFrame();
+		frame.createGraph();
+		frame.prepareGui();
+		frame.showFrame();
+	}
 
-        //private Graph graph = new MultiGraph("embedded");
-        private Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-        //private Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_SWING_THREAD);
-        private View view = viewer.addDefaultView(false);
+	private void prepareGui () {
 
-        public MyFrame() {
-             setLayout(new BorderLayout());
-             this.add(BorderLayout.CENTER);
-             setDefaultCloseOperation(EXIT_ON_CLOSE);
-             viewer.enableAutoLayout();
-        }
-    }
+		mainFrame = new JFrame("Paralex - Parallel Task Scheduling");
+		mainFrame.setSize(1000,800);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 
-    public static void main(String args[]) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                MyFrame frame = new MyFrame();
-                frame.setSize(320, 240);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+		contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout());
+		contentPane.setPreferredSize(new Dimension(500, 500));
+		
+		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		View view = viewer.addDefaultView(false);
+		((Component) view).setPreferredSize(new Dimension(500, 500));
+		contentPane.add((Component) view, BorderLayout.CENTER);
+		viewer.enableAutoLayout();
+		
+		mainFrame.add(contentPane);
+		//mainFrame.pack();
+	}
 
-                graph.addNode("A");
-                graph.addNode("B");
-                graph.addNode("C");
-                graph.addEdge("AB", "A", "B");
-                graph.addEdge("BC", "B", "C");
-                graph.addEdge("CA", "C", "A");
+	private void showFrame () {
+		mainFrame.setVisible(true);
+	}
 
-                graph.addAttribute("ui.quality");
-                graph.addAttribute("ui.antialias");
-            }
-        });
-    }
+
+	private void createGraph () {
+		graph = new DefaultGraph("graph");
+		graph.addNode("A" );
+		graph.addNode("B" );
+		graph.addNode("C" );
+		graph.addEdge("AB", "A", "B");
+		graph.addEdge("BC", "B", "C");
+		graph.addEdge("CA", "C", "A");
+	}
+
 	
 }
