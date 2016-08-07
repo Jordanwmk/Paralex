@@ -113,6 +113,7 @@ public class Input {
         FileSinkDOT writer = new FileSinkDOT(true);
         writer.setDirected(true);
         writer.writeAll(input.getInputG(), "src/test2.dot");
+       
     }
 
 	private void readInputGraph(String fileName) throws IOException {
