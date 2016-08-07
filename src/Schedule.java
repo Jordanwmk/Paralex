@@ -45,13 +45,13 @@ public class Schedule implements Comparable<Schedule>{
 
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
     public int compareTo(Schedule other) {
-        return other.estimate-this.estimate;
+        return this.estimate-other.estimate;
     }
 
     //not needed in the final implementation but for testing
     public String toString() {
 
-        if (this.parent != null) {
+        if (this.parent != null && this.parent.task!=-1) {
             System.out.println(this.parent);
         }
         return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
@@ -72,7 +72,7 @@ public class Schedule implements Comparable<Schedule>{
 
         //starting from this node, go up the tree to the root and find all the tasks that have been completed
         //this will update the completedTasks boolean array
-        while(scheduleCurrentlyInspecting != null) {
+        while(scheduleCurrentlyInspecting.task!=-1) {
             completedTasks[scheduleCurrentlyInspecting.task] = true;
             scheduleCurrentlyInspecting=scheduleCurrentlyInspecting.parent;
         }
@@ -109,8 +109,8 @@ public class Schedule implements Comparable<Schedule>{
 
                 //as we are going up the tree looking for dependencies, keep going until either there are no nodes left,
                 //or if all the dependencies and the earliest start time on this process is found.
-                while(scheduleYouAreCurrentlyInspecting != null && (dependenciesRemaining != 0 || earliestStartTimeOnThisProcessor == -1)) {
 
+                while(scheduleYouAreCurrentlyInspecting.task!=-1 && (dependenciesRemaining != 0 || earliestStartTimeOnThisProcessor == -1)) {
                     //FIND EARLIEST START TIME ON THIS PROCESSOR
                     //if the earliest start time on this processor is not found yet, and the node we are looking at is on the same processor,
                     //then set the earliest start time to the 'node we are looking at's starttime+weight. not communication cost, because
