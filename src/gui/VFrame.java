@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.DefaultGraph;
+
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
@@ -21,7 +22,7 @@ import org.graphstream.ui.view.Viewer;
  * @author Ammar Bagasrawala
  *
  */
-public class VFrame {
+public class VFrame{
 
 	private JFrame mainFrame;
 	private JPanel contentPane;
@@ -79,5 +80,6 @@ public class VFrame {
 		graph.addEdge("BC", "B", "C");
 		graph.addEdge("CA", "C", "A");
 	}
+
 	
 }
