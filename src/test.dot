@@ -1,12 +1,10 @@
-digraph {
-b	[weight="5"];
-a	[weight="2"];
-c	[weight="6"];
-d				[weight="3"];
-e	[weight="3"];
-a -> b[label="2",weight="2"];
-a -> c[label="4",weight="4"];
-c -> d[label="6",weight="6"];
-b -> d[label="7",weight="7"];
-e -> b[label="7",weight="7"];
+digraph "example"{
+	a 		[Weight="2"] ;
+	b 		[Weight="3"] ;
+	a -> b 	[Weight="1"] ;
+	c 		[Weight="3"] ;
+	a -> c 	[Weight="2"] ;
+	d 		[Weight="2"];
+	b -> d 	[Weight="2"];
+	c -> d 	[Weight="1"];
 }

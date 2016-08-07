@@ -7,6 +7,10 @@ import java.util.Collections;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
+import org.graphstream.stream.file.FileSink;
+import org.graphstream.stream.file.FileSinkBase;
+import org.graphstream.stream.file.FileSinkDOT;
+import org.graphstream.stream.file.FileSinkFactory;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 
@@ -72,7 +76,7 @@ public class Input {
         }
         
         
-        input.getInputG().display();      
+        //input.getInputG().display();      
         
         //creating a phantomSource node
         ArrayList phantomSource = input.createPhantomSource();
@@ -99,6 +103,16 @@ public class Input {
         for (int i = 0; i < srcNodes.size(); i ++) {
         	System.out.print(srcNodes.get(i) + " ");
         }
+        
+        //Output parser from here
+        for (Node node: input.getInputG()){
+        	node.removeAttribute("ui.label");
+        	node.removeAttribute("ui.style");
+        }
+        
+        FileSinkDOT writer = new FileSinkDOT(true);
+        writer.setDirected(true);
+        writer.writeAll(input.getInputG(), "src/test2.dot");
     }
 
 	private void readInputGraph(String fileName) throws IOException {
@@ -138,7 +152,7 @@ public class Input {
         int adjacencyMatrix[][] = new int[numNodes][numNodes];
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("weight")) : -1);
+                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("Weight")) : -1);
             }
         }
         this.setAdjMatrix(adjacencyMatrix);
@@ -189,7 +203,7 @@ public class Input {
     	
         //constructing a phantom node to be single source
         inputGraph.addNode("source1");
-        inputGraph.getNode("source1").addAttribute("weight", "0");
+        inputGraph.getNode("source1").addAttribute("Weight", "0");
         //adding it to the adjacency list with edges to real sources
         ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
         adjacencyList.add(sourceNodes);
@@ -229,15 +243,15 @@ public class Input {
     					cBottomLevels.add(this.createBottomLevels(singleChild));
     				}
     				int[] temp = this.getBotLevels();
-    				temp[i] = ( Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight")) + Collections.max(cBottomLevels));
+    				temp[i] = (Integer.parseInt(this.getInputG().getNode(i).getAttribute("Weight")) + Collections.max(cBottomLevels));
     				this.setBotLevels(temp);
-    				return (Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight")) + Collections.max(cBottomLevels));
+    				return (Integer.parseInt(this.getInputG().getNode(i).getAttribute("Weight")) + Collections.max(cBottomLevels));
     		} else {
     			int[] temp = this.getBotLevels();
-    			temp[i] = Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight"));
+    			temp[i] = Integer.parseInt(this.getInputG().getNode(i).getAttribute("Weight"));
     			this.setBotLevels(temp);
     			
-    			return Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight"));
+    			return Integer.parseInt(this.getInputG().getNode(i).getAttribute("Weight"));
     		}
     	}
 		return 0;
