@@ -16,12 +16,20 @@ import org.graphstream.stream.file.FileSourceFactory;
  */
 public class Input {
 
+	
 	private Graph inputG;
 	private ArrayList<ArrayList<Integer>> adjList = new ArrayList<ArrayList<Integer>>();
+	private ArrayList<ArrayList<Integer>> dependencyList = new ArrayList<ArrayList<Integer>>();
 	private int[] botLevels;
 	private int adjMatrix[][];
 	private ArrayList<Integer> srcNodes = new ArrayList<Integer>();
 	
+	public ArrayList<ArrayList<Integer>> getDependencyList() {
+		return dependencyList;
+	}
+	public void setDependencyList(ArrayList<ArrayList<Integer>> dependencyList) {
+		this.dependencyList = dependencyList;
+	}
 	public ArrayList<Integer> getSrcNodes() {
 		return srcNodes;
 	}
@@ -51,6 +59,20 @@ public class Input {
 	}
 	public void setInputG(Graph inputG) {
 		this.inputG = inputG;
+	}
+	
+	public void Input(){
+		
+	}
+	public void Input(String fileName) throws IOException{
+		//pass in the input file name
+        this.readInputGraph("src/test.dot");
+        
+        //creating the adjacency matrix and list
+        this.createMatrixList();
+        
+        //finding all of the source nodes
+        this.createSourceNodes();
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -99,6 +121,35 @@ public class Input {
         for (int i = 0; i < srcNodes.size(); i ++) {
         	System.out.print(srcNodes.get(i) + " ");
         }
+        System.out.println("");
+        
+        //printing matrixList to check validity
+        System.out.println("--------Adj matrix below----------------------");
+        for (int i = 0; i < input.getInputG().getNodeCount(); i++){
+            for (int j = 0; j < input.getInputG().getNodeCount(); j++){
+                System.out.print(input.getAdjMatrix()[i][j]+ " ");
+            }
+            System.out.println("");
+        }
+        System.out.println("-----Adj List below--------------------");
+        
+        for (int i = 0; i < input.getInputG().getNodeCount(); i++){
+        	 for (int j = 0; j < input.getAdjList().get(i).size(); j++){
+                 System.out.print(input.getAdjList().get(i).get(j)+ " ");
+             }
+             System.out.println("");
+        }
+        System.out.println("------------------------------");
+        System.out.println("-----Dependency List below--------------------");
+        
+        for (int i = 0; i < input.getInputG().getNodeCount(); i++){
+        	 for (int j = 0; j < input.getDependencyList().get(i).size(); j++){
+                 System.out.print(input.getDependencyList().get(i).get(j)+ " ");
+             }
+             System.out.println("");
+        }
+        System.out.println("------------------------------");
+        
     }
 
 	private void readInputGraph(String fileName) throws IOException {
@@ -157,6 +208,18 @@ public class Input {
         }
         this.setAdjList(temp1);
         
+        ArrayList temp2 = new ArrayList();
+        for (int i = 0; i < numNodes; i++) {
+        	ArrayList temp3 = new ArrayList();
+        	temp2.add(temp3);
+        	for (int j = 0; j < numNodes; j++) {
+        		if (adjacencyMatrix[j][i] != -1){
+        			temp3.add(j);
+        		}
+        	}
+        }
+        this.setDependencyList(temp2);
+        
     }
     
     private void createSourceNodes (){
@@ -205,18 +268,7 @@ public class Input {
         return singleSource;
     }
     
-    private void deletePhatomSource (){
-    	
-    	Graph inputGraph = this.getInputG();
-    	inputGraph.removeNode("source1");
-    	
-    	ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
-    	adjacencyList.remove(inputGraph.getNodeCount());
-    	
-    }
-    
-    private int createBottomLevels(ArrayList<Integer> nodes){
-		
+ private int createBottomLevels(ArrayList<Integer> nodes){
     	for (Integer i: nodes){
     		ArrayList<Integer> children = this.getAdjList().get(i);
 	
@@ -242,6 +294,18 @@ public class Input {
     	}
 		return 0;
     }
+ 
+    private void deletePhatomSource (){
+    	
+    	Graph inputGraph = this.getInputG();
+    	inputGraph.removeNode("source1");
+    	
+    	ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
+    	adjacencyList.remove(inputGraph.getNodeCount());
+    	
+    }
+    
+   
 
   
 }
