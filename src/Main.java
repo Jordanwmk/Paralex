@@ -3,24 +3,32 @@
  */
 public class Main {
     public static void main(String[] args){
+        long startTime,endTime,totalTime;
 
-        long startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
         Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(Graph.getInstance());
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Brute Force Time: " + totalTime + "ms");
+        endTime   = System.currentTimeMillis();
+        totalTime = endTime - startTime;
         System.out.println(bruteForceSolution);
-        System.out.println("brute force total time: " + bruteForceSolution.getTotalTime());
+        System.out.println("brute Force solution time: " + bruteForceSolution.getTotalTime());
+        System.out.println("Brute Force runtime: " + totalTime + "ms");
         System.out.println();
 
         startTime = System.currentTimeMillis();
         Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
-        System.out.println("A Star Time: " + totalTime + "ms");
-
         System.out.println(aStarSolution);
-        System.out.println("a* total time: "+aStarSolution.getTotalTime());
+        System.out.println("A* solution time: "+aStarSolution.getTotalTime());
+        System.out.println("A* runtime: " + totalTime + "ms");
+        System.out.println();
 
+        startTime = System.currentTimeMillis();
+        Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(Graph.getInstance());
+        endTime   = System.currentTimeMillis();
+        totalTime = endTime - startTime;
+        System.out.println(branchAndBoundSolution);
+        System.out.println("Branch & Bound solution time: "+branchAndBoundSolution.getTotalTime());
+        System.out.println("Branch & Bound runtime: " + totalTime + "ms");
     }
 }

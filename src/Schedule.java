@@ -75,6 +75,10 @@ public class Schedule implements Comparable<Schedule>{
         return totalTime;
     }
 
+    public int getFinishTimeEstimate(){
+        return estimate;
+    }
+
     //method that returns a list of valid children nodes
     public List<Schedule> generateChildren() {
         //list used for storing all the children. will be returned
