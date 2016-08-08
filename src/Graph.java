@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Created by Hanzhi on 1/08/2016.
@@ -13,13 +14,14 @@ public class Graph {
     private List<ArrayList<Integer>> adjListChildren;
     private List<ArrayList<Integer>> adjListDependencies;
     private int numProcessors =2;
-    private int totalTaskTime = 10;
-    private int totalNumTasks = 4;
+    private int totalTaskTime;
+    private int totalNumTasks;
 
     private static Graph instance;
-
+    private Input input;
+    
     private Graph(){
-       Input input = new Input();
+        this.input = new Input();
     	try {
 			 input = new Input("src/test.dot");
 		} catch (IOException e) {
@@ -32,7 +34,9 @@ public class Graph {
         edgeCosts=input.getAdjMatrix();
         adjListChildren=input.getAdjList();
         adjListDependencies= input.getDependencyList();
-
+        totalTaskTime = IntStream.of(nodeCosts).sum();
+        totalNumTasks = nodeCosts.length;
+        
     }
 
     public static Graph getInstance(){
@@ -76,6 +80,6 @@ public class Graph {
     }
 
     public List<Integer> getEntryPoints(){
-        return Arrays.asList(new Integer[]{0});
+        return this.input.getSrcNodes();
     }
 }
