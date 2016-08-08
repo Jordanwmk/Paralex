@@ -8,7 +8,7 @@ public class Main {
         Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(Graph.getInstance());
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        System.out.println("Brute Force Time: " + totalTime);
+        System.out.println("Brute Force Time: " + totalTime + "ms");
         System.out.println(bruteForceSolution);
         System.out.println("brute force total time: " + bruteForceSolution.getTotalTime());
         System.out.println();
@@ -17,7 +17,7 @@ public class Main {
         Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
-        System.out.println("A Star Time: " + totalTime);
+        System.out.println("A Star Time: " + totalTime + "ms");
 
         System.out.println(aStarSolution);
         System.out.println("a* total time: "+aStarSolution.getTotalTime());
