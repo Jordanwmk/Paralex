@@ -10,8 +10,8 @@ public class Graph {
     private int[] nodeCosts;
     private int[] nodeBL;
     private int[][] edgeCosts;
-    private List<List<Integer>> adjListChildren;
-    private List<List<Integer>> adjListDependencies;
+    private List<ArrayList<Integer>> adjListChildren;
+    private List<ArrayList<Integer>> adjListDependencies;
     private int numProcessors =2;
     private int totalTaskTime = 10;
     private int totalNumTasks = 4;
@@ -19,28 +19,20 @@ public class Graph {
     private static Graph instance;
 
     private Graph(){
-       
+       Input input = new Input();
     	try {
-			Input input = new Input("src/test.dot");
+			 input = new Input("src/test.dot");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
-    	nodeCosts=new int[]{2,3,3,2};
-        nodeBL=new int[]{7,5,5,2};
-        edgeCosts=new int[][]{{-1,1,2,-1},{-1,-1,-1,2},{-1,-1,-1,1},{-1,-1,-1,-1}};
-        adjListChildren=new ArrayList<>();
-        adjListChildren.add(Arrays.asList(new Integer[]{1,2}));
-        adjListChildren.add(Arrays.asList(new Integer[]{3}));
-        adjListChildren.add(Arrays.asList(new Integer[]{3}));
-        adjListChildren.add(Arrays.asList(new Integer[]{}));
+    	nodeCosts= input.getNodeCosts();
+        nodeBL= input.getBotLevels();
+        edgeCosts=input.getAdjMatrix();
+        adjListChildren=input.getAdjList();
+        adjListDependencies= input.getDependencyList();
 
-        adjListDependencies=new ArrayList<>();
-        adjListDependencies.add(Arrays.asList(new Integer[]{}));
-        adjListDependencies.add(Arrays.asList(new Integer[]{0}));
-        adjListDependencies.add(Arrays.asList(new Integer[]{0}));
-        adjListDependencies.add(Arrays.asList(new Integer[]{1,2}));
     }
 
     public static Graph getInstance(){

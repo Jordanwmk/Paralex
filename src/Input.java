@@ -81,6 +81,15 @@ public class Input {
         //creating the array of node costs
         this.createNodeCosts();
         
+        // Adding labels to the graph so they display
+        for (Node node : this.getInputG()) {
+        	node.addAttribute("ui.label", node.getId());
+        	node.addAttribute("ui.style", "fill-color: red;");
+        }
+        
+        
+        this.getInputG().display();  
+        
         //finding all of the source nodes
         this.createSourceNodes();
         
