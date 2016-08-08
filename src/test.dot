@@ -1,22 +1,10 @@
-digraph {
-b	[weight="5"];
-a	[weight="2"];
-c	[weight="6"];
-d	[weight="3"];
-e	[weight="3"];
-f	[weight="6"];
-g	[weight="6"];
-h	[weight="1"];
-i	[weight="4"];
-j	[weight="5"];
-a -> b[label="2",weight="2"];
-a -> c[label="4",weight="4"];
-c -> d[label="6",weight="6"];
-b -> d[label="7",weight="7"];
-e -> b[label="7",weight="7"];
-f -> g[label="7",weight="7"];
-f -> h[label="2",weight="2"];
-i -> j[label="4",weight="4"];
-i -> h[label="9",weight="9"];
-j -> b[label="1",weight="1"];
+digraph " example " {
+a       [weight="2"] ;
+b       [weight="3"] ;
+a -> b  [weight="1"] ;
+c       [weight="3"] ;
+a -> c  [weight="2"] ;
+d       [weight="2"] ;
+b -> d  [weight="2"] ;
+c -> d  [weight="1"] ;
 }

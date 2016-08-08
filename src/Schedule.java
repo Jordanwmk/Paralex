@@ -62,6 +62,13 @@ public class Schedule implements Comparable<Schedule>{
         if (this.parent != null && this.parent.task!=-1) {
             System.out.println(this.parent);
         }
+
+        //Add attributes for output file
+        Input.getInputG().getNode(task).addAttribute("Processor", processor + 1);
+        Input.getInputG().getNode(task).addAttribute("Start", time);
+//        Input.getInputG().getNode(task).removeAttribute("ui.style");
+//        Input.getInputG().getNode(task).removeAttribute("ui.label");
+
         return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
     }
 
@@ -114,15 +121,15 @@ public class Schedule implements Comparable<Schedule>{
 
                 Schedule scheduleYouAreCurrentlyInspecting = this;
 
-                //finish time of last task schduled on this processor
+                //finish time of last task scheduled on this processor
                 //only need to find the last task scheduled on this processor
                 int earliestStartTimeOnThisProcessor = -1;
 
-                //maximum starttime + node cost + communication cost of all dependancies
+                //maximum start time + node cost + communication cost of all dependencies
                 int earliestStartTimeOfThisTask = -1;
 
                 //a counter for how many dependencies the task we are trying to schedule has
-                //when its 0, we know we have gona through all its dependencies
+                //when its 0, we know we have gone through all its dependencies
                 int dependenciesRemaining = dependencyList.size();
 
                 //as we are going up the tree looking for dependencies, keep going until either there are no nodes left,
@@ -131,7 +138,7 @@ public class Schedule implements Comparable<Schedule>{
                 while(scheduleYouAreCurrentlyInspecting.task!=-1 && (dependenciesRemaining != 0 || earliestStartTimeOnThisProcessor == -1)) {
                     //FIND EARLIEST START TIME ON THIS PROCESSOR
                     //if the earliest start time on this processor is not found yet, and the node we are looking at is on the same processor,
-                    //then set the earliest start time to the 'node we are looking at's starttime+weight. not communication cost, because
+                    //then set the earliest start time to the 'node we are looking at's start time+weight. not communication cost, because
                     //its on the same processor
                     if (earliestStartTimeOnThisProcessor == -1 && scheduleYouAreCurrentlyInspecting.processor == processorWeAreTryingToScheduleOn) {
                         earliestStartTimeOnThisProcessor = scheduleYouAreCurrentlyInspecting.time + taskGraph.getNodeCost(scheduleYouAreCurrentlyInspecting.task);

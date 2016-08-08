@@ -1,10 +1,10 @@
 digraph {
-	"a" ["Weight"="2"];
-	"b" ["Weight"="3"];
-	"c" ["Weight"="3"];
-	"d" ["Weight"="2"];
-	"a" -> "b" ["Weight"="1"];
-	"a" -> "c" ["Weight"="2"];
-	"b" -> "d" ["Weight"="2"];
-	"c" -> "d" ["Weight"="1"];
+	"a" ["weight"="2","Processor"=1,"ui.label"="a","Start"=0,"ui.style"="fill-color: red;"];
+	"b" ["weight"="3","Processor"=2,"ui.label"="b","Start"=3,"ui.style"="fill-color: red;"];
+	"c" ["weight"="3","Processor"=1,"ui.label"="c","Start"=2,"ui.style"="fill-color: red;"];
+	"d" ["weight"="2","Processor"=2,"ui.label"="d","Start"=6,"ui.style"="fill-color: red;"];
+	"a" -> "b" ["weight"="1"];
+	"a" -> "c" ["weight"="2"];
+	"b" -> "d" ["weight"="2"];
+	"c" -> "d" ["weight"="1"];
 }

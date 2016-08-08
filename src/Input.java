@@ -15,9 +15,8 @@ import org.graphstream.stream.file.FileSourceFactory;
  * Edited by Ammar Bagasrawala
  */
 public class Input {
-
 	
-	private Graph inputG;
+	private static Graph inputG;
 	private ArrayList<ArrayList<Integer>> adjList = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>> dependencyList = new ArrayList<ArrayList<Integer>>();
 	private int[] nodeCosts;
@@ -61,16 +60,18 @@ public class Input {
 	public void setBotLevels(int[] botLevels) {
 		this.botLevels = botLevels;
 	}
-    public Graph getInputG() {
+    public static Graph getInputG() {
 		return inputG;
 	}
-	public void setInputG(Graph inputG) {
+	private void setInputG(Graph inputG) {
 		this.inputG = inputG;
 	}
+
 	
 	public Input(){
 		
 	}
+
 	public Input(String fileName) throws IOException{
 		//pass in the input file name
         this.readInputGraph(fileName);
@@ -86,9 +87,11 @@ public class Input {
         	node.addAttribute("ui.label", node.getId());
         	node.addAttribute("ui.style", "fill-color: red;");
         }
+
+        //System.out.println(this.getInputG().getNode(3).getId() + " " + this.getInputG().getNode(3).getIndex());
+        //Input.getInputG().getNode(task).addAttribute("Start", time);Input.getInputG().getNode(task).addAttribute("Processor", processor);
         
-        
-        this.getInputG().display();  
+        this.getInputG().display();
         
         //finding all of the source nodes
         this.createSourceNodes();
