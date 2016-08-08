@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,15 @@ public class Graph {
     private static Graph instance;
 
     private Graph(){
-        nodeCosts=new int[]{2,3,3,2};
+       
+    	try {
+			Input input = new Input("src/test.dot");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	nodeCosts=new int[]{2,3,3,2};
         nodeBL=new int[]{7,5,5,2};
         edgeCosts=new int[][]{{-1,1,2,-1},{-1,-1,-1,2},{-1,-1,-1,1},{-1,-1,-1,-1}};
         adjListChildren=new ArrayList<>();
