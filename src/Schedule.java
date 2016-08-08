@@ -43,6 +43,14 @@ public class Schedule implements Comparable<Schedule>{
 
     }
 
+    /**
+     * Creates an empty schedule to use as the start of the state tree traversal/generation
+     * @return the empty schedule
+     */
+    public static Schedule getEmptySchedule(){
+        return new Schedule(null,-1,-1,0,0,0,1, Graph.getInstance().getEntryPoints());
+    }
+
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
     public int compareTo(Schedule other) {
         return this.estimate-other.estimate;
@@ -57,8 +65,18 @@ public class Schedule implements Comparable<Schedule>{
         return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
     }
 
+    public int getTotalTime(){
+        int totalTime=0;
+        Schedule scheduleWeAreCurrentlyInspecting=this;
+        while(scheduleWeAreCurrentlyInspecting!=null && scheduleWeAreCurrentlyInspecting.task!=-1){
+            totalTime=Math.max(totalTime,scheduleWeAreCurrentlyInspecting.time+Graph.getInstance().getNodeCost(scheduleWeAreCurrentlyInspecting.task));
+            scheduleWeAreCurrentlyInspecting=scheduleWeAreCurrentlyInspecting.parent;
+        }
+        return totalTime;
+    }
+
     //method that returns a list of valid children nodes
-    List<Schedule> generateChildren() {
+    public List<Schedule> generateChildren() {
         //list used for storing all the children. will be returned
         List<Schedule> children = new ArrayList<Schedule>();
         //graph singleton that has all the edge costs and node weights, BLs etc.
@@ -203,7 +221,7 @@ public class Schedule implements Comparable<Schedule>{
             }
         }
 
-    //return the final list of all the child nodes that were generated
-    return children;
+        //return the final list of all the child nodes that were generated
+        return children;
     }
 }
