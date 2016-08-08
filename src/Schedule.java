@@ -66,8 +66,8 @@ public class Schedule implements Comparable<Schedule>{
         //Add attributes for output file
         Input.getInputG().getNode(task).addAttribute("Processor", processor + 1);
         Input.getInputG().getNode(task).addAttribute("Start", time);
-//        Input.getInputG().getNode(task).removeAttribute("ui.style");
-//        Input.getInputG().getNode(task).removeAttribute("ui.label");
+        Input.getInputG().getNode(task).removeAttribute("ui.style");
+        Input.getInputG().getNode(task).removeAttribute("ui.label");
 
         return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
     }

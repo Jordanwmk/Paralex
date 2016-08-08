@@ -5,13 +5,13 @@ public class Main {
     public static void main(String[] args){
 
        long startTime = System.currentTimeMillis();
-//        Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(Graph.getInstance());
+        Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(Graph.getInstance());
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-//        System.out.println("Brute Force Time: " + totalTime + "ms");
-//        System.out.println(bruteForceSolution);
-//        System.out.println("brute force total time: " + bruteForceSolution.getTotalTime());
-//        System.out.println();
+        System.out.println("Brute Force Time: " + totalTime + "ms");
+        System.out.println(bruteForceSolution);
+        System.out.println("brute force total time: " + bruteForceSolution.getTotalTime());
+        System.out.println();
 
         startTime = System.currentTimeMillis();
         Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());

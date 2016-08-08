@@ -1,23 +1,23 @@
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDOT;
 
-import java.io.IOException;
-
 /**
- * Created by Hanzhi on 1/08/2016.
+ * Created by Jordan on 8/08/2016.
  */
 public class Output {
 
-    public void createOutput (){
+    String fileName = "src/test2.dot";
 
+    public void createOutput(){
+
+        //Get created graph from input dot file
         Graph graph = Input.getInputG();
 
+        //Create the dot file writer for output. Constructor parameter "true" indicates that graph is directed
         FileSinkDOT writer = new FileSinkDOT(true);
-        writer.setDirected(true);
 
         try{
-            writer.writeAll(graph, "src/test2.dot");
+            writer.writeAll(graph, fileName);
         } catch (Exception e){
             e.printStackTrace();
         }

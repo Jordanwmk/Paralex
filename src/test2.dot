@@ -1,10 +1,22 @@
 digraph {
-	"a" ["weight"="2","Processor"=1,"ui.label"="a","Start"=0,"ui.style"="fill-color: red;"];
-	"b" ["weight"="3","Processor"=2,"ui.label"="b","Start"=3,"ui.style"="fill-color: red;"];
-	"c" ["weight"="3","Processor"=1,"ui.label"="c","Start"=2,"ui.style"="fill-color: red;"];
-	"d" ["weight"="2","Processor"=2,"ui.label"="d","Start"=6,"ui.style"="fill-color: red;"];
-	"a" -> "b" ["weight"="1"];
-	"a" -> "c" ["weight"="2"];
-	"b" -> "d" ["weight"="2"];
-	"c" -> "d" ["weight"="1"];
+	"b" ["weight"="5","Processor"=2,"Start"=12];
+	"a" ["weight"="2","Processor"=1,"Start"=0];
+	"c" ["weight"="6","Processor"=1,"Start"=2];
+	"d" ["weight"="3","Processor"=2,"Start"=17];
+	"e" ["weight"="3","Processor"=2,"Start"=4];
+	"f" ["weight"="6","Processor"=1,"Start"=8];
+	"g" ["weight"="6","Processor"=1,"Start"=14];
+	"h" ["weight"="1","Processor"=1,"Start"=20];
+	"i" ["weight"="4","Processor"=2,"Start"=0];
+	"j" ["weight"="5","Processor"=2,"Start"=7];
+	"a" -> "b" ["weight"="2","label"="2"];
+	"a" -> "c" ["weight"="4","label"="4"];
+	"c" -> "d" ["weight"="6","label"="6"];
+	"b" -> "d" ["weight"="7","label"="7"];
+	"e" -> "b" ["weight"="7","label"="7"];
+	"f" -> "g" ["weight"="7","label"="7"];
+	"f" -> "h" ["weight"="2","label"="2"];
+	"i" -> "j" ["weight"="4","label"="4"];
+	"i" -> "h" ["weight"="9","label"="9"];
+	"j" -> "b" ["weight"="1","label"="1"];
 }
