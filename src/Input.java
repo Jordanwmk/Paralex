@@ -10,10 +10,6 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
-import org.jgrapht.ext.DOTImporter;
-import org.jgrapht.ext.EdgeProvider;
-import org.jgrapht.ext.VertexNameProvider;
-import org.jgrapht.ext.VertexProvider;
 
 /**
  * Created by Ben Mitchell on 8/4/2016.
