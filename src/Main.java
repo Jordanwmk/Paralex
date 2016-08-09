@@ -18,6 +18,10 @@ public class Main {
         System.out.println("a* total time: "+aStarSolution.getTotalTime());
 
         new Output().createOutput(aStarSolution);
-
+        System.exit(0);
+        
+//        InputParser lol = new InputParser(filename);
+//        Schedule =  scheduler.schedule(Graph.getGraph);
+//        Outputparser.print(schedule);
     }
 }

@@ -10,6 +10,16 @@ public class Output {
 
     public void createOutput(Schedule aStarSolution){
 
+    	while (aStarSolution.getTask() != -1){
+    		
+    		int task = aStarSolution.getTask();
+    		int processor = aStarSolution.getProcessor();
+    		int time = aStarSolution.getTime();
+    		Graph graph = Input.getInputG();
+    		
+    		formatAttributes(graph, task, processor, time);
+    		aStarSolution = aStarSolution.getParent();
+    	}
     	
     	
         //Get created graph from input dot file
@@ -25,5 +35,12 @@ public class Output {
         }
 
 
+    }
+    
+    public void formatAttributes(Graph graph, int task, int processor, int time){
+    	graph.getNode(task).addAttribute("Processor", processor + 1);
+		graph.getNode(task).addAttribute("Start", time);
+		graph.getNode(task).removeAttribute("ui.style");
+		graph.getNode(task).removeAttribute("ui.label");
     }
 }

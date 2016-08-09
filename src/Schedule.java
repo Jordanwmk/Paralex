@@ -63,12 +63,6 @@ public class Schedule implements Comparable<Schedule>{
             System.out.println(this.parent);
         }
 
-        //Add attributes for output file
-        Input.getInputG().getNode(task).addAttribute("Processor", processor + 1);
-        Input.getInputG().getNode(task).addAttribute("Start", time);
-        Input.getInputG().getNode(task).removeAttribute("ui.style");
-        Input.getInputG().getNode(task).removeAttribute("ui.label");
-
         return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
     }
 
@@ -231,4 +225,36 @@ public class Schedule implements Comparable<Schedule>{
         //return the final list of all the child nodes that were generated
         return children;
     }
+
+	public Schedule getParent() {
+		return parent;
+	}
+
+	public int getTask() {
+		return task;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public int getProcessor() {
+		return processor;
+	}
+
+	public int getIdleTime() {
+		return idleTime;
+	}
+
+	public int getEstimate() {
+		return estimate;
+	}
+
+	public int getProcessorsUsed() {
+		return processorsUsed;
+	}
+
+	public List<Integer> getDoableTasks() {
+		return doableTasks;
+	}
 }
