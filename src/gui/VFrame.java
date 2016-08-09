@@ -39,9 +39,11 @@ public class VFrame{
 		frame.createGraph();
 		frame.prepareGui();
 		frame.showFrame();
-		frame.addTaskToProcessor(1, 1, 1);
+		frame.addTaskToProcessor(1, 0, 1);	
+		frame.addTaskToProcessor(1, 2, 2);
 		frame.addTaskToProcessor(1, 1, 2);
 		frame.addTaskToProcessor(0, 1, 8);
+		frame.removeTaskFromProcessor(1, 1);
 	}
 
 	private void prepareGui () {
@@ -102,6 +104,22 @@ public class VFrame{
 		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
 	}
 	
+	// Allows removal of a task
+	public void removeTaskFromProcessor (int proc, int task) {
+		JTable table = procTables.get(proc);
+		System.out.println(proc);
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		
+		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		for (int i = 0; i < model.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).equals(Integer.toString(task))) {
+				//model.removeRow(i);			// Removes row
+				model.setValueAt("", i, 0);		// Makes row blank
+			}
+		}
+	}
+	
+	// TO BE REMOVED
 	private void createGraph () {
 		graph = new DefaultGraph("graph");
 		graph.addNode("A" );
