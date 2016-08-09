@@ -8,8 +8,10 @@ public class Output {
 
     String fileName = "src/test2.dot";
 
-    public void createOutput(){
+    public void createOutput(Schedule aStarSolution){
 
+    	
+    	
         //Get created graph from input dot file
         Graph graph = Input.getInputG();
 

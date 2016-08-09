@@ -4,14 +4,9 @@
 public class Main {
     public static void main(String[] args){
 
-       long startTime = System.currentTimeMillis();
-        Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(Graph.getInstance());
+    	long startTime = System.currentTimeMillis();
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        System.out.println("Brute Force Time: " + totalTime + "ms");
-        System.out.println(bruteForceSolution);
-        System.out.println("brute force total time: " + bruteForceSolution.getTotalTime());
-        System.out.println();
 
         startTime = System.currentTimeMillis();
         Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
@@ -22,7 +17,7 @@ public class Main {
         System.out.println(aStarSolution);
         System.out.println("a* total time: "+aStarSolution.getTotalTime());
 
-        new Output().createOutput();
+        new Output().createOutput(aStarSolution);
 
     }
 }
