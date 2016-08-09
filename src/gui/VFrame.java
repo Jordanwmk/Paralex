@@ -43,7 +43,8 @@ public class VFrame{
 		frame.addTaskToProcessor(1, 2, 2);
 		frame.addTaskToProcessor(1, 1, 2);
 		frame.addTaskToProcessor(0, 1, 8);
-		frame.removeTaskFromProcessor(1, 1);
+		//frame.removeTaskFromProcessor(1, 1);
+		frame.addIdleTime(1, 2, 3);
 	}
 
 	private void prepareGui () {
@@ -107,7 +108,6 @@ public class VFrame{
 	// Allows removal of a task
 	public void removeTaskFromProcessor (int proc, int task) {
 		JTable table = procTables.get(proc);
-		System.out.println(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		
 		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -117,6 +117,20 @@ public class VFrame{
 				model.setValueAt("", i, 0);		// Makes row blank
 			}
 		}
+	}
+	
+	// Method to add idle time to a processor
+	public void addIdleTime (int proc, int priorTask, int idleTime) {
+		JTable table = procTables.get(proc);
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		
+		for (int i = 0; i < model.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).equals(Integer.toString(priorTask))) {
+				model.insertRow(i+1 , new String[]{"Idle Time"});
+				table.setRowHeight(i+1, (idleTime * 16));
+			}
+		}
+		
 	}
 	
 	// TO BE REMOVED
