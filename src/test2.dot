@@ -1,14 +1,14 @@
 digraph {
-	"b" ["weight"="5","Processor"=2,"Start"=12];
-	"a" ["weight"="2","Processor"=1,"Start"=0];
-	"c" ["weight"="6","Processor"=1,"Start"=2];
-	"d" ["weight"="3","Processor"=2,"Start"=17];
-	"e" ["weight"="3","Processor"=2,"Start"=4];
-	"f" ["weight"="6","Processor"=1,"Start"=8];
-	"g" ["weight"="6","Processor"=1,"Start"=14];
-	"h" ["weight"="1","Processor"=1,"Start"=20];
-	"i" ["weight"="4","Processor"=2,"Start"=0];
-	"j" ["weight"="5","Processor"=2,"Start"=7];
+	"b" ["weight"="5","Processor"=1,"Start"=12];
+	"a" ["weight"="2","Processor"=2,"Start"=0];
+	"c" ["weight"="6","Processor"=2,"Start"=2];
+	"d" ["weight"="3","Processor"=1,"Start"=17];
+	"e" ["weight"="3","Processor"=1,"Start"=9];
+	"f" ["weight"="6","Processor"=2,"Start"=8];
+	"g" ["weight"="6","Processor"=2,"Start"=14];
+	"h" ["weight"="1","Processor"=2,"Start"=20];
+	"i" ["weight"="4","Processor"=1,"Start"=0];
+	"j" ["weight"="5","Processor"=1,"Start"=4];
 	"a" -> "b" ["weight"="2","label"="2"];
 	"a" -> "c" ["weight"="4","label"="4"];
 	"c" -> "d" ["weight"="6","label"="6"];

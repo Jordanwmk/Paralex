@@ -48,7 +48,7 @@ public class Schedule implements Comparable<Schedule>{
      * @return the empty schedule
      */
     public static Schedule getEmptySchedule(){
-        return new Schedule(null,-1,-1,0,0,0,1, Graph.getInstance().getEntryPoints());
+        return new Schedule(null,-1,-1,0,0,0,0, Graph.getInstance().getEntryPoints());
     }
 
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
@@ -74,6 +74,10 @@ public class Schedule implements Comparable<Schedule>{
             scheduleWeAreCurrentlyInspecting=scheduleWeAreCurrentlyInspecting.parent;
         }
         return totalTime;
+    }
+
+    public int getFinishTimeEstimate(){
+        return estimate;
     }
 
     //method that returns a list of valid children nodes
