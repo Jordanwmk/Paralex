@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.DefaultGraph;
@@ -29,6 +31,7 @@ public class VFrame{
 	private Graph graph;
 	private JTable table;
 	private int processors = 3;
+	private ArrayList<JTable> procTables = new ArrayList<JTable>();
 
 	// Should be removed before merging into master
 	public static void main (String[] args) {
@@ -36,6 +39,9 @@ public class VFrame{
 		frame.createGraph();
 		frame.prepareGui();
 		frame.showFrame();
+		frame.addTaskToProcessor(1, 1, 1);
+		frame.addTaskToProcessor(1, 1, 2);
+		frame.addTaskToProcessor(0, 1, 8);
 	}
 
 	private void prepareGui () {
@@ -60,33 +66,42 @@ public class VFrame{
 
 		// Right panel to hold table of processors and tasks
 		JPanel processPanel = new JPanel();
-		processPanel.setLayout(new BorderLayout());
+		processPanel.setLayout(new GridLayout(1, processors));
 
-		// Setting initial table values
-		String[][] rowData = new String[1][processors];	
-		String[] columnNames = new String[processors];
+		
+		// Creating JTable for each processor and adding it to the processors panel
 		for (int i = 0; i < processors; i++) {
-			columnNames[i] = "Proc " + (i +1);
-			rowData[0][i] = "";
+			
+			DefaultTableModel model = new DefaultTableModel();
+			model.addColumn("Proc " + i);
+			model.addRow(new String[] {"Tasks"});
+			JTable table = new JTable(model);
+			
+			JScrollPane scrollPane = new JScrollPane(table);
+			table.setRowSelectionAllowed(false);
+			table.setEnabled(false);	// Disabling user edit
+			procTables.add(table);
+			processPanel.add(scrollPane);
 		}
-		JTable table = new JTable(rowData, columnNames);
-
-		JScrollPane scrollPane = new JScrollPane(table);
-		table.setRowSelectionAllowed(false);
-		table.setEnabled(false);
-		processPanel.add(scrollPane);
-
+		
 		contentPane.add(graphPane);
 		contentPane.add(processPanel);
 		mainFrame.add(contentPane);
-		//mainFrame.pack();
 	}
 
 	private void showFrame () {
 		mainFrame.setVisible(true);
 	}
 
-
+	// Method to add a task to a certain processor
+	public void addTaskToProcessor(int proc, int task, int nodeCost) {
+		JTable table = procTables.get(proc);
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.addRow(new String[]{"" + task});
+		int numRows = model.getRowCount();	// Getting which row to change height of
+		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
+	}
+	
 	private void createGraph () {
 		graph = new DefaultGraph("graph");
 		graph.addNode("A" );
