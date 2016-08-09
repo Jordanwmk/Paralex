@@ -45,14 +45,14 @@ public class Main {
         System.out.println("Branch & Bound runtime: " + totalTime + "ms");
         System.out.println();
 
-//        startTime = System.currentTimeMillis();
-//        Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
-//        endTime   = System.currentTimeMillis();
-//        totalTime = endTime - startTime;
-//        System.out.println(aStarSolution);
-//        System.out.println("A* solution time: "+aStarSolution.getTotalTime());
-//        System.out.println("A* runtime: " + totalTime + "ms");
-//        System.out.println();
+        startTime = System.currentTimeMillis();
+        Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
+        endTime   = System.currentTimeMillis();
+        totalTime = endTime - startTime;
+        System.out.println(aStarSolution);
+        System.out.println("A* solution time: "+aStarSolution.getTotalTime());
+        System.out.println("A* runtime: " + totalTime + "ms");
+        System.out.println();
 
         new Output().createOutput(branchAndBoundSolution);
         System.exit(0);

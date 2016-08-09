@@ -23,7 +23,7 @@ public class Graph {
     private Graph(){
         this.input = new Input();
     	try {
-			 input = new Input("src/input7.dot");
+			 input = new Input("src/input11.dot");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
