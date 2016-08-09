@@ -1,4 +1,4 @@
-digraph {
+digraph "test.dot" {
 b	[weight="5"];
 a	[weight="2"];
 c	[weight="6"];

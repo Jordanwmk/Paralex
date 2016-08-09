@@ -1,5 +1,7 @@
 import org.graphstream.graph.Graph;
 import org.graphstream.stream.file.FileSinkDOT;
+import java.io.*;
+import java.util.Scanner;
 
 /**
  * Created by Jordan on 8/08/2016.
@@ -30,13 +32,27 @@ public class Output {
 
         try{
             writer.writeAll(graph, fileName);
+
+            //Store entire file into the string
+            String fileContent = new Scanner(new File(fileName)).useDelimiter("\\Z").next();
+
+            //Remove double quotes
+            String temp = fileContent.replaceAll("\"","");
+            temp = temp.replaceFirst("digraph ", "digraph \"outputExample\" ");
+            System.out.println(temp);
+
+            //Overwrite old file with new contents
+            FileWriter  writer2 = new FileWriter (new File("src/test2.dot"));
+            writer2.write(temp);
+
+            writer2.close();
+
         } catch (Exception e){
             e.printStackTrace();
         }
 
-
     }
-    
+
     public void formatAttributes(Graph graph, int task, int processor, int time){
     	graph.getNode(task).addAttribute("Processor", processor + 1);
 		graph.getNode(task).addAttribute("Start", time);
