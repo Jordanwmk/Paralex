@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 /**
  * Created by Hanzhi on 1/08/2016.
@@ -37,8 +35,12 @@ public class Graph {
         edgeCosts=input.getAdjMatrix();
         adjListChildren=input.getAdjList();
         adjListDependencies= input.getDependencyList();
-        totalTaskTime = IntStream.of(nodeCosts).sum();
+        //totalTaskTime = IntStream.of(nodeCosts).sum();
         totalNumTasks = nodeCosts.length;
+        
+        for (int i = 0; i < totalNumTasks; i++) {
+        	totalTaskTime += nodeCosts[i];
+        }
         
     }
 

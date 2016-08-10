@@ -1,0 +1,15 @@
+digraph "outputExample" {
+	0 [Processor=1,Start=0,Weight=5.0];
+	1 [Processor=1,Start=11,Weight=6.0];
+	2 [Processor=2,Start=16,Weight=5.0];
+	3 [Processor=1,Start=5,Weight=6.0];
+	4 [Processor=1,Start=24,Weight=4.0];
+	5 [Processor=2,Start=21,Weight=7.0];
+	6 [Processor=1,Start=17,Weight=7.0];
+	0 -> 1 [Weight=15.0];
+	0 -> 2 [Weight=11.0];
+	0 -> 3 [Weight=11.0];
+	1 -> 4 [Weight=19.0];
+	1 -> 5 [Weight=4.0];
+	1 -> 6 [Weight=21.0];
+}
