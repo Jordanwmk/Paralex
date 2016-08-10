@@ -1,23 +1,23 @@
-digraph "OutTree-Balanced-MaxBf-3_Nodes_11_CCR_0.1_WeightType_Random" {
-	0	 [Weight=50];
-	1	 [Weight=70];
-	0 -> 1	 [Weight=9];
-	2	 [Weight=90];
-	0 -> 2	 [Weight=7];
-	3	 [Weight=100];
-	0 -> 3	 [Weight=4];
-	4	 [Weight=40];
-	1 -> 4	 [Weight=10];
-	5	 [Weight=20];
-	1 -> 5	 [Weight=7];
-	6	 [Weight=100];
-	1 -> 6	 [Weight=5];
-	7	 [Weight=80];
-	2 -> 7	 [Weight=5];
-	8	 [Weight=50];
-	2 -> 8	 [Weight=3];
-	9	 [Weight=20];
-	2 -> 9	 [Weight=10];
-	10	 [Weight=20];
-	3 -> 10	 [Weight=4];
+digraph {
+	"0" ["Processor"=1,"Start"=0,"Weight"=50.0];
+	"1" ["Processor"=1,"Start"=50,"Weight"=70.0];
+	"2" ["Processor"=3,"Start"=57,"Weight"=90.0];
+	"3" ["Processor"=2,"Start"=54,"Weight"=100.0];
+	"4" ["Processor"=1,"Start"=140,"Weight"=40.0];
+	"5" ["Processor"=1,"Start"=120,"Weight"=20.0];
+	"6" ["Processor"=3,"Start"=147,"Weight"=100.0];
+	"7" ["Processor"=2,"Start"=174,"Weight"=80.0];
+	"8" ["Processor"=1,"Start"=200,"Weight"=50.0];
+	"9" ["Processor"=1,"Start"=180,"Weight"=20.0];
+	"10" ["Processor"=2,"Start"=154,"Weight"=20.0];
+	"0" -> "1" ["Weight"=9.0];
+	"0" -> "2" ["Weight"=7.0];
+	"0" -> "3" ["Weight"=4.0];
+	"1" -> "4" ["Weight"=10.0];
+	"1" -> "5" ["Weight"=7.0];
+	"1" -> "6" ["Weight"=5.0];
+	"2" -> "7" ["Weight"=5.0];
+	"2" -> "8" ["Weight"=3.0];
+	"2" -> "9" ["Weight"=10.0];
+	"3" -> "10" ["Weight"=4.0];
 }

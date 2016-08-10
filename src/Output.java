@@ -31,10 +31,10 @@ public class Output {
         FileSinkDOT writer = new FileSinkDOT(true);
 
         try{
-            writer.writeAll(graph, fileName);
+            writer.writeAll(graph, Main.outputName);
 
             //Store entire file into the string
-            String fileContent = new Scanner(new File(fileName)).useDelimiter("\\Z").next();
+            String fileContent = new Scanner(new File(Main.outputName)).useDelimiter("\\Z").next();
 
             //Remove double quotes
             String temp = fileContent.replaceAll("\"","");
