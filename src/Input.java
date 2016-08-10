@@ -221,7 +221,7 @@ public class Input {
         int adjacencyMatrix[][] = new int[numNodes][numNodes];
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? Integer.parseInt(inputGraph.getNode(i).getEdgeBetween(j).getAttribute("weight")) : -1);
+                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? ((Integer) inputGraph.getNode(i).getEdgeBetween(j).getAttribute("Weight")).intValue() : -1);
             }
         }
         this.setAdjMatrix(adjacencyMatrix);
@@ -282,7 +282,7 @@ public class Input {
         int numNodes = inputGraph.getNodeCount();
         int[] nodeCosts = new int[numNodes];
         for (int i =0; i<numNodes; i++) {
-        	nodeCosts[i] = Integer.parseInt(inputGraph.getNode(i).getAttribute("weight"));
+        	nodeCosts[i] = ((Integer) inputGraph.getNode(i).getAttribute("Weight")).intValue();
         	
         }
         
@@ -296,7 +296,7 @@ public class Input {
     	
         //constructing a phantom node to be single source
         inputGraph.addNode("source1");
-        inputGraph.getNode("source1").addAttribute("weight", "0");
+        inputGraph.getNode("source1").addAttribute("Weight", "0");
         //adding it to the adjacency list with edges to real sources
         ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
         adjacencyList.add(sourceNodes);
@@ -325,15 +325,15 @@ public class Input {
     					cBottomLevels.add(this.createBottomLevels(singleChild));
     				}
     				int[] temp = this.getBotLevels();
-    				temp[i] = ( Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight")) + Collections.max(cBottomLevels));
+    				temp[i] = ( ((Integer) this.getInputG().getNode(i).getAttribute("Weight")).intValue() + Collections.max(cBottomLevels));
     				this.setBotLevels(temp);
-    				return (Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight")) + Collections.max(cBottomLevels));
+    				return (((Integer) this.getInputG().getNode(i).getAttribute("Weight")).intValue() + Collections.max(cBottomLevels));
     		} else {
     			int[] temp = this.getBotLevels();
-    			temp[i] = Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight"));
+    			temp[i] = ((Integer) this.getInputG().getNode(i).getAttribute("Weight")).intValue();
     			this.setBotLevels(temp);
     			
-    			return Integer.parseInt(this.getInputG().getNode(i).getAttribute("weight"));
+    			return ((Integer) this.getInputG().getNode(i).getAttribute("Weight")).intValue();
     		}
     	}
 		return 0;
