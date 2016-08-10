@@ -26,6 +26,9 @@ public class Main {
     				useVisualisation = true;
     			}else if (args[i].equals("-o")){
     				outputName = args[i+1];
+    				if (!outputName.contains(".dot")) {	// Checking if user has specified file extension as .dot
+    					outputName = outputName + ".dot";
+    				}
     			}
     		}
     	}
