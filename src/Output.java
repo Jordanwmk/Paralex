@@ -8,8 +8,8 @@ import java.util.Scanner;
  */
 public class Output {
 
-    String fileName = "src/test2.dot";
-
+    //String fileName = "src/test2.dot";
+	String fileName = Main.fileName;
     public void createOutput(Schedule aStarSolution){
 
     	while (aStarSolution.getTask() != -1){
@@ -41,7 +41,8 @@ public class Output {
             temp = temp.replaceFirst("digraph ", "digraph \"outputExample\" ");
 
             //Overwrite old file with new contents
-            FileWriter  writer2 = new FileWriter (new File("src/output.dot"));
+            //FileWriter  writer2 = new FileWriter (new File("src/output.dot"));
+            FileWriter  writer2 = new FileWriter (new File(Main.outputName));
             writer2.write(temp);
 
             writer2.close();

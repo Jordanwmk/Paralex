@@ -13,7 +13,8 @@ public class Graph {
     private int[][] edgeCosts;
     private List<ArrayList<Integer>> adjListChildren;
     private List<ArrayList<Integer>> adjListDependencies;
-    private int numProcessors = 2;
+    private int numProcessors = Main.numOfProcessors;
+    //private int numProcessors = 2;
     private int totalTaskTime;
     private int totalNumTasks;
 
@@ -24,8 +25,8 @@ public class Graph {
         this.input = new Input();
     	try {
 
-			 input = new Input("src/Nodes_11_OutTree.dot");
-
+		//	 input = new Input("src/Nodes_11_OutTree.dot");
+    		input = new Input(Main.fileName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
