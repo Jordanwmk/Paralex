@@ -1,5 +1,6 @@
 import org.graphstream.graph.Graph;
 import org.graphstream.stream.file.FileSinkDOT;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class Output {
 
     //String fileName = "src/test2.dot";
-	String fileName = Main.fileName;
+	//String fileName = Main.fileName;
     public void createOutput(Schedule aStarSolution){
 
     	while (aStarSolution.getTask() != -1){
@@ -22,7 +23,6 @@ public class Output {
     		formatAttributes(graph, task, processor, time);
     		aStarSolution = aStarSolution.getParent();
     	}
-    	
     	
         //Get created graph from input dot file
         Graph graph = Input.getInputG();

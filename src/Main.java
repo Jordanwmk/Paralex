@@ -13,7 +13,9 @@ public class Main {
     	fileName = args[0];
     	numOfProcessors = Integer.parseInt(args[1]);
     	boolean useVisualisation = false;
-    	outputName = fileName + "-output.dot";
+    	
+    	String[] splitName = fileName.split(".dot");
+    	outputName = splitName[0] + "_Output.dot";
     	
     	//Check when additional options are added.
      	if (args.length > 2) {
