@@ -3,8 +3,8 @@
  */
 public class Main {
     public static void main(String[] args){
-    	//Check for what options are enabled in executing the jar.
-    	
+//    	//Check for what options are enabled in executing the jar.
+//    	
 //    	//Default values when no additional option is added.
 //    	int threadsUsed = 0;
 //    	String fileName = args[0];
@@ -24,7 +24,6 @@ public class Main {
 //    			}
 //    		}
 //    	}
-     	
         long startTime,endTime,totalTime;
 
 //        startTime = System.currentTimeMillis();
@@ -35,7 +34,7 @@ public class Main {
 //        System.out.println("brute Force solution time: " + bruteForceSolution.getTotalTime());
 //        System.out.println("Brute Force runtime: " + totalTime + "ms");
 //        System.out.println();
-        
+
         startTime = System.currentTimeMillis();
         Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(Graph.getInstance());
         endTime   = System.currentTimeMillis();
@@ -45,14 +44,15 @@ public class Main {
         System.out.println("Branch & Bound runtime: " + totalTime + "ms");
         System.out.println();
 
-        startTime = System.currentTimeMillis();
-        Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
-        endTime   = System.currentTimeMillis();
-        totalTime = endTime - startTime;
-        System.out.println(aStarSolution);
-        System.out.println("A* solution time: "+aStarSolution.getTotalTime());
-        System.out.println("A* runtime: " + totalTime + "ms");
-        System.out.println();
+
+//        startTime = System.currentTimeMillis();
+//        Schedule aStarSolution=new AStarAlgorithm().schedule(Graph.getInstance());
+//        endTime   = System.currentTimeMillis();
+//        totalTime = endTime - startTime;
+//        System.out.println(aStarSolution);
+//        System.out.println("A* solution time: "+aStarSolution.getTotalTime());
+//        System.out.println("A* runtime: " + totalTime + "ms");
+//        System.out.println();
 
         new Output().createOutput(branchAndBoundSolution);
         System.exit(0);

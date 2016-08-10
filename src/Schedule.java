@@ -163,6 +163,8 @@ public class Schedule implements Comparable<Schedule>{
                     scheduleYouAreCurrentlyInspecting = scheduleYouAreCurrentlyInspecting.parent;
                 }
 
+                //STARTING FROM HERE, WE ARE JUST CALCULATING THE REMAINING FIELDS WE NEED FOR THE CHILD
+                
                 //if the earliest start time hasnt been found, then set it to 0, as it is on an empty processor
                 //we can optimize this later to avoid doing searches up the tree if its on an empty node
                 if(earliestStartTimeOnThisProcessor==-1){
@@ -230,6 +232,7 @@ public class Schedule implements Comparable<Schedule>{
         return children;
     }
 
+
 	public Schedule getParent() {
 		return parent;
 	}
@@ -262,3 +265,4 @@ public class Schedule implements Comparable<Schedule>{
 		return doableTasks;
 	}
 }
+
