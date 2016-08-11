@@ -15,7 +15,7 @@ public class Main {
     	boolean useVisualisation = false;
     	
     	String[] splitName = fileName.split(".dot");
-    	outputName = splitName[0] + "_Output.dot";
+    	outputName = splitName[0] + "-output.dot";
     	
     	//Check when additional options are added.
      	if (args.length > 2) {

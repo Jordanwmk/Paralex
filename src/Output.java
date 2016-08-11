@@ -38,7 +38,7 @@ public class Output {
 
             //Remove double quotes
             String temp = fileContent.replaceAll("\"","");
-            temp = temp.replaceFirst("digraph ", "digraph \"" + Main.outputName + "\"");
+            temp = temp.replaceFirst("digraph ", "digraph \"" + Main.outputName + "\" ");
 
             //Overwrite old file with new contents
             //FileWriter  writer2 = new FileWriter (new File("src/output.dot"));

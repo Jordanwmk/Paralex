@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
@@ -136,6 +137,17 @@ public class Input {
             fs.removeSink(inputGraph);
         }
 
+        
+        //setting the nodes and edges to be Integer values
+        for(Node node: inputGraph){
+        	node.setAttribute("Weight", (((Double) (node.getAttribute("Weight"))).intValue()));
+        }
+        for(Edge e : inputGraph.getEachEdge()){
+        	e.setAttribute("Weight", ((Double)e.getAttribute("Weight")).intValue());
+        }
+        
+        
+        
         this.setInputG(inputGraph);
 	}
 	
@@ -148,7 +160,7 @@ public class Input {
         int adjacencyMatrix[][] = new int[numNodes][numNodes];
         for (int i = 0; i < numNodes; i++){
             for (int j = 0; j < numNodes; j++){
-                adjacencyMatrix[i][j] = (inputGraph.getNode(i).hasEdgeBetween(j) ? ((Double) inputGraph.getNode(i).getEdgeBetween(j).getAttribute("Weight")).intValue() : -1);
+                adjacencyMatrix[i][j] = (int) (inputGraph.getNode(i).hasEdgeBetween(j) ? inputGraph.getNode(i).getEdgeBetween(j).getAttribute("Weight") : -1);
             }
         }
         this.setAdjMatrix(adjacencyMatrix);
@@ -209,7 +221,7 @@ public class Input {
         int numNodes = inputGraph.getNodeCount();
         int[] nodeCosts = new int[numNodes];
         for (int i =0; i<numNodes; i++) {
-        	nodeCosts[i] = ((Double) inputGraph.getNode(i).getAttribute("Weight")).intValue();
+        	nodeCosts[i] = inputGraph.getNode(i).getAttribute("Weight");
         	
         }
         
@@ -223,7 +235,7 @@ public class Input {
     	
         //constructing a phantom node to be single source
         inputGraph.addNode("source1");
-        inputGraph.getNode("source1").addAttribute("Weight", 2.0);
+        inputGraph.getNode("source1").addAttribute("Weight", 2);
         //adding it to the adjacency list with edges to real sources
         ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
         adjacencyList.add(sourceNodes);
@@ -252,15 +264,15 @@ public class Input {
     					cBottomLevels.add(this.createBottomLevels(singleChild));
     				}
     				int[] temp = this.getBotLevels();
-    				temp[i] = ( ((Double) this.getInputG().getNode(i).getAttribute("Weight")).intValue() + Collections.max(cBottomLevels));
+    				temp[i] =  ((Integer)this.getInputG().getNode(i).getAttribute("Weight")) + Collections.max(cBottomLevels);
     				this.setBotLevels(temp);
-    				return (((Double) this.getInputG().getNode(i).getAttribute("Weight")).intValue() + Collections.max(cBottomLevels));
+    				return ((Integer) this.getInputG().getNode(i).getAttribute("Weight")) + Collections.max(cBottomLevels);
     		} else {
     			int[] temp = this.getBotLevels();
-    			temp[i] = ((Double) this.getInputG().getNode(i).getAttribute("Weight")).intValue();
+    			temp[i] = ((Integer) this.getInputG().getNode(i).getAttribute("Weight"));
     			this.setBotLevels(temp);
     			
-    			return ((Double) this.getInputG().getNode(i).getAttribute("Weight")).intValue();
+    			return ((Integer) this.getInputG().getNode(i).getAttribute("Weight"));
     		}
     	}
 		return 0;
