@@ -25,6 +25,7 @@ public class Graph {
 
 		//	 input = new Input("src/Nodes_11_OutTree.dot");
     		input = new Input(Main.fileName);
+    		System.out.println(input);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,6 +50,10 @@ public class Graph {
             instance = new Graph();
         }
         return instance;
+    }
+    
+    static void cleanInstance(){
+    	instance = null;
     }
 
     int getNodeCost(int node){

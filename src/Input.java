@@ -93,7 +93,7 @@ public class Input {
         //System.out.println(this.getInputG().getNode(3).getId() + " " + this.getInputG().getNode(3).getIndex());
         //Input.getInputG().getNode(task).addAttribute("Start", time);Input.getInputG().getNode(task).addAttribute("Processor", processor);
         
-        //this.getInputG().display();
+        this.getInputG().display();
         
         //finding all of the source nodes
         this.createSourceNodes();

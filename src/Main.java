@@ -5,7 +5,7 @@ public class Main {
 	public static String fileName;
 	public static String outputName;
 	public static int numOfProcessors;
-    public static void main(String[] args){
+    public static int main(String[] args){
 //    	//Check for what options are enabled in executing the jar.
 //    	
     	//Default values when no additional option is added.
@@ -64,7 +64,7 @@ public class Main {
 //        System.out.println();
 
         new Output().createOutput(branchAndBoundSolution);
-        System.exit(0);
+        return branchAndBoundSolution.getTotalTime();
         
 //        InputParser lol = new InputParser(filename);
 //        Schedule =  scheduler.schedule(Graph.getGraph);
