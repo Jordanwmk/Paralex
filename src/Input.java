@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +10,6 @@ import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
 
-/**
- * Created by Ben Mitchell on 8/4/2016.
- * Edited by Ammar Bagasrawala
- */
 public class Input {
 	
 	private static Graph inputG;
@@ -69,10 +63,6 @@ public class Input {
 		this.inputG = inputG;
 	}
 
-	
-	public Input(){
-		
-	}
 
 	public Input(String fileName) throws IOException{
 		//pass in the input file name
@@ -89,9 +79,6 @@ public class Input {
         	node.addAttribute("ui.label", node.getId());
         	node.addAttribute("ui.style", "fill-color: red;");
         }
-
-        //System.out.println(this.getInputG().getNode(3).getId() + " " + this.getInputG().getNode(3).getIndex());
-        //Input.getInputG().getNode(task).addAttribute("Start", time);Input.getInputG().getNode(task).addAttribute("Processor", processor);
         
         this.getInputG().display();
         
@@ -136,7 +123,6 @@ public class Input {
         } finally {
             fs.removeSink(inputGraph);
         }
-
         
         //setting the nodes and edges to be Integer values
         for(Node node: inputGraph){
@@ -145,9 +131,7 @@ public class Input {
         for(Edge e : inputGraph.getEachEdge()){
         	e.setAttribute("Weight", ((Double)e.getAttribute("Weight")).intValue());
         }
-        
-        
-        
+
         this.setInputG(inputGraph);
 	}
 	
