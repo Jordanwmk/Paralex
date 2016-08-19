@@ -1,14 +1,39 @@
 import static org.junit.Assert.*;
 
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GraphTester {
+	/*
+	 * Create test timer to measure runtime of each test
+	 * Reference: http://stackoverflow.com/questions/17552779/record-time-it-takes-junit-tests-to-run
+	 */
+	@Rule
+	public TestRule timer = new TestWatcher() {
+		long startTime;
+		@Override
+		protected void starting(Description description) {
+			//record the start time
+			startTime=System.currentTimeMillis();
+		}
+
+		@Override
+		protected void finished(Description description) {
+			long runTime=System.currentTimeMillis()-startTime;
+			//print the finish time
+			System.out.println(description);
+			System.out.println("Runtime: "+runTime+"ms");
+			System.out.println("==================================================");
+		}
+	};
 
 	@Test
 	public void test_Nodes_11_2_Proccessors() throws IOException {

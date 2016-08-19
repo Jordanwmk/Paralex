@@ -12,8 +12,12 @@ public class Graph {
     private int totalTaskTime;
     private int totalNumTasks;
     private List<Integer> entryPoints;
-    
-    public Graph(String inputFile, int numProcessors) throws IOException{
+
+    public Graph(String inputFile, int numProcessors) throws IOException {
+        this(inputFile,numProcessors,false);
+    }
+
+    public Graph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
         Input input = new Input(inputFile);
         this.numProcessors=numProcessors;
 
@@ -29,6 +33,10 @@ public class Graph {
         }
 
         entryPoints=input.getSrcNodes();
+
+        if(useVisualisation){
+            input.showVisualisation();
+        }
     }
 
     int getNodeCost(int node){

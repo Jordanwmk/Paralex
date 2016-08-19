@@ -80,8 +80,6 @@ public class Input {
         	node.addAttribute("ui.style", "fill-color: red;");
         }
         
-        this.getInputG().display();
-        
         //finding all of the source nodes
         this.createSourceNodes();
         
@@ -235,8 +233,8 @@ public class Input {
         return singleSource;
     }
     
- private int createBottomLevels(ArrayList<Integer> nodes){
-    	for (Integer i: nodes){
+ 	private int createBottomLevels(ArrayList<Integer> nodes){
+		for (Integer i: nodes){
     		ArrayList<Integer> children = this.getAdjList().get(i);
     		
     		
@@ -272,7 +270,8 @@ public class Input {
     	
     }
     
-   
-
+   	public void showVisualisation(){
+		getInputG().display();
+	}
   
 }

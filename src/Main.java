@@ -13,7 +13,7 @@ public class Main {
     	
     	String[] splitName = fileName.split(".dot");
     	String outputName = splitName[0] + "-output.dot";
-    	
+
     	//Check when additional options are added.
      	if (args.length > 2) {
     		for (int i=2; i<args.length; i++ ){
@@ -32,13 +32,13 @@ public class Main {
 
 		Graph taskGraph;
 		try {
-			taskGraph = new Graph(fileName,numProcessors);
+			taskGraph = new Graph(fileName,numProcessors,useVisualisation);
 		}catch(IOException e){
 			e.printStackTrace();
 			System.out.println("IOException while reading graph file");
 			return;
 		}
-     	
+
         long startTime,endTime,totalTime;
 
 //        startTime = System.currentTimeMillis();
