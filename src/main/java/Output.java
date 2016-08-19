@@ -1,7 +1,8 @@
 import org.graphstream.graph.Graph;
 import org.graphstream.stream.file.FileSinkDOT;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Output {
