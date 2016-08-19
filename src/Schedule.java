@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Hanzhi on 1/08/2016.
- */
 public class Schedule implements Comparable<Schedule>{
+    private Graph taskGraph;
+
     //pointer to the nodes parent
     private Schedule parent;
 
@@ -31,7 +30,8 @@ public class Schedule implements Comparable<Schedule>{
     private List<Integer> doableTasks;
 
     //CONSTRUCTOR
-    public Schedule(Schedule parent, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks) {
+    public Schedule(Graph taskGraph, Schedule parent, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks) {
+        this.taskGraph = taskGraph;
         this.parent = parent;
         this.task = task;
         this.time = time;
@@ -47,8 +47,8 @@ public class Schedule implements Comparable<Schedule>{
      * Creates an empty schedule to use as the start of the state tree traversal/generation
      * @return the empty schedule
      */
-    public static Schedule getEmptySchedule(){
-        return new Schedule(null,-1,-1,0,0,0,0, Graph.getInstance().getEntryPoints());
+    public static Schedule getEmptySchedule(Graph taskGraph){
+        return new Schedule(taskGraph,null,-1,-1,0,0,0,0, taskGraph.getEntryPoints());
     }
 
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
@@ -70,7 +70,7 @@ public class Schedule implements Comparable<Schedule>{
         int totalTime=0;
         Schedule scheduleWeAreCurrentlyInspecting=this;
         while(scheduleWeAreCurrentlyInspecting!=null && scheduleWeAreCurrentlyInspecting.task!=-1){
-            totalTime=Math.max(totalTime,scheduleWeAreCurrentlyInspecting.time+Graph.getInstance().getNodeCost(scheduleWeAreCurrentlyInspecting.task));
+            totalTime=Math.max(totalTime,scheduleWeAreCurrentlyInspecting.time+taskGraph.getNodeCost(scheduleWeAreCurrentlyInspecting.task));
             scheduleWeAreCurrentlyInspecting=scheduleWeAreCurrentlyInspecting.parent;
         }
         return totalTime;
@@ -85,7 +85,6 @@ public class Schedule implements Comparable<Schedule>{
         //list used for storing all the children. will be returned
         List<Schedule> children = new ArrayList<Schedule>();
         //graph singleton that has all the edge costs and node weights, BLs etc.
-        Graph taskGraph = Graph.getInstance();
 
         //setting the size of the array to the total number of tasks
         //boolean set to true if the task index is completed
@@ -222,7 +221,7 @@ public class Schedule implements Comparable<Schedule>{
                 }
 
                 //add then new child with all the new values we calculated
-                children.add(new Schedule(this, taskYouAreTryingToSchedule,
+                children.add(new Schedule(taskGraph,this, taskYouAreTryingToSchedule,
                         startTime, processorWeAreTryingToScheduleOn,
                         updatedIdleTime, est, updatedProccessorsUsed, updatedDoableTasks));
             }

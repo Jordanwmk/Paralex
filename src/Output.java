@@ -4,24 +4,21 @@ import org.graphstream.stream.file.FileSinkDOT;
 import java.io.*;
 import java.util.Scanner;
 
-/**
- * Created by Jordan on 8/08/2016.
- */
 public class Output {
 
     //String fileName = "src/test2.dot";
 	//String fileName = Main.fileName;
-    public void createOutput(Schedule aStarSolution){
+    public void createOutput(Schedule solution, String outputName){
 
-    	while (aStarSolution.getTask() != -1){
+    	while (solution.getTask() != -1){
     		
-    		int task = aStarSolution.getTask();
-    		int processor = aStarSolution.getProcessor();
-    		int time = aStarSolution.getTime();
+    		int task = solution.getTask();
+    		int processor = solution.getProcessor();
+    		int time = solution.getTime();
     		Graph graph = Input.getInputG();
     		
     		formatAttributes(graph, task, processor, time);
-    		aStarSolution = aStarSolution.getParent();
+    		solution = solution.getParent();
     	}
     	
         //Get created graph from input dot file
@@ -31,18 +28,18 @@ public class Output {
         FileSinkDOT writer = new FileSinkDOT(true);
 
         try{
-            writer.writeAll(graph, Main.outputName);
+            writer.writeAll(graph, outputName);
 
             //Store entire file into the string
-            String fileContent = new Scanner(new File(Main.outputName)).useDelimiter("\\Z").next();
+            String fileContent = new Scanner(new File(outputName)).useDelimiter("\\Z").next();
 
             //Remove double quotes
             String temp = fileContent.replaceAll("\"","");
-            temp = temp.replaceFirst("digraph ", "digraph \"" + Main.outputName + "\" ");
+            temp = temp.replaceFirst("digraph ", "digraph \"" + outputName + "\" ");
 
             //Overwrite old file with new contents
             //FileWriter  writer2 = new FileWriter (new File("src/output.dot"));
-            FileWriter  writer2 = new FileWriter (new File(Main.outputName));
+            FileWriter  writer2 = new FileWriter (new File(outputName));
             writer2.write(temp);
 
             writer2.close();

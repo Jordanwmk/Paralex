@@ -5,7 +5,7 @@ public class BranchAndBoundAlgorithm implements Algorithm{
     @Override
     public Schedule schedule(Graph taskGraph) {
         Stack<Schedule> stack=new Stack<>();
-        stack.add(Schedule.getEmptySchedule());
+        stack.add(Schedule.getEmptySchedule(taskGraph));
         Schedule currentBest=null;
         int currentBestTime=Integer.MAX_VALUE;
         Schedule scheduleWeAreCurrentlyAt=null;

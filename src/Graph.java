@@ -2,58 +2,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Hanzhi on 1/08/2016.
- */
 public class Graph {
     private int[] nodeCosts;
     private int[] nodeBL;
     private int[][] edgeCosts;
     private List<ArrayList<Integer>> adjListChildren;
     private List<ArrayList<Integer>> adjListDependencies;
-    private int numProcessors = Main.numOfProcessors;
-    //private int numProcessors = 2;
+    private int numProcessors;
     private int totalTaskTime;
     private int totalNumTasks;
+    private List<Integer> entryPoints;
 
-    private static Graph instance;
-    private Input input;
-    
-    private Graph(){
-        this.input = new Input();
-    	try {
+    public Graph(String inputFile, int numProcessors) throws IOException {
+        this(inputFile,numProcessors,false);
+    }
 
-		//	 input = new Input("src/Nodes_11_OutTree.dot");
-    		input = new Input(Main.fileName);
-    		System.out.println(input);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+    public Graph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
+        Input input = new Input(inputFile);
+        this.numProcessors=numProcessors;
+
     	nodeCosts= input.getNodeCosts();
         nodeBL= input.getBotLevels();
         edgeCosts=input.getAdjMatrix();
         adjListChildren=input.getAdjList();
         adjListDependencies= input.getDependencyList();
-        //totalTaskTime = IntStream.of(nodeCosts).sum();
         totalNumTasks = nodeCosts.length;
         
         for (int i = 0; i < totalNumTasks; i++) {
         	totalTaskTime += nodeCosts[i];
         }
-        
-    }
 
-    public static Graph getInstance(){
-        if(instance==null) {
-            instance = new Graph();
+        entryPoints=input.getSrcNodes();
+
+        if(useVisualisation){
+            input.showVisualisation();
         }
-        return instance;
-    }
-    
-    static void cleanInstance(){
-    	instance = null;
     }
 
     int getNodeCost(int node){
@@ -90,6 +73,6 @@ public class Graph {
     }
 
     public List<Integer> getEntryPoints(){
-        return this.input.getSrcNodes();
+        return entryPoints;
     }
 }
