@@ -1,9 +1,8 @@
-import java.io.IOException;
-import java.util.List;
-
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDOT;
+
+import java.io.IOException;
 
 public class OutputParser{
 
