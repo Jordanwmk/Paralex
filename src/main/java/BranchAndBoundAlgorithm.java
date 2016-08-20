@@ -10,6 +10,8 @@ public class BranchAndBoundAlgorithm implements Algorithm{
         int currentBestTime=Integer.MAX_VALUE;
         Schedule scheduleWeAreCurrentlyAt=null;
         int i=0;
+        TableThreader tableThreader = new TableThreader();
+        
         while(!stack.isEmpty()){
             scheduleWeAreCurrentlyAt=stack.pop();
             VFrame frame = VFrame.getInstance();
@@ -27,6 +29,8 @@ public class BranchAndBoundAlgorithm implements Algorithm{
                         System.out.println(i);
                         frame.addToBestSchedule(currentBest);
                         currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
+                        tableThreader.setSchedule(currentBest);
+                        tableThreader.execute();
                     }
                 }
             }
