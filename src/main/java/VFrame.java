@@ -1,4 +1,4 @@
-package gui;
+
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -135,7 +135,8 @@ public class VFrame{
 	
 	// TO BE REMOVED
 	private void createGraph () {
-		graph = new DefaultGraph("graph");
+			
+		graph = new DefaultGraph("graph");	
 		graph.addNode("A" );
 		graph.addNode("B" );
 		graph.addNode("C" );
