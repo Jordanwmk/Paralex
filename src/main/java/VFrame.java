@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class VFrame{
 	//private Graph graph;
 	private JTable table;
 	private int totalProcessors = 0;
-	private ArrayList<Integer> procFinishTimes;
+	private int[] procFinishTimes;
 	private ArrayList<JTable> procTables = new ArrayList<JTable>();
 	private Input input;
 	private Graph taskGraph;
@@ -59,10 +60,11 @@ public class VFrame{
 		}
         
         totalProcessors = processors;
-        procFinishTimes = new ArrayList<>(Collections.nCopies(totalProcessors, 0));
+        
 		this.prepareGui();
 		this.showFrame();
 		int numNodes = taskGraph.getNodeCount();
+		procFinishTimes=new int[numNodes];
 		listOfTasks = new ArrayList<Integer>(Collections.nCopies(numNodes, 0));
 		listOfAccess = new ArrayList<ArrayList<Integer>>();
 		for (int i = 0; i < numOfCores; i++){
@@ -177,7 +179,6 @@ public class VFrame{
 			taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition5000");
 		}else if (activityNumber >= 1000){
-			System.out.println(task);
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition1000");
 		}else if (activityNumber >= 500){
@@ -235,9 +236,8 @@ public class VFrame{
 //	}
 
 	public void addToBestSchedule(Schedule currentBest) {
-		
 		currentBestScheduleList.clear();
-		
+		Arrays.fill(procFinishTimes, 0);
 		
 		for (int i = 0; i < totalProcessors; i++) {
 			JTable table = procTables.get(i);
@@ -268,20 +268,21 @@ public class VFrame{
 	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		
-		int earliestStartOnProc = procFinishTimes.get(proc);
+		int earliestStartOnProc = procFinishTimes[proc];
+		System.out.println("The earliest starttime on processor" + proc+ " is " + earliestStartOnProc);
 		int idleTime = startTime - earliestStartOnProc;
 		System.out.println("idle: " + idleTime);
 		
 		if (idleTime > 0) {
 			System.out.println("Adding idle time");
-			model.insertRow(table.getRowCount(), new String[]{"Idle Time"});;
+			model.addRow(new String[]{"Idle Time"});;
 			table.setRowHeight(table.getRowCount()-1, (idleTime * 16));
 		}
 		
 		model.addRow(new String[]{"" + task});
+		table.setRowHeight(table.getRowCount()-1, (nodeCost * 16));
 		System.out.println("New finish: " + (startTime + nodeCost));
-		procFinishTimes.set(proc, startTime + nodeCost);
+		procFinishTimes[proc]=startTime+nodeCost;
 	}
 
 
