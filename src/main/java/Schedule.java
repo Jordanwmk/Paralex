@@ -40,7 +40,7 @@ public class Schedule implements Comparable<Schedule>{
         this.estimate = estimate;
         this.processorsUsed = processorsUsed;
         this.doableTasks = doableTasks;
-
+ 
     }
 
     /**

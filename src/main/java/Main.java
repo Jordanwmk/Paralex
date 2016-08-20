@@ -29,7 +29,7 @@ public class Main {
     			}
     		}
     	}
-
+ 
 		Graph taskGraph;
 		try {
 			taskGraph = new Graph(fileName,numProcessors,useVisualisation);

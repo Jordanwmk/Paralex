@@ -67,6 +67,12 @@ public class GraphTest {
 		assertEquals(28, solution.getTotalTime());
 	} 
 	
+	@Test
+	public void test_9middle_ForkandJoin_2_Proccessors() throws IOException {
+		Schedule solution = new BranchAndBoundAlgorithm().schedule(new Graph("src/test/resources/forkjoin_9middle.dot", 2));
+		assertEquals(23, solution.getTotalTime());
+	} 
+	
 	//===================================================================================
 	//===================================================================================
 	//====================				  4 Processors 		     ========================
@@ -102,5 +108,11 @@ public class GraphTest {
 		Schedule solution = new BranchAndBoundAlgorithm().schedule(new Graph("src/test/resources/Nodes_7_OutTree.dot", 4));
 		assertEquals(22, solution.getTotalTime());
 	} 
+	
+//	@Test
+//	public void test_9middle_ForkandJoin_4_Proccessors() throws IOException {
+//		Schedule solution = new BranchAndBoundAlgorithm().schedule(new Graph("src/test/resources/forkjoin_9middle.dot", 4));
+//		assertEquals(27, solution.getTotalTime());
+//	} 
 	
 }
