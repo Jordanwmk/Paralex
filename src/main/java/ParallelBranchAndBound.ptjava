@@ -1,0 +1,87 @@
+import java.util.List;
+import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+
+import pt.runtime.*;
+import java.util.EmptyStackException;
+import java.lang.Thread;
+
+
+public class ParallelBranchAndBound implements Algorithm{
+	
+	Stack<Schedule> stack = new Stack<Schedule>();
+	int threadsCurrentlyRunning = 0;
+	Schedule currentBest;
+	int currentBestTime=Integer.MAX_VALUE;
+	int coresToRunOn = 0;
+	
+	public ParallelBranchAndBound(int coresToRunOn){
+		this.coresToRunOn = coresToRunOn;
+	}
+	
+	@Override
+	public Schedule schedule(Graph taskGraph) {
+		stack.add(Schedule.getEmptySchedule(taskGraph));
+		TaskIDGroup g = new TaskIDGroup(coresToRunOn);
+		for (int i = 0; i< coresToRunOn; i++) {
+			TaskID id = startWorker();
+			g.add(id);
+		}
+		try {
+			g.waitTillFinished();
+		} catch(Exception e3) {
+			e3.printStackTrace();
+		}
+		return currentBest;
+
+	}
+	
+	TASK public void startWorker() {
+		
+		Schedule scheduleWeAreCurrentlyAt=null;
+		while(!stack.isEmpty() || threadsCurrentlyRunning!=0 ){
+			
+			try{
+				synchronized(this){
+					scheduleWeAreCurrentlyAt = stack.pop();
+					threadsCurrentlyRunning ++;
+				}
+				
+				
+				if(scheduleWeAreCurrentlyAt.getFinishTimeEstimate()<currentBestTime){
+	                List<Schedule> childNodes=scheduleWeAreCurrentlyAt.generateChildren();
+	                
+	                if(childNodes.isEmpty()){
+	                    
+	                	synchronized(this){
+	                		if(scheduleWeAreCurrentlyAt.getTotalTime()<currentBestTime){
+	                			currentBest=scheduleWeAreCurrentlyAt;
+	                			currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
+	                		}
+	                	}
+	                }
+	                synchronized(this) {
+	                	stack.addAll(childNodes);
+	                }
+	            }
+				synchronized(this) {
+					threadsCurrentlyRunning--;
+                }
+				
+			} catch(EmptyStackException e){
+				try{
+					Thread.sleep(1);
+				} catch (Exception e1){
+					e.printStackTrace();
+				}
+				
+				continue;
+			}
+			
+		}
+	}
+	
+	
+	
+	
+}
