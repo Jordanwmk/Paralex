@@ -11,6 +11,7 @@ public class BranchAndBoundAlgorithm implements Algorithm{
         Schedule scheduleWeAreCurrentlyAt=null;
         while(!stack.isEmpty()){
             scheduleWeAreCurrentlyAt=stack.pop();
+            
             //if estimate >= current best, then prune the subtree (don't traverse it)
             if(scheduleWeAreCurrentlyAt.getFinishTimeEstimate()<currentBestTime){
                 List<Schedule> childNodes=scheduleWeAreCurrentlyAt.generateChildren();

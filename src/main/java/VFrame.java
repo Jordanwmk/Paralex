@@ -36,6 +36,7 @@ public class VFrame{
 	private ArrayList<JTable> procTables = new ArrayList<JTable>();
 	private Input input;
 	private Graph taskGraph;
+	private ArrayList<Integer> listOfTasks;
 	
 	public VFrame(int numOfCores, String filename ){
 		try {
@@ -47,7 +48,16 @@ public class VFrame{
 		}
 		this.prepareGui();
 		this.showFrame();
+		int numNodes = taskGraph.getNodeCount();
+		listOfTasks = new ArrayList<Integer>(numNodes);
+		listOfAccess = new ArrayList<ArrayList<Integer>>(numOfCores);
+		for (int i=0; i<numOfCores; i++){
+			listOfAccess.add(i, listOfTasks);
+		}
+		
 	}
+	
+	
 	// Should be removed before merging into master
 //	public static void main (String[] args) {
 //		VFrame frame = new VFrame();
