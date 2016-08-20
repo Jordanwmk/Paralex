@@ -15,7 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
@@ -38,7 +40,7 @@ public class VFrame{
 	private Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
-
+	
 	public VFrame() {}
 	
 	public VFrame(int numOfCores, String fileName){
@@ -62,6 +64,16 @@ public class VFrame{
 		for (int i = 0; i < numOfCores; i++){
 			listOfAccess.add(i, listOfTasks);
 		}
+		taskGraph.addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
+//		
+//        for (Node node : taskGraph) {
+//        	node.addAttribute("ui.label", node.getId());
+//        	node.addAttribute("ui.style", "fill-color: #80d4ff;");
+//        }
+//        for (Edge edge: taskGraph.getEachEdge()){
+//        	edge.addAttribute("ui.style", "fill-color: black;");
+//        }
+//        
 	}
 
 	public void printStuff(){

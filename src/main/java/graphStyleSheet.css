@@ -1,0 +1,15 @@
+node{ 
+	fill-color: #80d4ff;
+	size: 30px;
+	stroke-mode: plain;
+	stroke-color: black;
+	stroke-width: 15px;
+}
+
+edge{
+	fill-color:blue;
+}
+
+node.partition50{
+	
+}
