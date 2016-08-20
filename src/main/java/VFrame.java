@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -15,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
@@ -27,6 +27,7 @@ import org.graphstream.ui.view.Viewer;
  *
  */
 public class VFrame{
+	private static VFrame instance;
 	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
 	private JPanel contentPane;
@@ -37,40 +38,56 @@ public class VFrame{
 	private Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
+
+	public VFrame() {}
 	
-	public VFrame(int numOfCores, String filename ){
+	public VFrame(int numOfCores, String fileName){
+		instance = this;
+		instance.setup(numOfCores, fileName);
+	}
+	
+	private void setup(int numOfCores, String fileName) {
 		try {
-			input = new Input(filename) ;
+			input = new Input(fileName) ;
 			taskGraph = input.getInputG();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		this.prepareGui();
 		this.showFrame();
 		int numNodes = taskGraph.getNodeCount();
-		listOfTasks = new ArrayList<Integer>(numNodes);
-		listOfAccess = new ArrayList<ArrayList<Integer>>(numOfCores);
-		for (int i=0; i<numOfCores; i++){
+		listOfTasks = new ArrayList<Integer>(Collections.nCopies(numNodes, 0));
+		listOfAccess = new ArrayList<ArrayList<Integer>>();
+		for (int i = 0; i < numOfCores; i++){
 			listOfAccess.add(i, listOfTasks);
 		}
-		
+	}
+
+	public void printStuff(){
+		for (int i=0 ; i< listOfAccess.size(); i++){
+			for (int j=0; j<listOfTasks.size();j++){
+				System.out.print(listOfTasks.get(j) + " ");
+			}
+			System.out.println();
+		}
+	}
+	public void incrementTask(int task) {
+
+		ArrayList<Integer> currentCore = listOfAccess.get(0);
+
+		Integer value = currentCore.get(task); // get value
+		currentCore.set(task, value+1);
 	}
 	
-	
-	// Should be removed before merging into master
-//	public static void main (String[] args) {
-//		VFrame frame = new VFrame();
-//		frame.createGraph();
-//		frame.prepareGui();
-//		frame.showFrame();
-//		frame.addTaskToProcessor(1, 0, 1);	
-//		frame.addTaskToProcessor(1, 2, 2);
-//		frame.addTaskToProcessor(1, 1, 2);
-//		frame.addTaskToProcessor(0, 1, 8);
-//		//frame.removeTaskFromProcessor(1, 1);
-//		frame.addIdleTime(1, 2, 3);
-//	}
+	public static VFrame getInstance() {
+		if (instance == null) {
+			instance = new VFrame();
+		} 
+
+		return instance;
+	}
+
 
 	private void prepareGui () {
 
@@ -96,22 +113,22 @@ public class VFrame{
 		JPanel processPanel = new JPanel();
 		processPanel.setLayout(new GridLayout(1, processors));
 
-		
+
 		// Creating JTable for each processor and adding it to the processors panel
 		for (int i = 0; i < processors; i++) {
-			
+
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("Proc " + i);
 			model.addRow(new String[] {"Tasks"});
 			JTable table = new JTable(model);
-			
+
 			JScrollPane scrollPane = new JScrollPane(table);
 			table.setRowSelectionAllowed(false);
 			table.setEnabled(false);	// Disabling user edit
 			procTables.add(table);
 			processPanel.add(scrollPane);
 		}
-		
+
 		contentPane.add(graphPane);
 		contentPane.add(processPanel);
 		mainFrame.add(contentPane);
@@ -129,12 +146,12 @@ public class VFrame{
 		int numRows = model.getRowCount();	// Getting which row to change height of
 		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
 	}
-	
+
 	// Allows removal of a task
 	public void removeTaskFromProcessor (int proc, int task) {
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		
+
 		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		for (int i = 0; i < model.getRowCount(); i++) {
 			if (model.getValueAt(i, 0).equals(Integer.toString(task))) {
@@ -143,32 +160,20 @@ public class VFrame{
 			}
 		}
 	}
-	
+
 	// Method to add idle time to a processor
 	public void addIdleTime (int proc, int priorTask, int idleTime) {
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		
+
 		for (int i = 0; i < model.getRowCount(); i++) {
 			if (model.getValueAt(i, 0).equals(Integer.toString(priorTask))) {
 				model.insertRow(i+1 , new String[]{"Idle Time"});
 				table.setRowHeight(i+1, (idleTime * 16));
 			}
 		}
-		
+
 	}
-	
-//	// TO BE REMOVED
-//	private void createGraph () {
-//			
-//		graph = new DefaultGraph("graph");	
-//		graph.addNode("A" );
-//		graph.addNode("B" );
-//		graph.addNode("C" );
-//		graph.addEdge("AB", "A", "B");
-//		graph.addEdge("BC", "B", "C");
-//		graph.addEdge("CA", "C", "A");
-//	}
 
 
 }

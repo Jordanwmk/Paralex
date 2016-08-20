@@ -7,7 +7,7 @@ public class Main {
 //    	
 
     	//Default values when no additional option is added.
-    	int threadsUsed = 0;
+    	int threadsUsed = 1;
     	String fileName = args[0];
     	int numProcessors = Integer.parseInt(args[1]);
     	boolean useVisualisation = false;
@@ -58,6 +58,8 @@ public class Main {
         Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
+        VFrame frame = VFrame.getInstance();
+        frame.printStuff();
         System.out.println(branchAndBoundSolution);
         System.out.println("Branch & Bound solution time: "+branchAndBoundSolution.getTotalTime());
         System.out.println("Branch & Bound runtime: " + totalTime + "ms");
