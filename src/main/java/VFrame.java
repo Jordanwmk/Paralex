@@ -158,36 +158,36 @@ public class VFrame{
 	}
 
 	private void setNodeColour(int activityNumber, int task){
-		if (activityNumber >= 3000000){
+		if (activityNumber == 3000000){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition3000000");
 
-		}else if (activityNumber >= 1000000){
-			taskGraph.getNode(task).removeAttribute("ui.class");
+		}else if (activityNumber == 1000000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition1000000");
-		}else if (activityNumber >= 300000){
-			taskGraph.getNode(task).removeAttribute("ui.class");
+		}else if (activityNumber == 300000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");		
 			
-		}else if (activityNumber >= 50000){
-			taskGraph.getNode(task).removeAttribute("ui.class");
+		}else if (activityNumber == 50000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50000");
-		}else if (activityNumber >= 10000){
-			taskGraph.getNode(task).removeAttribute("ui.class");
+		}else if (activityNumber == 10000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition10000");
-		}else if (activityNumber >= 5000){
-			taskGraph.getNode(task).removeAttribute("ui.class");
+		}else if (activityNumber == 5000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition5000");
-		}else if (activityNumber >= 1000){
+		}else if (activityNumber == 1000){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition1000");
-		}else if (activityNumber >= 500){
+		}else if (activityNumber == 500){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition500");
-		}else if (activityNumber >= 150){
+		}else if (activityNumber == 150){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition150");
-		}else if (activityNumber >= 50){
+		}else if (activityNumber == 50){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50");
 		}
@@ -269,19 +269,15 @@ public class VFrame{
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		int earliestStartOnProc = procFinishTimes[proc];
-		System.out.println("The earliest starttime on processor" + proc+ " is " + earliestStartOnProc);
 		int idleTime = startTime - earliestStartOnProc;
-		System.out.println("idle: " + idleTime);
 		
 		if (idleTime > 0) {
-			System.out.println("Adding idle time");
 			model.addRow(new String[]{"Idle Time"});;
 			table.setRowHeight(table.getRowCount()-1, (idleTime * 16));
 		}
 		
 		model.addRow(new String[]{"" + task});
 		table.setRowHeight(table.getRowCount()-1, (nodeCost * 16));
-		System.out.println("New finish: " + (startTime + nodeCost));
 		procFinishTimes[proc]=startTime+nodeCost;
 	}
 

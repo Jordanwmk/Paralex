@@ -60,10 +60,6 @@ public class Main {
         totalTime = endTime - startTime;
         VFrame frame = VFrame.getInstance();
         frame.printStuff();
-        System.out.println(branchAndBoundSolution);
-        System.out.println("Branch & Bound solution time: "+branchAndBoundSolution.getTotalTime());
-        System.out.println("Branch & Bound runtime: " + totalTime + "ms");
-        System.out.println();
 
 
 //        startTime = System.currentTimeMillis();
