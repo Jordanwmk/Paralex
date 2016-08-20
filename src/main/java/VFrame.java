@@ -65,11 +65,13 @@ public class VFrame{
 			listOfAccess.add(i, listOfTasks);
 		}
 		taskGraph.addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
-//		
-//        for (Node node : taskGraph) {
-//        	node.addAttribute("ui.label", node.getId());
-//        	node.addAttribute("ui.style", "fill-color: #80d4ff;");
-//        }
+		//taskGraph.getNode(0).setAttribute("ui.color", 0.2);
+		//taskGraph.getNode(1).setAttribute("ui.color", 1);
+		
+        for (Node node : taskGraph) {
+        	node.addAttribute("ui.label", node.getId());
+        	//node.addAttribute("ui.style", "fill-color: #80d4ff;");
+        }
 //        for (Edge edge: taskGraph.getEachEdge()){
 //        	edge.addAttribute("ui.style", "fill-color: black;");
 //        }
@@ -90,6 +92,8 @@ public class VFrame{
 
 		Integer value = currentCore.get(task); // get value
 		currentCore.set(task, value+1);
+		setNodeColour(currentCore.get(task),task);
+		
 	}
 	
 	public static VFrame getInstance() {
@@ -146,6 +150,44 @@ public class VFrame{
 		mainFrame.add(contentPane);
 	}
 
+	private void setNodeColour(int activityNumber, int task){
+		if (activityNumber >= 3000000){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition3000000");
+
+		}else if (activityNumber >= 1000000){
+			taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition1000000");
+		}else if (activityNumber >= 300000){
+			taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");		
+			
+		}else if (activityNumber >= 50000){
+			taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition50000");
+		}else if (activityNumber >= 10000){
+			taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition10000");
+		}else if (activityNumber >= 5000){
+			taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition5000");
+		}else if (activityNumber >= 1000){
+			System.out.println(task);
+			//taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition1000");
+		}else if (activityNumber >= 500){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition500");
+		}else if (activityNumber >= 150){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition150");
+		}else if (activityNumber >= 50){
+			//taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition50");
+		}
+    }
+			
+	
 	private void showFrame () {
 		mainFrame.setVisible(true);
 	}
