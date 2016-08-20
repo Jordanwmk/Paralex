@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule implements Comparable<Schedule>{
-    private Graph taskGraph;
+    private TaskGraph taskGraph;
 
     //pointer to the nodes parent
     private Schedule parent;
@@ -30,7 +30,7 @@ public class Schedule implements Comparable<Schedule>{
     private List<Integer> doableTasks;
 
     //CONSTRUCTOR
-    public Schedule(Graph taskGraph, Schedule parent, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks) {
+    public Schedule(TaskGraph taskGraph, Schedule parent, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks) {
         this.taskGraph = taskGraph;
         this.parent = parent;
         this.task = task;
@@ -47,7 +47,7 @@ public class Schedule implements Comparable<Schedule>{
      * Creates an empty schedule to use as the start of the state tree traversal/generation
      * @return the empty schedule
      */
-    public static Schedule getEmptySchedule(Graph taskGraph){
+    public static Schedule getEmptySchedule(TaskGraph taskGraph){
         return new Schedule(taskGraph,null,-1,-1,0,0,0,0, taskGraph.getEntryPoints());
     }
 

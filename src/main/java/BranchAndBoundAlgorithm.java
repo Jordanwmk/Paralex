@@ -3,7 +3,7 @@ import java.util.Stack;
 
 public class BranchAndBoundAlgorithm implements Algorithm{
     @Override
-    public Schedule schedule(Graph taskGraph) {
+    public Schedule schedule(TaskGraph taskGraph) {
         Stack<Schedule> stack=new Stack<>();
         stack.add(Schedule.getEmptySchedule(taskGraph));
         Schedule currentBest=null;

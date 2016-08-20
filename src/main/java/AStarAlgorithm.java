@@ -8,7 +8,7 @@ public class AStarAlgorithm implements Algorithm{
      * @return
      */
     @Override
-    public Schedule schedule(Graph taskGraph){
+    public Schedule schedule(TaskGraph taskGraph){
         PriorityQueue<Schedule> queue=new PriorityQueue<>();
         queue.add(Schedule.getEmptySchedule(taskGraph));
         Schedule scheduleWeAreCurrentlyAt = null;

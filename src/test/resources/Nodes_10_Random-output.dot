@@ -6,7 +6,7 @@ digraph "src/test/resources/Nodes_10_Random-output.dot" {
 	graph [ No of edges=19.0 ];
 	graph [ Node concurrency=-1.0 ];
 	0 [Processor=1,Start=0,Weight=6];
-	3 [Processor=3,Start=40,Weight=10];
+	3 [Processor=2,Start=40,Weight=10];
 	4 [Processor=1,Start=6,Weight=3];
 	9 [Processor=1,Start=38,Weight=8];
 	1 [Processor=1,Start=9,Weight=5];

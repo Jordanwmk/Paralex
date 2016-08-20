@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args){
 //    	//Check for what options are enabled in executing the jar.
 //    	
+
     	//Default values when no additional option is added.
     	int threadsUsed = 0;
     	String fileName = args[0];
@@ -29,10 +30,13 @@ public class Main {
     			}
     		}
     	}
+     	if (useVisualisation){
+     		VFrame frame = new VFrame(threadsUsed, fileName);
+     	}
 
-		Graph taskGraph;
+		TaskGraph taskGraph;
 		try {
-			taskGraph = new Graph(fileName,numProcessors,useVisualisation);
+			taskGraph = new TaskGraph(fileName,numProcessors,useVisualisation);
 		}catch(IOException e){
 			e.printStackTrace();
 			System.out.println("IOException while reading graph file");

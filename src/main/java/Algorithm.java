@@ -1,3 +1,3 @@
 public interface Algorithm  {
-    public Schedule schedule(Graph taskGraph);
+    public Schedule schedule(TaskGraph taskGraph);
 }

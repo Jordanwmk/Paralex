@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,27 +27,40 @@ import org.graphstream.ui.view.Viewer;
  *
  */
 public class VFrame{
-
+	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
 	private JPanel contentPane;
-	private Graph graph;
+	//private Graph graph;
 	private JTable table;
 	private int processors = 3;
 	private ArrayList<JTable> procTables = new ArrayList<JTable>();
-
-	// Should be removed before merging into master
-	public static void main (String[] args) {
-		VFrame frame = new VFrame();
-		frame.createGraph();
-		frame.prepareGui();
-		frame.showFrame();
-		frame.addTaskToProcessor(1, 0, 1);	
-		frame.addTaskToProcessor(1, 2, 2);
-		frame.addTaskToProcessor(1, 1, 2);
-		frame.addTaskToProcessor(0, 1, 8);
-		//frame.removeTaskFromProcessor(1, 1);
-		frame.addIdleTime(1, 2, 3);
+	private Input input;
+	private Graph taskGraph;
+	
+	public VFrame(int numOfCores, String filename ){
+		try {
+			input = new Input(filename) ;
+			taskGraph = input.getInputG();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.prepareGui();
+		this.showFrame();
 	}
+	// Should be removed before merging into master
+//	public static void main (String[] args) {
+//		VFrame frame = new VFrame();
+//		frame.createGraph();
+//		frame.prepareGui();
+//		frame.showFrame();
+//		frame.addTaskToProcessor(1, 0, 1);	
+//		frame.addTaskToProcessor(1, 2, 2);
+//		frame.addTaskToProcessor(1, 1, 2);
+//		frame.addTaskToProcessor(0, 1, 8);
+//		//frame.removeTaskFromProcessor(1, 1);
+//		frame.addIdleTime(1, 2, 3);
+//	}
 
 	private void prepareGui () {
 
@@ -61,7 +76,7 @@ public class VFrame{
 		graphPane.setLayout(new BorderLayout());
 		graphPane.setPreferredSize(new Dimension(500, 7));
 
-		Viewer viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		Viewer viewer = new Viewer(taskGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		View view = viewer.addDefaultView(false);
 		viewer.enableAutoLayout();
 		//((Component) view).setPreferredSize(new Dimension(500, 500));
@@ -133,17 +148,17 @@ public class VFrame{
 		
 	}
 	
-	// TO BE REMOVED
-	private void createGraph () {
-			
-		graph = new DefaultGraph("graph");	
-		graph.addNode("A" );
-		graph.addNode("B" );
-		graph.addNode("C" );
-		graph.addEdge("AB", "A", "B");
-		graph.addEdge("BC", "B", "C");
-		graph.addEdge("CA", "C", "A");
-	}
+//	// TO BE REMOVED
+//	private void createGraph () {
+//			
+//		graph = new DefaultGraph("graph");	
+//		graph.addNode("A" );
+//		graph.addNode("B" );
+//		graph.addNode("C" );
+//		graph.addEdge("AB", "A", "B");
+//		graph.addEdge("BC", "B", "C");
+//		graph.addEdge("CA", "C", "A");
+//	}
 
 
 }
