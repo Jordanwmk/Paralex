@@ -35,27 +35,31 @@ public class VFrame{
 	private JPanel contentPane;
 	//private Graph graph;
 	private JTable table;
-	private int processors = 3;
+	private int totalProcessors = 0;
+	private ArrayList<Integer> procFinishTimes;
 	private ArrayList<JTable> procTables = new ArrayList<JTable>();
 	private Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
+	private ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	
 	public VFrame() {}
 	
-	public VFrame(int numOfCores, String fileName){
+	public VFrame(int numOfCores, String fileName, int processors){
 		instance = this;
-		instance.setup(numOfCores, fileName);
+		instance.setup(numOfCores, fileName, processors);
 	}
 	
-	private void setup(int numOfCores, String fileName) {
+	private void setup(int numOfCores, String fileName,  int processors) {
 		try {
 			input = new Input(fileName) ;
 			taskGraph = input.getInputG();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+        
+        totalProcessors = processors;
+        procFinishTimes = new ArrayList<>(Collections.nCopies(totalProcessors, 0));
 		this.prepareGui();
 		this.showFrame();
 		int numNodes = taskGraph.getNodeCount();
@@ -76,6 +80,7 @@ public class VFrame{
 //        	edge.addAttribute("ui.style", "fill-color: black;");
 //        }
 //        
+
 	}
 
 	public void printStuff(){
@@ -127,15 +132,15 @@ public class VFrame{
 
 		// Right panel to hold table of processors and tasks
 		JPanel processPanel = new JPanel();
-		processPanel.setLayout(new GridLayout(1, processors));
+		processPanel.setLayout(new GridLayout(1, totalProcessors));
 
 
 		// Creating JTable for each processor and adding it to the processors panel
-		for (int i = 0; i < processors; i++) {
+		for (int i = 0; i < totalProcessors; i++) {
 
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("Proc " + i);
-			model.addRow(new String[] {"Tasks"});
+//			model.addRow(new String[] {"Tasks"});
 			JTable table = new JTable(model);
 
 			JScrollPane scrollPane = new JScrollPane(table);
@@ -192,41 +197,91 @@ public class VFrame{
 		mainFrame.setVisible(true);
 	}
 
-	// Method to add a task to a certain processor
-	public void addTaskToProcessor(int proc, int task, int nodeCost) {
+//	// Method to add a task to a certain processor
+//	public void addTaskToProcessor(int proc, int task, int nodeCost) {
+//		JTable table = procTables.get(proc);
+//		DefaultTableModel model = (DefaultTableModel) table.getModel();
+//		model.addRow(new String[]{"" + task});
+//		int numRows = model.getRowCount();	// Getting which row to change height of
+//		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
+//	}
+//
+//	// Allows removal of a task
+//	public void removeTaskFromProcessor (int proc, int task) {
+//		JTable table = procTables.get(proc);
+//		DefaultTableModel model = (DefaultTableModel) table.getModel();
+//
+//		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//		for (int i = 0; i < model.getRowCount(); i++) {
+//			if (model.getValueAt(i, 0).equals(Integer.toString(task))) {
+//				//model.removeRow(i);			// Removes row
+//				model.setValueAt("", i, 0);		// Makes row blank
+//			}
+//		}
+//	}
+//
+//	// Method to add idle time to a processor
+//	public void addIdleTime (int proc, int priorTask, int idleTime) {
+//		JTable table = procTables.get(proc);
+//		DefaultTableModel model = (DefaultTableModel) table.getModel();
+//
+//		for (int i = 0; i < model.getRowCount(); i++) {
+//			if (model.getValueAt(i, 0).equals(Integer.toString(priorTask))) {
+//				model.insertRow(i+1 , new String[]{"Idle Time"});
+//				table.setRowHeight(i+1, (idleTime * 16));
+//			}
+//		}
+//
+//	}
+
+	public void addToBestSchedule(Schedule currentBest) {
+		
+		currentBestScheduleList.clear();
+		
+		
+		for (int i = 0; i < totalProcessors; i++) {
+			JTable table = procTables.get(i);
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.setRowCount(0);
+		}
+		
+		while (currentBest.getTask() != -1) {
+			//System.out.println(currentBest.getTask());
+			currentBestScheduleList.add(currentBest);
+			currentBest=currentBest.getParent();
+		} 
+			
+		for (int i = currentBestScheduleList.size()-1; i >= 0; i--) {
+			Schedule schedule = currentBestScheduleList.get(i);
+			int startTime = schedule.getTime();
+			int processor = schedule.getProcessor();
+			int task = schedule.getTask();
+			int[] nodeCostArray = input.getNodeCosts();
+			if (task != -1) {
+				int nodeCost = nodeCostArray[task];
+				instance.addTaskToProcessor(processor, task, nodeCost, startTime);
+			}
+					
+		}
+	}
+	
+	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		
+		int earliestStartOnProc = procFinishTimes.get(proc);
+		int idleTime = startTime - earliestStartOnProc;
+		System.out.println("idle: " + idleTime);
+		
+		if (idleTime > 0) {
+			System.out.println("Adding idle time");
+			model.insertRow(table.getRowCount(), new String[]{"Idle Time"});;
+			table.setRowHeight(table.getRowCount()-1, (idleTime * 16));
+		}
+		
 		model.addRow(new String[]{"" + task});
-		int numRows = model.getRowCount();	// Getting which row to change height of
-		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
-	}
-
-	// Allows removal of a task
-	public void removeTaskFromProcessor (int proc, int task) {
-		JTable table = procTables.get(proc);
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		for (int i = 0; i < model.getRowCount(); i++) {
-			if (model.getValueAt(i, 0).equals(Integer.toString(task))) {
-				//model.removeRow(i);			// Removes row
-				model.setValueAt("", i, 0);		// Makes row blank
-			}
-		}
-	}
-
-	// Method to add idle time to a processor
-	public void addIdleTime (int proc, int priorTask, int idleTime) {
-		JTable table = procTables.get(proc);
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-
-		for (int i = 0; i < model.getRowCount(); i++) {
-			if (model.getValueAt(i, 0).equals(Integer.toString(priorTask))) {
-				model.insertRow(i+1 , new String[]{"Idle Time"});
-				table.setRowHeight(i+1, (idleTime * 16));
-			}
-		}
-
+		System.out.println("New finish: " + (startTime + nodeCost));
+		procFinishTimes.set(proc, startTime + nodeCost);
 	}
 
 

@@ -31,7 +31,7 @@ public class Main {
     		}
     	}
      	if (useVisualisation){
-     		VFrame frame = new VFrame(threadsUsed, fileName);
+     		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
      	}
 
 		TaskGraph taskGraph;
