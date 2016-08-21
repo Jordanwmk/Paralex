@@ -18,12 +18,12 @@ public class TableThreader extends SwingWorker<Void,Void> {
 	}
 	
 	//change gui here
-	protected void publish(Schedule schedule){
+	@Override
+	protected void process(Schedule schedule){
 		//gui.update(schedule);
 	}
 	
 	@Override
-	
 	protected void done(){
 		
 	}
