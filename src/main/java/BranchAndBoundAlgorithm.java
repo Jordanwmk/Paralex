@@ -25,9 +25,7 @@ public class BranchAndBoundAlgorithm implements Algorithm{
                 if(childNodes.isEmpty()){
                     if(scheduleWeAreCurrentlyAt.getTotalTime()<currentBestTime){
                         currentBest=scheduleWeAreCurrentlyAt;
-                        i++;
-                        System.out.println(i);
-                        frame.addToBestSchedule(currentBest);
+                		frame.addToBestSchedule(currentBest);
                         currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
                         tableThreader.setSchedule(currentBest);
                         tableThreader.execute();

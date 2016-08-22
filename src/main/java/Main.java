@@ -32,6 +32,7 @@ public class Main {
     	}
      	if (useVisualisation){
      		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+     		
      	}
 
 		TaskGraph taskGraph;
@@ -59,8 +60,11 @@ public class Main {
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
         VFrame frame = VFrame.getInstance();
-        frame.printStuff();
-
+//        frame.printStuff();
+//	      System.out.println(branchAndBoundSolution);
+//	      System.out.println("brute Force solution time: " + branchAndBoundSolution.getTotalTime());
+//	      System.out.println("Brute Force runtime: " + totalTime + "ms");
+//	      System.out.println();
 
 //        startTime = System.currentTimeMillis();
 //        Schedule aStarSolution=new AStarAlgorithm().schedule(taskGraph);
