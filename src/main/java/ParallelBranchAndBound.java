@@ -114,11 +114,6 @@ public class ParallelBranchAndBound implements Algorithm {//####[10]####
                     threadsCurrentlyRunning--;//####[68]####
                 }//####[69]####
             } catch (EmptyStackException e) {//####[71]####
-                try {//####[72]####
-                    Thread.sleep(1);//####[73]####
-                } catch (Exception e1) {//####[74]####
-                    e.printStackTrace();//####[75]####
-                }//####[76]####
                 continue;//####[78]####
             }//####[79]####
         }//####[81]####

@@ -69,11 +69,11 @@ public class ParallelBranchAndBound implements Algorithm{
                 }
 				
 			} catch(EmptyStackException e){
-				try{
-					Thread.sleep(1);
-				} catch (Exception e1){
-					e.printStackTrace();
-				}
+//				try{
+//					Thread.sleep(1);
+//				} catch (Exception e1){
+//					e.printStackTrace();
+//				}
 				
 				continue;
 			}
