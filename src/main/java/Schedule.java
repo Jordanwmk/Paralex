@@ -33,21 +33,24 @@ public class Schedule implements Comparable<Schedule>{
     //array that stores the start times for each of the tasks, -1 if the task has not been scheduled yet
     private int[] taskStartTimes;
 
+    //array that stores which processors tasks have been scheduled on
+    private int[] taskProcessors;
+
     //Array that stores the earliest free time a task can be scheduled on each processor
     private int[] processorFinishTimes;
 
     //CONSTRUCTOR
-    public Schedule(Graph taskGraph, Schedule parent, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] processorFinishTimes) {
+    public Schedule(Graph taskGraph, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] taskProcessors, int[] processorFinishTimes) {
         this.taskGraph = taskGraph;
-        this.parent = parent;
-        this.task = task;
-        this.time = time;
-        this.processor = processor;
+        //this.task = task;
+        //this.time = time;
+        //this.processor = processor;
         this.idleTime = idleTime;
         this.estimate = estimate;
         this.processorsUsed = processorsUsed;
         this.doableTasks = doableTasks;
         this.taskStartTimes = taskStartTimes;
+        this.taskProcessors = taskProcessors;
         this.processorFinishTimes = processorFinishTimes;
 
     }
@@ -59,8 +62,11 @@ public class Schedule implements Comparable<Schedule>{
     public static Schedule getEmptySchedule(Graph taskGraph){
         int[] taskStartTime = new int[taskGraph.getTotalNumTasks()];
         Arrays.fill(taskStartTime, -1);
+        int[] taskProcessors = new int[taskGraph.getTotalNumTasks()];
+        Arrays.fill(taskProcessors,-1);
         int[] processFinishTime = new int[taskGraph.getNumProcessors()];
-        return new Schedule(taskGraph,null,-1,-1,0,0,0,0, taskGraph.getEntryPoints(),taskStartTime,processFinishTime);
+
+        return new Schedule(taskGraph,-1,-1,0,0,0,0, taskGraph.getEntryPoints(),taskStartTime,taskProcessors,processFinishTime);
     }
 
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
@@ -80,10 +86,9 @@ public class Schedule implements Comparable<Schedule>{
 
     public int getTotalTime(){
         int totalTime=0;
-        Schedule scheduleWeAreCurrentlyInspecting=this;
-        while(scheduleWeAreCurrentlyInspecting!=null && scheduleWeAreCurrentlyInspecting.task!=-1){
-            totalTime=Math.max(totalTime,scheduleWeAreCurrentlyInspecting.time+taskGraph.getNodeCost(scheduleWeAreCurrentlyInspecting.task));
-            scheduleWeAreCurrentlyInspecting=scheduleWeAreCurrentlyInspecting.parent;
+
+        for (int finishTime:processorFinishTimes) {
+            totalTime = Math.max(totalTime, finishTime);
         }
         return totalTime;
     }
@@ -98,18 +103,6 @@ public class Schedule implements Comparable<Schedule>{
         List<Schedule> children = new ArrayList<Schedule>();
         //graph singleton that has all the edge costs and node weights, BLs etc.
 
-        //setting the size of the array to the total number of tasks
-        //boolean set to true if the task index is completed
-        boolean[] completedTasks = new boolean[taskGraph.getTotalNumTasks()];
-        //start by looking at the current node
-        Schedule scheduleCurrentlyInspecting = this;
-
-        //starting from this node, go up the tree to the root and find all the tasks that have been completed
-        //this will update the completedTasks boolean array
-        while(scheduleCurrentlyInspecting.task!=-1) {
-            completedTasks[scheduleCurrentlyInspecting.task] = true;
-            scheduleCurrentlyInspecting=scheduleCurrentlyInspecting.parent;
-        }
 
         //for all the tasks that are valid to add as a child, we will generate a child by adding
         //it to each of the occupied processors, and 1 of the empty processors
@@ -128,24 +121,21 @@ public class Schedule implements Comparable<Schedule>{
                  processorWeAreTryingToScheduleOn < Math.min(processorsUsed+1,taskGraph.getNumProcessors());
                  processorWeAreTryingToScheduleOn++) {
 
-                Schedule scheduleYouAreCurrentlyInspecting = this;
-
                 //finish time of last task scheduled on this processor
                 //only need to find the last task scheduled on this processor
                 int earliestStartTimeOnThisProcessor = processorFinishTimes[processorWeAreTryingToScheduleOn];
 
                 //maximum start time + node cost + communication cost of all dependencies
-                int earliestStartTimeOfThisTask = -1;
-
-                //a counter for how many dependencies the task we are trying to schedule has
-                //when its 0, we know we have gone through all its dependencies
-                int dependenciesRemaining = dependencyList.size();
+                int earliestStartTimeOfThisTask = 0;
 
                 //as we are going up the tree looking for dependencies, keep going until either there are no nodes left,
                 //or if all the dependencies and the earliest start time on this process is found.
-
-                for(int task:dependencyList) {
-                    earliestStartTimeOnThisProcessor = Math.max(earliestStartTimeOnThisProcessor, taskStartTimes[task] + taskGraph.getNodeCost(task));
+                for(int dependency :dependencyList) {
+                    if(taskProcessors[dependency]==processorWeAreTryingToScheduleOn){
+                        earliestStartTimeOfThisTask = Math.max(earliestStartTimeOfThisTask, taskStartTimes[dependency] + taskGraph.getNodeCost(dependency));
+                    }else{
+                        earliestStartTimeOfThisTask = Math.max(earliestStartTimeOfThisTask, taskStartTimes[dependency] + taskGraph.getNodeCost(dependency) + taskGraph.getEdgeCost(dependency,taskYouAreTryingToSchedule));
+                    }
                 }
 
                 //STARTING FROM HERE, WE ARE JUST CALCULATING THE REMAINING FIELDS WE NEED FOR THE CHILD
@@ -157,17 +147,19 @@ public class Schedule implements Comparable<Schedule>{
                 int updatedIdleTime = idleTime + startTime - earliestStartTimeOnThisProcessor;
 
                 //recalculate the estimated time of completion for the partial schedule
-                int updatedEstimate = Math.max((updatedIdleTime + taskGraph.getTotalTaskTime())/taskGraph.getNumProcessors(), taskGraph.getBottomLevel(taskYouAreTryingToSchedule) + startTime);
+                int updatedEstimate = Math.max(
+                        (updatedIdleTime + taskGraph.getTotalTaskTime())/taskGraph.getNumProcessors(),
+                        taskGraph.getBottomLevel(taskYouAreTryingToSchedule) + startTime);
 
                 //max it with the old estimate
                 //not sure if this line is needed, can check later
-                int est = Math.max(updatedEstimate, estimate);
+                updatedEstimate = Math.max(updatedEstimate, estimate);
 
                 //now update doable task list
                 List<Integer> updatedDoableTasks = new ArrayList<Integer>(doableTasks);
 
                 //remove the task we just scheduled from the list
-                //this line workd but might be slower so we use faster
+                //this line worked but might be slower so we use faster
                 //updatedDoableTasks.remove(new Integer(taskYouAreTryingToSchedule));
                 updatedDoableTasks.remove(Integer.valueOf(taskYouAreTryingToSchedule));
 
@@ -179,7 +171,7 @@ public class Schedule implements Comparable<Schedule>{
                 for (int child:taskGraph.getChildren(taskYouAreTryingToSchedule)) {
                     boolean isDoable = true;
                     for (int dependency: taskGraph.getDependencies(child)) {
-                        if (!completedTasks[dependency] && dependency != taskYouAreTryingToSchedule) {
+                        if (taskStartTimes[dependency] == -1 && dependency != taskYouAreTryingToSchedule) {
                             //as soon as a dependency is not met, break and go to the next child
                             isDoable = false;
                             break;
@@ -205,16 +197,20 @@ public class Schedule implements Comparable<Schedule>{
                 System.arraycopy(taskStartTimes, 0, updatedTaskStartTimes, 0, taskStartTimes.length);
                 updatedTaskStartTimes[taskYouAreTryingToSchedule] = startTime;
 
+                //need to update the processors each task is scheduled on
+                int[] updatedTaskProcessors=new int[taskGraph.getTotalNumTasks()];
+                System.arraycopy(taskProcessors, 0, updatedTaskProcessors, 0, taskProcessors.length);
+                updatedTaskProcessors[taskYouAreTryingToSchedule] = processorWeAreTryingToScheduleOn;
+
                 //need to update when each processor is free
-                int[] updatedProcessFinishTimes = new int[taskGraph.getTotalNumTasks()];
-                System.arraycopy(processorFinishTimes, 0, updatedProcessFinishTimes, 0, taskGraph.getTotalNumTasks());
+                int[] updatedProcessFinishTimes = new int[taskGraph.getNumProcessors()];
+                System.arraycopy(processorFinishTimes, 0, updatedProcessFinishTimes, 0, processorFinishTimes.length);
                 updatedProcessFinishTimes[processorWeAreTryingToScheduleOn] = startTime + taskGraph.getNodeCost(taskYouAreTryingToSchedule);
 
-
                 //add then new child with all the new values we calculated
-                children.add(new Schedule(taskGraph,this, taskYouAreTryingToSchedule,
+                children.add(new Schedule(taskGraph, taskYouAreTryingToSchedule,
                         startTime, processorWeAreTryingToScheduleOn,
-                        updatedIdleTime, est, updatedProcessorsUsed, updatedDoableTasks, updatedTaskStartTimes, updatedProcessFinishTimes));
+                        updatedIdleTime, updatedEstimate, updatedProcessorsUsed, updatedDoableTasks, updatedTaskStartTimes, updatedTaskProcessors, updatedProcessFinishTimes));
             }
         }
 

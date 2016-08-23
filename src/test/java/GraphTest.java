@@ -37,7 +37,7 @@ public class GraphTest {
 
 	@Test
 	public void test_Nodes_11_2_Proccessors() throws IOException {
-		Schedule solution = new ParallelBranchAndBound(4).schedule(new Graph("src/test/resources/Nodes_11_OutTree.dot", 2));
+		Schedule solution = new BranchAndBoundAlgorithm().schedule(new Graph("src/test/resources/Nodes_11_OutTree.dot", 2));
 		assertEquals(350, solution.getTotalTime());
 
 	} 
