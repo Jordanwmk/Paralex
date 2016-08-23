@@ -60,11 +60,11 @@ public class Main {
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
         VFrame frame = VFrame.getInstance();
-//        frame.printStuff();
-//	      System.out.println(branchAndBoundSolution);
-//	      System.out.println("brute Force solution time: " + branchAndBoundSolution.getTotalTime());
-//	      System.out.println("Brute Force runtime: " + totalTime + "ms");
-//	      System.out.println();
+        //frame.printStuff();
+	    System.out.println(branchAndBoundSolution);
+	    System.out.println("brute Force solution time: " + branchAndBoundSolution.getTotalTime());
+	    System.out.println("Brute Force runtime: " + totalTime + "ms");
+	    System.out.println();
 
 //        startTime = System.currentTimeMillis();
 //        Schedule aStarSolution=new AStarAlgorithm().schedule(taskGraph);

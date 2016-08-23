@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Graph;
@@ -42,6 +44,7 @@ public class VFrame{
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
 	private ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
+	private int scalingFactor = 2;
 	
 	public VFrame() {}
 	
@@ -59,7 +62,7 @@ public class VFrame{
 		}
         
         totalProcessors = processors;
-        
+        setupScalingFactor();
 		this.prepareGui();
 		this.showFrame();
 		int numNodes = taskGraph.getNodeCount();
@@ -151,10 +154,11 @@ public class VFrame{
 
 			table.setRowSelectionAllowed(false);
 			table.setEnabled(false);	// Disabling user edit
+				
 			procTables.add(table);
 			JPanel tablePanel = new JPanel();
 			tablePanel.setLayout(new BorderLayout());
-			tablePanel.setBorder(BorderFactory.createTitledBorder("Proc " + (i + 1)));
+			tablePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder (), ("Proc " + (i + 1)), TitledBorder.CENTER, TitledBorder.TOP));
 			tablePanel.add(table);
 			processPanel.add(tablePanel);
 		}
@@ -212,42 +216,6 @@ public class VFrame{
 		mainFrame.setVisible(true);
 	}
 
-//	// Method to add a task to a certain processor
-//	public void addTaskToProcessor(int proc, int task, int nodeCost) {
-//		JTable table = procTables.get(proc);
-//		DefaultTableModel model = (DefaultTableModel) table.getModel();
-//		model.addRow(new String[]{"" + task});
-//		int numRows = model.getRowCount();	// Getting which row to change height of
-//		table.setRowHeight(numRows-1, (nodeCost*16));	// 16 px is original height		
-//	}
-//
-//	// Allows removal of a task
-//	public void removeTaskFromProcessor (int proc, int task) {
-//		JTable table = procTables.get(proc);
-//		DefaultTableModel model = (DefaultTableModel) table.getModel();
-//
-//		// Not sure if row should be removed or not +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//		for (int i = 0; i < model.getRowCount(); i++) {
-//			if (model.getValueAt(i, 0).equals(Integer.toString(task))) {
-//				//model.removeRow(i);			// Removes row
-//				model.setValueAt("", i, 0);		// Makes row blank
-//			}
-//		}
-//	}
-//
-//	// Method to add idle time to a processor
-//	public void addIdleTime (int proc, int priorTask, int idleTime) {
-//		JTable table = procTables.get(proc);
-//		DefaultTableModel model = (DefaultTableModel) table.getModel();
-//
-//		for (int i = 0; i < model.getRowCount(); i++) {
-//			if (model.getValueAt(i, 0).equals(Integer.toString(priorTask))) {
-//				model.insertRow(i+1 , new String[]{"Idle Time"});
-//				table.setRowHeight(i+1, (idleTime * 16));
-//			}
-//		}
-//
-//	}
 
 	public void addToBestSchedule(Schedule currentBest) {
 		currentBestScheduleList.clear();
@@ -287,13 +255,36 @@ public class VFrame{
 		
 		if (idleTime > 0) {
 			model.addRow(new String[]{"Idle Time"});;
-			table.setRowHeight(table.getRowCount()-1, (idleTime * 16));
+			table.setRowHeight(table.getRowCount()-1, (idleTime * scalingFactor));
 		}
 		
 		model.addRow(new String[]{"" + task});
-		table.setRowHeight(table.getRowCount()-1, (nodeCost * 16));
+		table.setRowHeight(table.getRowCount()-1, (nodeCost * scalingFactor));
 		procFinishTimes[proc]=startTime+nodeCost;
 	}
 
-
+	
+	// Setting up the factor to which the rows in the processor tables need to be resized to 
+	public void setupScalingFactor() {
+		int[] nodeCostArray = input.getNodeCosts();
+		int min = 9999999;
+		
+		for (int i = 0; i < nodeCostArray.length; i++) {
+			if (nodeCostArray[i] < min) {
+				min = nodeCostArray[i];
+			}
+		}
+		
+		if (min == 1) {
+			scalingFactor = 15;
+		} else if (min == 2) {
+			scalingFactor = 7;
+		} else if (min < 4) {
+			scalingFactor = 5;
+		} else if (min < 10) {
+			scalingFactor = 3;
+		} else {
+			scalingFactor = 2;
+		}
+	}
 }
