@@ -49,3 +49,6 @@ node.partition1000000{
 node.partition3000000{
 	fill-color: #000000;
 }
+node.highlighted{
+	fill-color: #ffff00;	
+}
