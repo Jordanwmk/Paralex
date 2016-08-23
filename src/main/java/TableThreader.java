@@ -40,8 +40,10 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
             if(scheduleWeAreCurrentlyAt.getFinishTimeEstimate()<currentBestTime){
                 List<Schedule> childNodes=scheduleWeAreCurrentlyAt.generateChildren();
                 stack.addAll(childNodes);
+                //Thread.sleep(100);
                 if(childNodes.isEmpty()){
                     if(scheduleWeAreCurrentlyAt.getTotalTime()<currentBestTime){
+                    	System.out.println("Found new Best");
                         currentBest=scheduleWeAreCurrentlyAt;
                         currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
                         
@@ -94,6 +96,7 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
 	
 	@Override
 	protected void done(){
+		System.out.println("DONE");
 		new Output().createOutput(this.currentBest,this.outputName);
 	}
 

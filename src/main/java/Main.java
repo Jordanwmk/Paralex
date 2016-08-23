@@ -65,6 +65,7 @@ public class Main {
              Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
              endTime   = System.currentTimeMillis();
              totalTime = endTime - startTime;
+             System.out.println(totalTime);
              new Output().createOutput(branchAndBoundSolution,outputName);
 //             VFrame frame = VFrame.getInstance();
 //             frame.printStuff();
