@@ -200,14 +200,20 @@ public class Schedule implements Comparable<Schedule>{
         //return the final list of all the child nodes that were generated
         return children;
     }
-    
+
     @Override
 	public String toString() {
 		for (int i = 0; i<taskGraph.getTotalNumTasks(); i++) {
 			System.out.println("Proc: " + taskProcessors[i] + ", Time: " + taskStartTimes[i] + ", Task: " + i);
 		}
 		return "";
-	}
+    }
+
+    @Override
+    public boolean equals(Object other){
+        return true;
+    }
+
 
 	public int getTask() {
 		return task;
