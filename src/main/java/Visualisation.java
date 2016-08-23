@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.Stack;
 
-public class BranchAndBoundAlgorithm implements Algorithm{
+
+public class Visualisation implements Algorithm{
 	
 	Schedule currentBest=null;
 	
@@ -14,7 +15,6 @@ public class BranchAndBoundAlgorithm implements Algorithm{
         Schedule scheduleWeAreCurrentlyAt=null;
      
         while(!stack.isEmpty()){
-
             scheduleWeAreCurrentlyAt=stack.pop();
             VFrame frame = VFrame.getInstance();
             if (scheduleWeAreCurrentlyAt.getTask() != -1){
@@ -41,4 +41,3 @@ public class BranchAndBoundAlgorithm implements Algorithm{
     }
     
 }
-

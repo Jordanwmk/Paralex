@@ -1,13 +1,19 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,17 +35,18 @@ import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 
-
 /**
  * 
  * Created 07/08/16
+ * 
  * @author Ammar Bagasrawala
  *
  */
-public class VFrame{
+public class VFrame {
 	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
+
 	private JTable table;
 	public int totalProcessors = 0;
 	public int[] procFinishTimes;
@@ -47,21 +54,27 @@ public class VFrame{
 	public Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
+
 	private ArrayList<Graph> taskGraphList = new ArrayList<Graph>();
+
+	private String currentHoveredCell = null;
+	private String currentColour = null;
+
 	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	private int scalingFactor = 2;
 	private int numCores = 4;
 
 	public VFrame() {}
 
-	public VFrame(int numCores, String fileName, int processors){
+	public VFrame(int numOfCores, String fileName, int processors) {
 		instance = this;
 		instance.setup(numCores, fileName, processors);
 	}
 
-	private void setup(int numOfCores, String fileName,  int processors) {
+
+	private void setup(int numOfCores, String fileName, int processors) {
 		try {
-			input = new Input(fileName) ;
+			input = new Input(fileName);
 			taskGraph = input.getInputG();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,7 +82,6 @@ public class VFrame{
 
 		numCores = numOfCores;
 		totalProcessors = processors;
-
 		setupScalingFactor();
 		this.prepareGui();
 		this.showFrame();
@@ -91,9 +103,9 @@ public class VFrame{
 
 	}
 
-	public void printStuff(){
-		for (int i=0 ; i< listOfAccess.size(); i++){
-			for (int j=0; j<listOfTasks.size();j++){
+	public void printStuff() {
+		for (int i = 0; i < listOfAccess.size(); i++) {
+			for (int j = 0; j < listOfTasks.size(); j++) {
 				System.out.print(listOfTasks.get(j) + " ");
 			}
 			System.out.println();
@@ -105,15 +117,12 @@ public class VFrame{
 		ArrayList<Integer> currentCore = listOfAccess.get(0);
 
 		Integer value = currentCore.get(task); // get value
-		if (task == 4){
-			//System.out.println("Value of task"+  task+ "is "+ value);
-		}
-		currentCore.set(task, value+1);
-		if (task == 4){
-			//System.out.println("Value of new task "+  task+ "is "+  currentCore.get(task));
+		currentCore.set(task, value + 1);
+
+		if (currentCore.get(task) % 50 == 0) {
+			setNodeColour(currentCore.get(task), task);
 		}
 
-		setNodeColour(currentCore.get(task),task);
 
 
 	}
@@ -121,13 +130,12 @@ public class VFrame{
 	public static VFrame getInstance() {
 		if (instance == null) {
 			instance = new VFrame();
-		} 
+		}
 
 		return instance;
 	}
 
-
-	private void prepareGui () {
+	private void prepareGui() {
 
 		mainFrame = new JFrame("Paralex - Parallel Task Scheduling");
 		mainFrame.setSize(1000,700);
@@ -177,12 +185,81 @@ public class VFrame{
 		JPanel processPanel = new JPanel();
 		processPanel.setLayout(new GridLayout(1, totalProcessors));
 
+
 		for (int i = 0; i < totalProcessors; i++) {
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("P");
 			JTable table = new JTable(model);
 
 			table.setRowSelectionAllowed(false);
+			table.setEnabled(false); // Disabling user edit
+			table.addMouseMotionListener(new MouseMotionListener() {
+
+				public void mouseMoved(java.awt.event.MouseEvent evt) {
+					int row = table.rowAtPoint(evt.getPoint());
+					int col = table.columnAtPoint(evt.getPoint());
+					if (table.getValueAt(row, col) != null) {
+						String value = (String) table.getValueAt(row, col);
+
+						// Checks if nothing has been hovered over and you are
+						// not hovering over
+						// idle time
+						if (currentHoveredCell == null && (!(value.equals("Idle Time")))) {
+							System.out.println(taskGraph.getNode(value).getId());
+							currentColour = taskGraph.getNode(value).getAttribute("ui.class");
+							System.out.println(value);
+							System.out.println(currentColour);
+							taskGraph.getNode(value).setAttribute("ui.class","highlighted");
+							currentHoveredCell = value;
+
+							// Checks if you are hovering over Idle time and you
+							// have already assigned something
+						} else if (currentHoveredCell != null && (value.equals("Idle Time"))) {
+							taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
+							currentHoveredCell = null;
+							currentColour = null;
+						}
+						if ((!(value.equals("Idle Time"))) && (!(currentHoveredCell.equals(value)))) {
+							taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
+							currentColour = taskGraph.getNode(value).getAttribute("ui.class");
+							taskGraph.getNode(value).setAttribute("ui.class","highlighted");
+							currentHoveredCell = value;
+
+							// System.out.println(taskGraph.getNode(currentHoveredCell).getAttribute("ui.class"));
+						}
+					}
+					// System.out.println("The row is " + row +
+					// ". The column is "+ col);
+					// do some action if appropriate column
+
+				}
+
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+			table.addMouseListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseExited(java.awt.event.MouseEvent evt) {
+					if (currentHoveredCell != null) {
+						taskGraph.getNode(currentHoveredCell).setAttribute(
+								"ui.class", currentColour);
+						currentHoveredCell = null;
+						currentColour = null;
+					}
+				}
+			});
+
+//			JPanel tablePanel = new JPanel();
+//			tablePanel.setLayout(new BorderLayout());
+//			tablePanel.setBorder(BorderFactory.createTitledBorder(
+//					BorderFactory.createEtchedBorder(), ("Proc " + (i + 1)),
+//					TitledBorder.CENTER, TitledBorder.TOP));
+//			tablePanel.add(table);
+//			processPanel.add(tablePanel);
+
 			table.setEnabled(false);	// Disabling user edit
 
 			procTables.add(table);
@@ -197,6 +274,7 @@ public class VFrame{
 			panel.add(table);
 			table.setDefaultRenderer(String.class, new CustomTableRenderer());
 			processPanel.add(panel);
+
 		}
 
 		JScrollPane scrollPane = new JScrollPane(processPanel);
@@ -246,38 +324,40 @@ public class VFrame{
 		}		
 	}
 
-	private void setNodeColour(int activityNumber, int task){
-		if (activityNumber == 3000000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
-			taskGraph.getNode(task).setAttribute("ui.class", "partition3000000");
 
-		}else if (activityNumber == 1000000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
-			taskGraph.getNode(task).setAttribute("ui.class", "partition1000000");
-		}else if (activityNumber == 300000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
-			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");		
+	private void setNodeColour(int activityNumber, int task) {
+		if (activityNumber >= 3000000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task)
+					.setAttribute("ui.class", "partition3000000");
 
-		}else if (activityNumber == 50000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 1000000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task)
+					.setAttribute("ui.class", "partition1000000");
+		} else if (activityNumber >= 300000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
+			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");
+		} else if (activityNumber >= 50000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50000");
-		}else if (activityNumber == 10000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 10000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition10000");
-		}else if (activityNumber == 5000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 5000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition5000");
-		}else if (activityNumber == 1000){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 1000) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition1000");
-		}else if (activityNumber == 500){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 500) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition500");
-		}else if (activityNumber == 150){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 150) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition150");
-		}else if (activityNumber == 50){
-			//taskGraph.getNode(task).removeAttribute("ui.class");
+		} else if (activityNumber >= 50) {
+			// taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50");
 		}
 	}
@@ -299,12 +379,12 @@ public class VFrame{
 		}
 
 		while (currentBest.getTask() != -1) {
-			//System.out.println(currentBest.getTask());
+			// System.out.println(currentBest.getTask());
 			currentBestScheduleList.add(currentBest);
-			currentBest=currentBest.getParent();
-		} 
+			currentBest = currentBest.getParent();
+		}
 
-		for (int i = currentBestScheduleList.size()-1; i >= 0; i--) {
+		for (int i = currentBestScheduleList.size() - 1; i >= 0; i--) {
 			Schedule schedule = currentBestScheduleList.get(i);
 			int startTime = schedule.getTime();
 			int processor = schedule.getProcessor();
@@ -312,13 +392,15 @@ public class VFrame{
 			int[] nodeCostArray = input.getNodeCosts();
 			if (task != -1) {
 				int nodeCost = nodeCostArray[task];
-				instance.addTaskToProcessor(processor, task, nodeCost, startTime);
+				instance.addTaskToProcessor(processor, task, nodeCost,
+						startTime);
 			}
 
 		}
 	}
 
 	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
+
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		int earliestStartOnProc = procFinishTimes[proc];
@@ -327,9 +409,12 @@ public class VFrame{
 		String taskName = taskGraph.getNode(task).getId();
 
 		if (idleTime > 0) {
-			model.addRow(new String[]{"Idle Time"});;
-			table.setRowHeight(table.getRowCount()-1, (idleTime * scalingFactor));
+			model.addRow(new String[] { "Idle Time" });
+			;
+			table.setRowHeight(table.getRowCount() - 1,
+					(idleTime * scalingFactor));
 		}
+
 
 		model.addRow(new String[]{taskName});
 		table.setRowHeight(table.getRowCount()-1, (nodeCost * scalingFactor));

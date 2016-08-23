@@ -1,0 +1,32 @@
+digraph "src/test/resources/forkjoin_9middle-output.dot" {
+	graph [ ui.stylesheet=url('src/main/java/graphStyleSheet.css')) ];
+	a [Processor=1,Start=0,Weight=2];
+	b [ui.class=partition3000000,Processor=2,Start=13,Weight=5];
+	c [ui.class=partition3000000,Processor=1,Start=16,Weight=6];
+	d [ui.class=partition3000000,Processor=2,Start=18,Weight=3];
+	e [ui.class=partition3000000,Processor=1,Start=13,Weight=3];
+	f [ui.class=partition3000000,Processor=2,Start=7,Weight=6];
+	g [ui.class=partition3000000,Processor=1,Start=7,Weight=6];
+	h [ui.class=partition1000000,Processor=1,Start=6,Weight=1];
+	i [ui.class=partition3000000,Processor=1,Start=2,Weight=4];
+	l [ui.class=partition50000,Processor=1,Start=22,Weight=1];
+	j [ui.class=partition3000000,Processor=2,Start=4,Weight=3];
+	a -> b [Weight=2,label=2.0];
+	a -> c [Weight=3,label=3.0];
+	a -> d [Weight=5,label=5.0];
+	a -> e [Weight=7,label=7.0];
+	a -> f [Weight=2,label=2.0];
+	a -> g [Weight=4,label=4.0];
+	a -> h [Weight=9,label=9.0];
+	a -> i [Weight=8,label=8.0];
+	a -> j [Weight=2,label=2.0];
+	b -> l [Weight=4,label=4.0];
+	c -> l [Weight=7,label=7.0];
+	d -> l [Weight=1,label=1.0];
+	e -> l [Weight=4,label=4.0];
+	f -> l [Weight=8,label=8.0];
+	g -> l [Weight=11,label=11.0];
+	h -> l [Weight=4,label=4.0];
+	i -> l [Weight=40,label=40.0];
+	j -> l [Weight=1,label=1.0];
+}
