@@ -34,18 +34,20 @@ import org.graphstream.ui.view.Viewer;
  *
  */
 public class VFrame{
-	private static VFrame instance;
+	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
 	private JTable table;
-	private int totalProcessors = 0;
-	private int[] procFinishTimes;
-	private ArrayList<JTable> procTables = new ArrayList<JTable>();
-	private Input input;
+	public int totalProcessors = 0;
+	public int[] procFinishTimes;
+	public ArrayList<JTable> procTables = new ArrayList<JTable>();
+	public Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
-	private ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
+
+	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	private int scalingFactor = 2;
+
 	
 	public VFrame() {}
 	
@@ -101,8 +103,16 @@ public class VFrame{
 		ArrayList<Integer> currentCore = listOfAccess.get(0);
 
 		Integer value = currentCore.get(task); // get value
+		if (task == 4){
+			System.out.println("Value of task"+  task+ "is "+ value);
+		}
 		currentCore.set(task, value+1);
+		if (task == 4){
+			System.out.println("Value of new task "+  task+ "is "+  currentCore.get(task));
+		}
+
 		setNodeColour(currentCore.get(task),task);
+		
 		
 	}
 	
