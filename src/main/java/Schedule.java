@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Schedule implements Comparable<Schedule>{
@@ -231,7 +232,22 @@ public class Schedule implements Comparable<Schedule>{
         return children;
     }
 
-
+    @Override
+    public boolean equals(Object other){
+    	Schedule otherSchedule = (Schedule)other;
+    	Schedule thisOne = this;
+    	while(thisOne.parent != null && otherSchedule.parent != null) {
+    		if (!(thisOne.time == otherSchedule.time && thisOne.task  == otherSchedule.task && thisOne.processor == otherSchedule.processor  )) {
+    			return false;
+    		}
+    		thisOne = thisOne.parent;
+    		otherSchedule = otherSchedule.parent;
+//    		System.out.println(thisOne.task);
+//    		System.out.println(otherSchedule.task);
+    	}
+    	return true;
+    }
+    
 	public Schedule getParent() {
 		return parent;
 	}

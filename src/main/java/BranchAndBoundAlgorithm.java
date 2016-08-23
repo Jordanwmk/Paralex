@@ -14,6 +14,7 @@ public class BranchAndBoundAlgorithm implements Algorithm{
         Schedule scheduleWeAreCurrentlyAt=null;
      
         while(!stack.isEmpty()){
+
             scheduleWeAreCurrentlyAt=stack.pop();
             VFrame frame = VFrame.getInstance();
             if (scheduleWeAreCurrentlyAt.getTask() != -1){
