@@ -30,3 +30,4 @@ public class BranchAndBoundAlgorithm implements Algorithm{
     }
     
 }
+
