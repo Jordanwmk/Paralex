@@ -14,7 +14,7 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
 	private TaskGraph taskGraph = null;
 	private Schedule currentBest = null;
 	private String outputName = null;
-	
+	private Schedule bestSchedule = null;
 	public TableThreader(TaskGraph taskGraph, String outputName){
 		this.taskGraph = taskGraph;
 		this.outputName = outputName;
@@ -43,7 +43,7 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
                 //Thread.sleep(100);
                 if(childNodes.isEmpty()){
                     if(scheduleWeAreCurrentlyAt.getTotalTime()<currentBestTime){
-                    	System.out.println("Found new Best");
+                    	this.bestSchedule=scheduleWeAreCurrentlyAt;
                         currentBest=scheduleWeAreCurrentlyAt;
                         currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
                         
