@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Stack;
 
 public class BruteForceAlgorithm implements Algorithm {
-    @Override
+	@Override
     public Schedule schedule(TaskGraph taskGraph) {
         Stack<Schedule> stack=new Stack<>();
         stack.add(Schedule.getEmptySchedule(taskGraph));
@@ -22,4 +22,5 @@ public class BruteForceAlgorithm implements Algorithm {
         }
         return currentBest;
     }
+
 }

@@ -119,6 +119,12 @@ public class VFrame {
 			setNodeColour(currentCore.get(task), task);
 		}
 
+
+		currentCore.set(task, value+1);
+		setNodeColour(currentCore.get(task),task);
+		
+		
+
 	}
 
 	public static VFrame getInstance() {
