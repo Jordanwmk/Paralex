@@ -1,6 +1,7 @@
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -51,14 +51,14 @@ public class VFrame{
 	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	private int scalingFactor = 2;
 	private int numCores = 4;
-	
+
 	public VFrame() {}
-	
-	public VFrame(int numOfCores, String fileName, int processors){
+
+	public VFrame(int numCores, String fileName, int processors){
 		instance = this;
-		instance.setup(numOfCores, fileName, processors);
+		instance.setup(numCores, fileName, processors);
 	}
-	
+
 	private void setup(int numOfCores, String fileName,  int processors) {
 		try {
 			input = new Input(fileName) ;
@@ -66,26 +66,28 @@ public class VFrame{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-			
-        totalProcessors = processors;
-        setupScalingFactor();
+
+		numCores = numOfCores;
+		totalProcessors = processors;
+
+		setupScalingFactor();
 		this.prepareGui();
 		this.showFrame();
+
 		int numNodes = taskGraph.getNodeCount();
-		procFinishTimes=new int[numNodes];
+		procFinishTimes = new int[numNodes];
 		listOfTasks = new ArrayList<Integer>(Collections.nCopies(numNodes, 0));
 		listOfAccess = new ArrayList<ArrayList<Integer>>();
+
 		for (int i = 0; i < numOfCores; i++){
 			listOfAccess.add(i, listOfTasks);
 		}
+
 		taskGraph.addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
-				
-        for (Node node : taskGraph) {
-        	node.addAttribute("ui.label", node.getId());
-        	//node.addAttribute("ui.style", "fill-color: #80d4ff;");
-        }
-        
+
+		for (Node node : taskGraph) {
+			node.addAttribute("ui.label", node.getId());
+		}       
 
 	}
 
@@ -97,7 +99,7 @@ public class VFrame{
 			System.out.println();
 		}
 	}
-	
+
 	public void incrementTask(int task) {
 
 		ArrayList<Integer> currentCore = listOfAccess.get(0);
@@ -112,10 +114,10 @@ public class VFrame{
 		}
 
 		setNodeColour(currentCore.get(task),task);
-		
-		
+
+
 	}
-	
+
 	public static VFrame getInstance() {
 		if (instance == null) {
 			instance = new VFrame();
@@ -131,11 +133,11 @@ public class VFrame{
 		mainFrame.setSize(1000,700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 		mainFrame.setMinimumSize(new Dimension (500, 500));
-		
+
 		JPanel contentPanel = new JPanel();
 		contentPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		
+
 		JPanel graphKey = new JPanel();		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -145,7 +147,7 @@ public class VFrame{
 		gbc.anchor = GridBagConstraints.NORTH;
 		graphKey.setBorder(BorderFactory.createTitledBorder("Graph Key"));
 		contentPanel.add(graphKey, gbc);
-		
+
 		JPanel statusPanel = new JPanel();		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -155,27 +157,26 @@ public class VFrame{
 		gbc.anchor = GridBagConstraints.NORTH;
 		statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
 		contentPanel.add(statusPanel, gbc);
-				
+
 		JPanel outerGraphPanel = new JPanel();
-				
-		//outerGraphPanel.setLayout(new GridBagLayout());
+
 		setupGraphPanel(outerGraphPanel);
-				
+
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.anchor = GridBagConstraints.WEST;
 		contentPanel.add(outerGraphPanel, gbc);
-		
+
 		JPanel outerProcessPanel = new JPanel();
 		outerProcessPanel.setLayout(new GridBagLayout());
 		outerProcessPanel.setBorder(BorderFactory.createTitledBorder("Current Best Schedule"));
 		GridBagConstraints gbcProcess = new GridBagConstraints();
-		
+
 		JPanel processPanel = new JPanel();
 		processPanel.setLayout(new GridLayout(1, totalProcessors));
-				
+
 		for (int i = 0; i < totalProcessors; i++) {
 			DefaultTableModel model = new DefaultTableModel();
 			model.addColumn("P");
@@ -189,16 +190,17 @@ public class VFrame{
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-			
+
 			JPanel panel = new JPanel();
 			panel.setLayout(new BorderLayout());
 			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Processor "+ i, TitledBorder.CENTER, TitledBorder.TOP));
 			panel.add(table);
+			table.setDefaultRenderer(String.class, new CustomTableRenderer());
 			processPanel.add(panel);
 		}
-		
+
 		JScrollPane scrollPane = new JScrollPane(processPanel);
-		
+
 		gbcProcess.gridx = 0;
 		gbcProcess.gridy = 0;
 		gbcProcess.weightx = 1.0;
@@ -207,30 +209,28 @@ public class VFrame{
 		gbcProcess.anchor = GridBagConstraints.NORTH;
 		gbcProcess.insets = new Insets(2,2,2,2);
 		outerProcessPanel.add(scrollPane, gbcProcess);
-		
+
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.anchor = GridBagConstraints.EAST;
 		contentPanel.add(outerProcessPanel, gbc);
-		
+
 		mainFrame.add(contentPanel);
 	}
 
 	// Sets up the graph pane depending on the number of cores running the application
 	private void setupGraphPanel(JPanel outerGraphPanel) {
-	
-		if (numCores == 4) {
-			outerGraphPanel.setLayout(new GridLayout(2,2));
-		} else if (numCores == 3) { 
+
+		if (numCores == 4 || numCores == 3) {
 			outerGraphPanel.setLayout(new GridLayout(2,2));
 		} else if (numCores == 2) {
 			outerGraphPanel.setLayout(new GridLayout(1,2));
 		} else {
 			outerGraphPanel.setLayout(new GridLayout(1,1));
 		}
-		
+
 		for (int i = 0; i < numCores; i++) {
 			JPanel graphPanel = new JPanel();
 			graphPanel.setLayout(new BorderLayout());
@@ -240,7 +240,7 @@ public class VFrame{
 			viewer.enableAutoLayout();
 			graphPanel.add((Component) view);
 			graphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph For Core " + (i+1)));
-			
+
 			taskGraphList.add(taskGraph);
 			outerGraphPanel.add(graphPanel);
 		}		
@@ -257,7 +257,7 @@ public class VFrame{
 		}else if (activityNumber == 300000){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");		
-			
+
 		}else if (activityNumber == 50000){
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50000");
@@ -280,9 +280,9 @@ public class VFrame{
 			//taskGraph.getNode(task).removeAttribute("ui.class");
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50");
 		}
-    }
-			
-	
+	}
+
+
 	private void showFrame () {
 		mainFrame.setVisible(true);
 	}
@@ -291,19 +291,19 @@ public class VFrame{
 	public void addToBestSchedule(Schedule currentBest) {
 		currentBestScheduleList.clear();
 		Arrays.fill(procFinishTimes, 0);
-		
+
 		for (int i = 0; i < totalProcessors; i++) {
 			JTable table = procTables.get(i);
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setRowCount(0);
 		}
-		
+
 		while (currentBest.getTask() != -1) {
 			//System.out.println(currentBest.getTask());
 			currentBestScheduleList.add(currentBest);
 			currentBest=currentBest.getParent();
 		} 
-			
+
 		for (int i = currentBestScheduleList.size()-1; i >= 0; i--) {
 			Schedule schedule = currentBestScheduleList.get(i);
 			int startTime = schedule.getTime();
@@ -314,40 +314,40 @@ public class VFrame{
 				int nodeCost = nodeCostArray[task];
 				instance.addTaskToProcessor(processor, task, nodeCost, startTime);
 			}
-					
+
 		}
 	}
-	
+
 	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		int earliestStartOnProc = procFinishTimes[proc];
 		int idleTime = startTime - earliestStartOnProc;
-		
+
 		String taskName = taskGraph.getNode(task).getId();
-		
+
 		if (idleTime > 0) {
 			model.addRow(new String[]{"Idle Time"});;
 			table.setRowHeight(table.getRowCount()-1, (idleTime * scalingFactor));
 		}
-		
+
 		model.addRow(new String[]{taskName});
 		table.setRowHeight(table.getRowCount()-1, (nodeCost * scalingFactor));
 		procFinishTimes[proc]=startTime+nodeCost;
 	}
 
-	
+
 	// Setting up the factor to which the rows in the processor tables need to be resized to 
 	public void setupScalingFactor() {
 		int[] nodeCostArray = input.getNodeCosts();
 		int ave = 0;
-		
+
 		for (int i = 0; i < nodeCostArray.length; i++) {
 			ave += nodeCostArray[i];
 		}
-		
+
 		ave = ave/nodeCostArray.length;
-				
+
 		if (ave <= 5) {
 			scalingFactor = 15;
 		} else if (ave <= 10) {
@@ -360,4 +360,22 @@ public class VFrame{
 			scalingFactor = 2;
 		}
 	}
+
+	public class CustomTableRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+
+			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+			c.setForeground(Color.RED);
+			c.setBackground(Color.black);
+			
+			return c;
+		}
+
+	}
 }
+
+
