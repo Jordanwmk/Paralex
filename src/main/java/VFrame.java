@@ -198,39 +198,34 @@ public class VFrame {
 				public void mouseMoved(java.awt.event.MouseEvent evt) {
 					int row = table.rowAtPoint(evt.getPoint());
 					int col = table.columnAtPoint(evt.getPoint());
-					if (table.getValueAt(row, col) != null) {
-						String value = (String) table.getValueAt(row, col);
+					
+					if (row != -1) {
+						if (table.getValueAt(row, col) != null) {
+							String value = (String) table.getValueAt(row, col);
 
-						// Checks if nothing has been hovered over and you are
-						// not hovering over
-						// idle time
-						if (currentHoveredCell == null && (!(value.equals("Idle Time")))) {
-							System.out.println(taskGraph.getNode(value).getId());
-							currentColour = taskGraph.getNode(value).getAttribute("ui.class");
-							System.out.println(value);
-							System.out.println(currentColour);
-							taskGraph.getNode(value).setAttribute("ui.class","highlighted");
-							currentHoveredCell = value;
-
-							// Checks if you are hovering over Idle time and you
-							// have already assigned something
-						} else if (currentHoveredCell != null && (value.equals("Idle Time"))) {
-							taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
-							currentHoveredCell = null;
-							currentColour = null;
-						}
-						if ((!(value.equals("Idle Time"))) && (!(currentHoveredCell.equals(value)))) {
-							taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
-							currentColour = taskGraph.getNode(value).getAttribute("ui.class");
-							taskGraph.getNode(value).setAttribute("ui.class","highlighted");
-							currentHoveredCell = value;
-
-							// System.out.println(taskGraph.getNode(currentHoveredCell).getAttribute("ui.class"));
+							// Checks if nothing has been hovered over and you are
+							// not hovering over
+							// idle time
+							if (currentHoveredCell == null && (!(value.equals("Idle Time")))) {
+								currentColour = taskGraph.getNode(value).getAttribute("ui.class");
+								taskGraph.getNode(value).setAttribute("ui.class","highlighted");
+								currentHoveredCell = value;
+	
+								// Checks if you are hovering over Idle time and you
+								// have already assigned something
+							} else if (currentHoveredCell != null && (value.equals("Idle Time"))) {
+								taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
+								currentHoveredCell = null;
+								currentColour = null;
+							}
+							if ((!(value.equals("Idle Time"))) && (!(currentHoveredCell.equals(value)))) {
+								taskGraph.getNode(currentHoveredCell).setAttribute("ui.class", "" + currentColour);
+								currentColour = taskGraph.getNode(value).getAttribute("ui.class");
+								taskGraph.getNode(value).setAttribute("ui.class","highlighted");
+								currentHoveredCell = value;
+							}
 						}
 					}
-					// System.out.println("The row is " + row +
-					// ". The column is "+ col);
-					// do some action if appropriate column
 
 				}
 
