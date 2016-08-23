@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -147,13 +148,140 @@ public class VFrame {
 		JPanel graphKey = new JPanel();		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 0.8;
-		gbc.weighty = 0.8;
+		gbc.weightx = 0.2;
+		gbc.weighty = 0.2;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.NORTH;
 		graphKey.setBorder(BorderFactory.createTitledBorder("Graph Key"));
 		contentPanel.add(graphKey, gbc);
 
+		graphKey.setLayout(new GridBagLayout());
+		GridBagConstraints gbcKey = new GridBagConstraints();
+		
+		JPanel panel50 = new JPanel();
+		panel50.setLayout(new BorderLayout());
+		JPanel color50 = new JPanel();
+		color50.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color50.setBackground(Color.BLUE);
+		panel50.add(color50, BorderLayout.WEST);
+		panel50.add(new JLabel("0-50 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 0;
+		gbcKey.gridy = 0;
+		gbcKey.weightx = 0.2;
+		gbcKey.weighty = 0.2;
+		gbcKey.anchor = GridBagConstraints.WEST;
+		graphKey.add(panel50, gbcKey);
+		
+		JPanel panel150 = new JPanel();
+		panel150.setLayout(new BorderLayout());
+		JPanel color150 = new JPanel();
+		color150.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color150.setBackground(Color.BLUE);
+		panel150.add(color150, BorderLayout.WEST);
+		panel150.add(new JLabel("50-150 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 0;
+		gbcKey.gridy = 1;
+		graphKey.add(panel150, gbcKey);
+		
+		JPanel panel500 = new JPanel();
+		panel500.setLayout(new BorderLayout());
+		JPanel color500 = new JPanel();
+		color500.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color500.setBackground(Color.BLUE);
+		panel500.add(color500, BorderLayout.WEST);
+		panel500.add(new JLabel("150-500 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 0;
+		gbcKey.gridy = 2;
+		graphKey.add(panel500, gbcKey);
+		
+		JPanel panel1000 = new JPanel();
+		panel1000.setLayout(new BorderLayout());
+		JPanel color1000 = new JPanel();
+		color1000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color1000.setBackground(Color.BLUE);
+		panel1000.add(color1000, BorderLayout.WEST);
+		panel1000.add(new JLabel("500-1000 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 1;
+		gbcKey.gridy = 0;
+		graphKey.add(panel1000, gbcKey);
+		
+		JPanel panel5000 = new JPanel();
+		panel5000.setLayout(new BorderLayout());
+		JPanel color5000 = new JPanel();
+		color5000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color5000.setBackground(Color.BLUE);
+		panel5000.add(color5000, BorderLayout.WEST);
+		panel5000.add(new JLabel("1000-5000 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 1;
+		gbcKey.gridy = 1;
+		graphKey.add(panel5000, gbcKey);
+		
+		JPanel panel10000 = new JPanel();
+		panel10000.setLayout(new BorderLayout());
+		JPanel color10000 = new JPanel();
+		color10000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color10000.setBackground(Color.BLUE);
+		panel10000.add(color10000, BorderLayout.WEST);
+		panel10000.add(new JLabel("5000-10000 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 1;
+		gbcKey.gridy = 1;
+		graphKey.add(panel10000, gbcKey);
+		
+		JPanel panel50000 = new JPanel();
+		panel50000.setLayout(new BorderLayout());
+		JPanel color50000 = new JPanel();
+		color50000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color50000.setBackground(Color.BLUE);
+		panel50000.add(color50000, BorderLayout.WEST);
+		panel50000.add(new JLabel("10000-50000 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 1;
+		gbcKey.gridy = 2;
+		graphKey.add(panel50000, gbcKey);
+		
+		JPanel panel300000 = new JPanel();
+		panel300000.setLayout(new BorderLayout());
+		JPanel color300000 = new JPanel();
+		color300000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color300000.setBackground(Color.BLUE);
+		panel300000.add(color300000, BorderLayout.WEST);
+		panel300000.add(new JLabel("50,000-300,000 touches"), BorderLayout.EAST);
+		gbcKey.gridx = 2;
+		gbcKey.gridy = 0;
+		graphKey.add(panel300000, gbcKey);
+		
+		JPanel panel1000000 = new JPanel();
+		panel1000000.setLayout(new BorderLayout());
+		JPanel color1000000 = new JPanel();
+		color1000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color1000000.setBackground(Color.BLUE);
+		panel1000000.add(color1000000, BorderLayout.WEST);
+		panel1000000.add(new JLabel("300,000-1,000,000 visits"), BorderLayout.EAST);
+		gbcKey.gridx = 2;
+		gbcKey.gridy = 0;
+		graphKey.add(panel1000000, gbcKey);
+		
+		JPanel panel3000000 = new JPanel();
+		panel3000000.setLayout(new BorderLayout());
+		JPanel color3000000 = new JPanel();
+		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color3000000.setBackground(Color.BLUE);
+		panel3000000.add(color3000000, BorderLayout.WEST);
+		panel3000000.add(new JLabel("1,000,000-3,000,000 visits"), BorderLayout.EAST);
+		gbcKey.gridx = 2;
+		gbcKey.gridy = 1;
+		graphKey.add(panel3000000, gbcKey);
+		
+//		JPanel panel0 = new JPanel();
+//		panel0.setLayout(new BorderLayout());
+//		JPanel color3000000 = new JPanel();
+//		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//		color3000000.setBackground(Color.BLUE);
+//		panel0.add(color3000000, BorderLayout.WEST);
+//		panel0.add(new JLabel("0-50 visits"), BorderLayout.EAST);
+//		gbcKey.gridx = 2;
+//		gbcKey.gridy = 2;
+//		graphKey.add(panel0, gbcKey);
+		
 		JPanel statusPanel = new JPanel();		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
