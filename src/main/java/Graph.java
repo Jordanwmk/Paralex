@@ -20,7 +20,7 @@ public class Graph {
     public Graph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
         Input input = new Input(inputFile);
         this.numProcessors=numProcessors;
-
+ 
     	nodeCosts= input.getNodeCosts();
         nodeBL= input.getBotLevels();
         edgeCosts=input.getAdjMatrix();
@@ -31,7 +31,7 @@ public class Graph {
         for (int i = 0; i < totalNumTasks; i++) {
         	totalTaskTime += nodeCosts[i];
         }
-
+ 
         entryPoints=input.getSrcNodes();
 
         if(useVisualisation){

@@ -19,7 +19,8 @@ public class Output {
     		Graph graph = Input.getInputG();
     		
     		formatAttributes(graph, task, processor, time);
-    		solution = solution.getParent();
+    		//THIS IS BROKEN NEED FIX
+    		solution = solution;
     	}
     	
         //Get created graph from input dot file

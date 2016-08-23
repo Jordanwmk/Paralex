@@ -18,7 +18,7 @@ public class Input {
 	private int[] botLevels;
 	private int adjMatrix[][];
 	private ArrayList<Integer> srcNodes = new ArrayList<Integer>();
-	
+	 
 	public int[] getNodeCosts() {
 		return nodeCosts;
 	}

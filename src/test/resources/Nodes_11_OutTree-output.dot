@@ -1,15 +1,15 @@
-digraph "src/tests/Nodes_11_OutTree-output.dot" {
-	0 [Start=0,Weight=50,Processor=1];
-	1 [Start=50,Weight=70,Processor=1];
-	2 [Start=174,Weight=90,Processor=2];
-	3 [Start=54,Weight=100,Processor=2];
-	4 [Start=240,Weight=40,Processor=1];
-	5 [Start=220,Weight=20,Processor=1];
-	6 [Start=120,Weight=100,Processor=1];
-	7 [Start=264,Weight=80,Processor=2];
-	8 [Start=300,Weight=50,Processor=1];
-	9 [Start=280,Weight=20,Processor=1];
-	10 [Start=154,Weight=20,Processor=2];
+digraph "src/test/resources/Nodes_11_OutTree-output.dot" {
+	0 [Processor=1,Start=0,Weight=50];
+	1 [Processor=2,Start=59,Weight=70];
+	2 [Processor=1,Start=50,Weight=90];
+	3 [Processor=2,Start=129,Weight=100];
+	4 [Processor=1,Start=140,Weight=40];
+	5 [Processor=2,Start=229,Weight=20];
+	6 [Processor=1,Start=180,Weight=100];
+	7 [Processor=2,Start=249,Weight=80];
+	8 [Processor=1,Start=280,Weight=50];
+	9 [Processor=2,Start=329,Weight=20];
+	10 [Processor=1,Start=330,Weight=20];
 	0 -> 1 [Weight=9];
 	0 -> 2 [Weight=7];
 	0 -> 3 [Weight=4];
