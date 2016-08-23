@@ -14,7 +14,7 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
 	private TaskGraph taskGraph = null;
 	private Schedule currentBest = null;
 	private String outputName = null;
-	
+	private Schedule bestSchedule = null;
 	public TableThreader(TaskGraph taskGraph, String outputName){
 		this.taskGraph = taskGraph;
 		this.outputName = outputName;
@@ -42,6 +42,7 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
                 stack.addAll(childNodes);
                 if(childNodes.isEmpty()){
                     if(scheduleWeAreCurrentlyAt.getTotalTime()<currentBestTime){
+                    	this.bestSchedule=scheduleWeAreCurrentlyAt;
                         currentBest=scheduleWeAreCurrentlyAt;
                         currentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
                         
@@ -94,7 +95,11 @@ public class TableThreader extends SwingWorker<Void,List<Schedule>> {
 	
 	@Override
 	protected void done(){
-		new Output().createOutput(this.currentBest,this.outputName);
+      System.out.println(this.bestSchedule);
+      System.out.println("brute Force solution time: " + this.bestSchedule.getTotalTime());
+
+
+		new Output().createOutput(this.bestSchedule,this.outputName);
 	}
 
 	public void setSchedule(Schedule schedule){
