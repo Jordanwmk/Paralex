@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
-public class TableThreader extends SwingWorker<Void, List<Schedule>> {
+public class TableThreader extends SwingWorker<Void, Schedule> {
 
 	BranchAndBoundAlgorithm algorithm = null;
 	VFrame frame;
@@ -20,26 +20,26 @@ public class TableThreader extends SwingWorker<Void, List<Schedule>> {
 	public TableThreader(BranchAndBoundAlgorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
-
+		System.out.println("GG123");
 		simpleTimer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Schedule currentBest = algorithm.getCurrentBest();
 				Schedule temp = currentBest;
 				if (prev == null) {
-					System.out.println("GG");
 					prev = temp;
-					while (currentBest.getTask() != -1) {
-						// System.out.println(currentBest.getTask());
-						frame.currentBestScheduleList.add(currentBest);
-						currentBest = currentBest.getParent();
-					}
-					publish(frame.currentBestScheduleList);
-					
+					// while (currentBest.getTask() != -1) {
+					// // System.out.println(currentBest.getTask());
+					// frame.currentBestScheduleList.add(currentBest);
+					// currentBest = currentBest.getParent();
+					// }
+					publish(frame.currentBestSchedule);
+
 				}
 
 				if (!(prev.equals(currentBest))) {
-					frame.currentBestScheduleList.clear();
+
+					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
 					for (int i = 0; i < frame.totalProcessors; i++) {
 						JTable table = frame.procTables.get(i);
@@ -47,17 +47,16 @@ public class TableThreader extends SwingWorker<Void, List<Schedule>> {
 								.getModel();
 						model.setRowCount(0);
 					}
+					System.out.println("GG123");
+					// set new currentBest
+					frame.currentBestSchedule = currentBest;
+					// while (currentBest.getTask() != -1) {
+					// // System.out.println(currentBest.getTask());
+					// frame.currentBestScheduleList.add(currentBest);
+					// currentBest = currentBest.getParent();
+					// }
 
-					while (currentBest.getTask() != -1) {
-						// System.out.println(currentBest.getTask());
-						frame.currentBestScheduleList.add(currentBest);
-						currentBest = currentBest.getParent();
-					}
-
-					System.out.println(prev.equals(currentBest));
-
-					System.out.println("Found new best");
-					publish(frame.currentBestScheduleList);
+					publish(frame.currentBestSchedule);
 					prev = temp;
 				}
 
@@ -77,22 +76,21 @@ public class TableThreader extends SwingWorker<Void, List<Schedule>> {
 
 	// change gui here
 	@Override
-	protected void process(List<List<Schedule>> schedules) {
+	protected void process(List<Schedule> schedules) {
 
-		List<Schedule> schedule = schedules.get(schedules.size() - 1);
-
+		Schedule schedule = schedules.get(schedules.size() - 1);
+		System.out.println("cool");
 		if (schedule != null) {
-			for (int i = schedule.size() - 1; i > 0; i--) {
 
-				int startTime = schedule.get(i).getTime();
-				int processor = schedule.get(i).getProcessor();
-				int task = schedule.get(i).getTask();
+			for (int i = 0; i < frame.taskGraph.getNodeCount(); i++) {
+				int startTime = frame.currentBestSchedule.getTaskStartTimes()[i];
+				int processor = frame.currentBestSchedule.getTaskProcessors()[i];
+				int task = i;
 				int[] nodeCostArray = frame.input.getNodeCosts();
-				if (task != -1) {
-					int nodeCost = nodeCostArray[task];
-					frame.addTaskToProcessor(processor, task, nodeCost,
-							startTime);
-				}
+				// if (task != -1) {
+				int nodeCost = nodeCostArray[task];
+				frame.addTaskToProcessor(processor, task, nodeCost, startTime);
+				// }
 
 			}
 		}

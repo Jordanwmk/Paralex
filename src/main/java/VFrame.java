@@ -53,7 +53,7 @@ public class VFrame {
 	public int[] procFinishTimes;
 	public ArrayList<JTable> procTables = new ArrayList<JTable>();
 	public Input input;
-	private Graph taskGraph;
+	public Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
 
 	private ArrayList<Graph> taskGraphList = new ArrayList<Graph>();
@@ -61,7 +61,7 @@ public class VFrame {
 	private String currentHoveredCell = null;
 	private String currentColour = null;
 
-	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
+	public Schedule currentBestSchedule = null;
 	private int scalingFactor = 2;
 	private int numCores = 4;
 
@@ -497,7 +497,6 @@ public class VFrame {
 
 
 	public void addToBestSchedule(Schedule currentBest) {
-		currentBestScheduleList.clear();
 		Arrays.fill(procFinishTimes, 0);
 
 		for (int i = 0; i < totalProcessors; i++) {
@@ -506,23 +505,23 @@ public class VFrame {
 			model.setRowCount(0);
 		}
 
-		while (currentBest.getTask() != -1) {
-			// System.out.println(currentBest.getTask());
-			currentBestScheduleList.add(currentBest);
-			currentBest = currentBest.getParent();
-		}
+		currentBestSchedule = currentBest;
+//		while (currentBest.getTask() != -1) {
+//			// System.out.println(currentBest.getTask());
+//			currentBestScheduleList.add(currentBest);
+//			currentBest = currentBest.getParent();
+//		}
 
-		for (int i = currentBestScheduleList.size() - 1; i >= 0; i--) {
-			Schedule schedule = currentBestScheduleList.get(i);
-			int startTime = schedule.getTime();
-			int processor = schedule.getProcessor();
-			int task = schedule.getTask();
+		for (int i = 0; i<taskGraph.getNodeCount() ; i++) {
+			int startTime = currentBestSchedule.getTaskStartTimes()[i];
+			int processor = currentBestSchedule.getTaskProcessors()[i];
+			int task = i;
 			int[] nodeCostArray = input.getNodeCosts();
-			if (task != -1) {
-				int nodeCost = nodeCostArray[task];
-				instance.addTaskToProcessor(processor, task, nodeCost,
-						startTime);
-			}
+//			if (task != -1) {
+			int nodeCost = nodeCostArray[task];
+			instance.addTaskToProcessor(processor, task, nodeCost,
+					startTime);
+//			}
 
 		}
 	}

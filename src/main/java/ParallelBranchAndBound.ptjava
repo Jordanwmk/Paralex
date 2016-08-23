@@ -1,0 +1,165 @@
+import java.util.List;
+import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+
+import pt.runtime.*;
+import java.util.EmptyStackException;
+import java.lang.Thread;
+
+
+public class ParallelBranchAndBound implements Algorithm{
+	final int globalReadFrequency=10000;
+	final int globalUpdateFrequency=0;
+	final int startingIterations = 50;
+	
+	Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
+	int threadsCurrentlyRunning = 0;
+	Schedule currentBest;
+	int currentBestTime=Integer.MAX_VALUE;
+	int coresToRunOn = 0;
+	
+	public ParallelBranchAndBound(int coresToRunOn){
+		this.coresToRunOn = coresToRunOn;
+	}
+	
+	@Override
+	public Schedule schedule(TaskGraph taskGraph) {
+		//Do BFS for schedules to initialise the queue
+		processingQueue.add(Schedule.getEmptySchedule(taskGraph));
+		for(int i=0;i<startingIterations;i++){
+			processingQueue.addAll(processingQueue.remove().generateChildren());
+		}
+		
+		
+		//uses the TASK identifier
+		TaskIDGroup g = new TaskIDGroup(coresToRunOn);
+		for (int i = 0; i< coresToRunOn; i++) {
+			TaskID id = startWorker();
+			g.add(id);
+		}
+		try {
+			g.waitTillFinished();
+		} catch(Exception e3) {
+			e3.printStackTrace();
+		}
+		
+		
+		//uses the TASK(*) identifier
+		
+//		TaskIDGroup g = startWorkers();
+//		try {
+//			g.waitTillFinished();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		return currentBest;
+	}
+	
+	class Worker{
+		Schedule localCurrentBest;
+		int localCurrentBestTime=Integer.MAX_VALUE;
+		ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
+		
+		int schedulesTraversed=0;
+		int schedulesCompleted=0;
+		
+		public void run(){
+			Schedule scheduleWeAreCurrentlyAt;
+			while(true){
+				//Loop while there is something in the local stack
+				while(!localStack.isEmpty()){
+					scheduleWeAreCurrentlyAt=localStack.pop();
+					schedulesTraversed++;
+					if(schedulesTraversed>globalReadFrequency){
+						schedulesTraversed=0;
+						updateLocalBest();
+					}
+					
+					//Only look at schedules which have a better estimate than the current best schedule
+					if(scheduleWeAreCurrentlyAt.getFinishTimeEstimate()<localCurrentBestTime){
+						List<Schedule> childNodes=scheduleWeAreCurrentlyAt.generateChildren();
+						
+						//Only push schedules which have a better estimate than the current best schedule
+						for(Schedule s : childNodes){
+							if(s.getEstimate()<localCurrentBestTime){
+								localStack.push(s);
+							}
+						}
+						
+						if(childNodes.isEmpty()){
+							if(scheduleWeAreCurrentlyAt.getTotalTime()<localCurrentBestTime){
+								localCurrentBest=scheduleWeAreCurrentlyAt;
+								localCurrentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
+								schedulesCompleted++;
+								if(schedulesCompleted>globalUpdateFrequency){
+									schedulesCompleted=0;
+									updateGlobalBest();
+									updateLocalBest();
+								}
+							}
+						}
+					}
+				}
+				
+				//When there is nothing on the local stack, go get something from the global (shared) queue
+				Schedule nextSchedule=getFromSharedQueue();
+				//if there is nothing else on the processing queue, the thread is done
+				if(nextSchedule==null){
+					updateGlobalBest();
+					return;
+				}else{
+					localStack.push(nextSchedule);
+				}
+			}
+		}
+		
+		private Schedule getFromSharedQueue(){
+			synchronized(ParallelBranchAndBound.this){
+				if(!ParallelBranchAndBound.this.processingQueue.isEmpty()){
+					return ParallelBranchAndBound.this.processingQueue.remove();
+				}else{
+					return null;
+				}
+			}
+		}
+		
+		/**
+		 * Update the local best time and schedule with the global best if it is better
+		 */
+		private void updateLocalBest(){
+			synchronized(ParallelBranchAndBound.this){
+				if(localCurrentBestTime>ParallelBranchAndBound.this.currentBestTime){
+					localCurrentBest=ParallelBranchAndBound.this.currentBest;
+					localCurrentBestTime=ParallelBranchAndBound.this.currentBestTime;
+				}
+			}
+		}
+		
+		/**
+		 * Update the global best time and schedule with the local best if it is better
+		 */
+		private void updateGlobalBest(){
+			synchronized(ParallelBranchAndBound.this){
+				if(localCurrentBestTime<ParallelBranchAndBound.this.currentBestTime){
+					ParallelBranchAndBound.this.currentBest=localCurrentBest;
+					ParallelBranchAndBound.this.currentBestTime=localCurrentBestTime;
+				}
+			}
+		}
+	}
+	
+	TASK public void startWorker() {
+		new Worker().run();
+	}
+	
+	TASK(coresToRunOn) public void startWorkers() {
+		for (int i = 0; i< coresToRunOn; i++) {
+			new Worker().run();
+		}
+    }
+	
+	
+	
+}

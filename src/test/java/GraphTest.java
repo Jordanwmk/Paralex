@@ -7,7 +7,6 @@ import org.junit.runner.Description;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -67,6 +66,12 @@ public class GraphTest {
 		assertEquals(28, solution.getTotalTime());
 	} 
 	
+	@Test
+	public void test_9middle_ForkandJoin_2_Proccessors() throws IOException {
+		Schedule solution = new BranchAndBoundAlgorithm().schedule(new TaskGraph("src/test/resources/forkjoin_9middle.dot", 2));
+		assertEquals(23, solution.getTotalTime());
+	} 
+	
 	//===================================================================================
 	//===================================================================================
 	//====================				  4 Processors 		     ========================
@@ -102,5 +107,18 @@ public class GraphTest {
 		Schedule solution = new BranchAndBoundAlgorithm().schedule(new TaskGraph("src/test/resources/Nodes_7_OutTree.dot", 4));
 		assertEquals(22, solution.getTotalTime());
 	} 
+	
+	@Test
+	public void test_9_middle_fork_join() throws IOException {
+		Schedule solution = new ParallelBranchAndBound(32).schedule(new TaskGraph("src/test/resources/forkjoin9.dot", 2));
+		assertEquals(23, solution.getTotalTime());
+	}
+	
+//	@Test
+//	public void test_10_middle_fork_join() throws IOException {
+//		Schedule solution = new ParallelBranchAndBound(4).schedule(new Graph("src/test/resources/forkjoin10.dot", 2));
+//		assertEquals(26, solution.getTotalTime());
+//	}
+
 	
 }

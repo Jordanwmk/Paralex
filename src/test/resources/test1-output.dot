@@ -1,19 +1,15 @@
-digraph "src/test/resources/forkjoin_9middle-output.dot" {
-<<<<<<< HEAD
-	graph [ ui.stylesheet=url('src/main/java/graphStyleSheet.css')) ];
-=======
->>>>>>> origin
+digraph "src/test/resources/test1-output.dot" {
 	a [Processor=1,Start=0,Weight=2];
-	b [Processor=2,Start=13,Weight=5];
-	c [Processor=1,Start=16,Weight=6];
-	d [Processor=2,Start=18,Weight=3];
-	e [Processor=1,Start=13,Weight=3];
-	f [Processor=2,Start=7,Weight=6];
-	g [Processor=1,Start=7,Weight=6];
-	h [Processor=1,Start=6,Weight=1];
+	b [Processor=1,Start=18,Weight=5];
+	c [Processor=1,Start=12,Weight=6];
+	d [Processor=2,Start=19,Weight=3];
+	e [Processor=2,Start=16,Weight=3];
+	f [Processor=2,Start=9,Weight=6];
+	g [Processor=1,Start=6,Weight=6];
+	h [Processor=2,Start=15,Weight=1];
 	i [Processor=1,Start=2,Weight=4];
-	l [Processor=1,Start=22,Weight=1];
-	j [Processor=2,Start=4,Weight=3];
+	j [Processor=2,Start=4,Weight=5];
+	l [Processor=1,Start=23,Weight=4];
 	a -> b [Weight=2,label=2.0];
 	a -> c [Weight=3,label=3.0];
 	a -> d [Weight=5,label=5.0];
@@ -30,6 +26,6 @@ digraph "src/test/resources/forkjoin_9middle-output.dot" {
 	f -> l [Weight=8,label=8.0];
 	g -> l [Weight=11,label=11.0];
 	h -> l [Weight=4,label=4.0];
-	i -> l [Weight=40,label=40.0];
-	j -> l [Weight=1,label=1.0];
+	i -> l [Weight=40,label=14.0];
+	j -> l [Weight=12,label=40.0];
 }

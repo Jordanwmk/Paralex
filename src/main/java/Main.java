@@ -11,7 +11,6 @@ public class Main {
     	String fileName = args[0];
     	int numProcessors = Integer.parseInt(args[1]);
     	boolean useVisualisation = false;
-    	System.out.println("GG");
     	
     	String[] splitName = fileName.split(".dot");
     	String outputName = splitName[0] + "-output.dot";
@@ -35,7 +34,7 @@ public class Main {
 //     	if (useVisualisation){
 //     		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
 //     	}
-
+     	
 		TaskGraph taskGraph;
 		try {
 			taskGraph = new TaskGraph(fileName,numProcessors,useVisualisation);

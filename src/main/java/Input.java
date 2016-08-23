@@ -18,7 +18,7 @@ public class Input {
 	private int[] botLevels;
 	private int adjMatrix[][];
 	private ArrayList<Integer> srcNodes = new ArrayList<Integer>();
-	
+	 
 	public int[] getNodeCosts() {
 		return nodeCosts;
 	}
@@ -86,6 +86,7 @@ public class Input {
         
         //using phantomSource to find all bottom levels and critical path
         int criticalPath = this.createBottomLevels(phantomSource);
+        
         
         //removing the phantom node
         this.deletePhatomSource();
@@ -212,7 +213,7 @@ public class Input {
     	
         //constructing a phantom node to be single source
         inputGraph.addNode("source1");
-        inputGraph.getNode("source1").addAttribute("Weight", 2);
+        inputGraph.getNode("source1").addAttribute("Weight", 0);
         //adding it to the adjacency list with edges to real sources
         ArrayList<ArrayList<Integer>> adjacencyList = this.getAdjList();
         adjacencyList.add(sourceNodes);
