@@ -20,6 +20,7 @@ public class Output {
     		
     		formatAttributes(graph, task, processor, time);
     		//THIS IS BROKEN NEED FIX
+    		//##############################################################################################################
     		solution = solution;
     	}
     	

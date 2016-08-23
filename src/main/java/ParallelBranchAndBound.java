@@ -50,7 +50,7 @@ public class ParallelBranchAndBound implements Algorithm {//####[12]####
     }//####[25]####
 //####[28]####
     @Override//####[28]####
-    public Schedule schedule(Graph taskGraph) {//####[28]####
+    public Schedule schedule(TaskGraph taskGraph) {//####[28]####
         processingQueue.add(Schedule.getEmptySchedule(taskGraph));//####[30]####
         for (int i = 0; i < startingIterations; i++) //####[31]####
         {//####[31]####

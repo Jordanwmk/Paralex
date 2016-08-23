@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Schedule implements Comparable<Schedule>{
     
-	private Graph taskGraph;
+	private TaskGraph taskGraph;
 
     //the task that is scheduled (eg task = 0 means task A)
     private int task;
@@ -38,7 +38,7 @@ public class Schedule implements Comparable<Schedule>{
     private int[] processorFinishTimes;
 
     //CONSTRUCTOR
-    public Schedule(Graph taskGraph, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] taskProcessors, int[] processorFinishTimes) {
+    public Schedule(TaskGraph taskGraph, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] taskProcessors, int[] processorFinishTimes) {
         this.taskGraph = taskGraph;
         //this.task = task;
         //this.time = time;
@@ -57,7 +57,7 @@ public class Schedule implements Comparable<Schedule>{
      * Creates an empty schedule to use as the start of the state tree traversal/generation
      * @return the empty schedules
      */
-    public static Schedule getEmptySchedule(Graph taskGraph){
+    public static Schedule getEmptySchedule(TaskGraph taskGraph){
         int[] taskStartTime = new int[taskGraph.getTotalNumTasks()];
         Arrays.fill(taskStartTime, -1);
         int[] taskProcessors = new int[taskGraph.getNumProcessors()];

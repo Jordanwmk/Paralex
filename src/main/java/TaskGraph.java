@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Graph {
+public class TaskGraph {
     private int[] nodeCosts;
     private int[] nodeBL;
     private int[][] edgeCosts;
@@ -13,11 +13,11 @@ public class Graph {
     private int totalNumTasks;
     private List<Integer> entryPoints;
 
-    public Graph(String inputFile, int numProcessors) throws IOException {
+    public TaskGraph(String inputFile, int numProcessors) throws IOException {
         this(inputFile,numProcessors,false);
     }
 
-    public Graph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
+    public TaskGraph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
         Input input = new Input(inputFile);
         this.numProcessors=numProcessors;
  

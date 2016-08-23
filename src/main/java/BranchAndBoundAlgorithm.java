@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class BranchAndBoundAlgorithm implements Algorithm {
 	@Override
-	public Schedule schedule(Graph taskGraph) {
+	public Schedule schedule(TaskGraph taskGraph) {
 		ArrayDeque<Schedule> stack = new ArrayDeque<Schedule>();
 		stack.push(Schedule.getEmptySchedule(taskGraph));
 		Schedule currentBest = null;

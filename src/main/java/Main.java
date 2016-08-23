@@ -30,9 +30,9 @@ public class Main {
     		}
     	}
  
-		Graph taskGraph;
+		TaskGraph taskGraph;
 		try {
-			taskGraph = new Graph(fileName,numProcessors,useVisualisation);
+			taskGraph = new TaskGraph(fileName,numProcessors,useVisualisation);
 		}catch(IOException e){
 			e.printStackTrace();
 			System.out.println("IOException while reading graph file");
