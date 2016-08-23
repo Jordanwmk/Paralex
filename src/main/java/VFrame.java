@@ -120,9 +120,6 @@ public class VFrame {
 		}
 
 
-		currentCore.set(task, value+1);
-		setNodeColour(currentCore.get(task),task);
-		
 		
 
 	}
@@ -236,6 +233,7 @@ public class VFrame {
 						// not hovering over
 						// idle time
 						if (currentHoveredCell == null && (!(value.equals("Idle Time")))) {
+							System.out.println(taskGraph.getNode(value).getId());
 							currentColour = taskGraph.getNode(value).getAttribute("ui.class");
 							System.out.println(value);
 							System.out.println(currentColour);
