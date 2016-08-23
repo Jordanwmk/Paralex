@@ -218,6 +218,12 @@ public class Schedule implements Comparable<Schedule>{
         return children;
     }
 
+    @Override
+    public boolean equals(Object other){
+        return other instanceof Schedule &&
+                Arrays.equals(taskStartTimes,((Schedule)other).taskStartTimes) &&
+                Arrays.equals(taskProcessors,((Schedule)other).taskProcessors);
+    }
 
 	public Schedule getParent() {
 		return parent;
