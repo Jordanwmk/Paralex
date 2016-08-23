@@ -1,15 +1,15 @@
 digraph "src/test/resources/Nodes_7_OutTree-output.dot" {
-	0 [Weight=5];
-	1 [Weight=6];
-	2 [Weight=5];
-	3 [Weight=6];
-	4 [Weight=4];
-	5 [Weight=7];
-	6 [Weight=7];
-	0 -> 1 [Weight=15];
-	0 -> 2 [Weight=11];
-	0 -> 3 [Weight=11];
-	1 -> 4 [Weight=19];
-	1 -> 5 [Weight=4];
-	1 -> 6 [Weight=21];
+	a [Weight=5];
+	b [Weight=6];
+	c [Weight=5];
+	d [Weight=6];
+	e [Weight=4];
+	f [Weight=7];
+	g [Weight=7];
+	a -> b [Weight=15];
+	a -> c [Weight=11];
+	a -> d [Weight=11];
+	b -> e [Weight=19];
+	b -> f [Weight=4];
+	b -> g [Weight=21];
 }

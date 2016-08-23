@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Graph;
@@ -44,10 +47,10 @@ public class VFrame{
 	public Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
-
+	private ArrayList<Graph> taskGraphList = new ArrayList<Graph>();
 	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	private int scalingFactor = 2;
-
+	private int numCores = 4;
 	
 	public VFrame() {}
 	
@@ -64,6 +67,7 @@ public class VFrame{
 			e.printStackTrace();
 		}
         
+			
         totalProcessors = processors;
         setupScalingFactor();
 		this.prepareGui();
@@ -76,17 +80,12 @@ public class VFrame{
 			listOfAccess.add(i, listOfTasks);
 		}
 		taskGraph.addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
-		//taskGraph.getNode(0).setAttribute("ui.color", 0.2);
-		//taskGraph.getNode(1).setAttribute("ui.color", 1);
-		
+				
         for (Node node : taskGraph) {
         	node.addAttribute("ui.label", node.getId());
         	//node.addAttribute("ui.style", "fill-color: #80d4ff;");
         }
-//        for (Edge edge: taskGraph.getEachEdge()){
-//        	edge.addAttribute("ui.style", "fill-color: black;");
-//        }
-//        
+        
 
 	}
 
@@ -98,17 +97,18 @@ public class VFrame{
 			System.out.println();
 		}
 	}
+	
 	public void incrementTask(int task) {
 
 		ArrayList<Integer> currentCore = listOfAccess.get(0);
 
 		Integer value = currentCore.get(task); // get value
 		if (task == 4){
-			System.out.println("Value of task"+  task+ "is "+ value);
+			//System.out.println("Value of task"+  task+ "is "+ value);
 		}
 		currentCore.set(task, value+1);
 		if (task == 4){
-			System.out.println("Value of new task "+  task+ "is "+  currentCore.get(task));
+			//System.out.println("Value of new task "+  task+ "is "+  currentCore.get(task));
 		}
 
 		setNodeColour(currentCore.get(task),task);
@@ -157,33 +157,10 @@ public class VFrame{
 		contentPanel.add(statusPanel, gbc);
 				
 		JPanel outerGraphPanel = new JPanel();
-		JPanel graphPanel = new JPanel();
-		
-		outerGraphPanel.setLayout(new GridBagLayout());
-		GridBagConstraints gbcGraph = new GridBagConstraints();
-		
-		gbcGraph.gridx = 0;
-		gbcGraph.gridy = 0;
-		gbcGraph.weightx = 1.0;
-		gbcGraph.weighty = 1.0;
-		gbcGraph.fill = GridBagConstraints.BOTH;
-		gbcGraph.anchor = GridBagConstraints.NORTH;
-		outerGraphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph"));
 				
-		graphPanel.setLayout(new BorderLayout());
-		graphPanel.setPreferredSize(new Dimension(300, 350));
-		Viewer viewer = new Viewer(taskGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		View view = viewer.addDefaultView(false);
-		viewer.enableAutoLayout();
-		graphPanel.add((Component) view);	
-		
-		gbcGraph.gridx = 0;
-		gbcGraph.gridy = 1;
-		gbcGraph.weightx = 1.0;
-		gbcGraph.weighty = 1.0;
-		gbcGraph.anchor = GridBagConstraints.CENTER;
-		outerGraphPanel.add(graphPanel, gbcGraph);
-		
+		//outerGraphPanel.setLayout(new GridBagLayout());
+		setupGraphPanel(outerGraphPanel);
+				
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weightx = 1.0;
@@ -196,16 +173,8 @@ public class VFrame{
 		outerProcessPanel.setBorder(BorderFactory.createTitledBorder("Current Best Schedule"));
 		GridBagConstraints gbcProcess = new GridBagConstraints();
 		
-		
 		JPanel processPanel = new JPanel();
-		processPanel.setLayout(new GridBagLayout());
-		GridBagConstraints gbcProcessPanel = new GridBagConstraints();
-		
-		gbcProcessPanel.gridx = 0;
-		gbcProcessPanel.gridy = 0;
-		gbcProcessPanel.weightx = 1.0;
-		gbcProcessPanel.weighty = 1.0;
-		gbcProcessPanel.fill = GridBagConstraints.BOTH;
+		processPanel.setLayout(new GridLayout(1, totalProcessors));
 				
 		for (int i = 0; i < totalProcessors; i++) {
 			DefaultTableModel model = new DefaultTableModel();
@@ -217,16 +186,15 @@ public class VFrame{
 
 			procTables.add(table);
 
-			gbcProcessPanel.gridx = i;
-			gbcProcessPanel.gridy = 0;
-			gbcProcessPanel.weightx = 1.0;
-			gbcProcessPanel.weighty = 1.0;
-			gbcProcessPanel.fill = GridBagConstraints.BOTH;
-			gbcProcessPanel.insets = new Insets(0,5,0,5);
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 			
-			processPanel.add(new JLabel("Processor " + i, SwingConstants.CENTER), gbcProcessPanel);
-			gbcProcessPanel.gridy = 1;
-			processPanel.add(table, gbcProcessPanel);
+			JPanel panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Processor "+ i, TitledBorder.CENTER, TitledBorder.TOP));
+			panel.add(table);
+			processPanel.add(panel);
 		}
 		
 		JScrollPane scrollPane = new JScrollPane(processPanel);
@@ -236,6 +204,8 @@ public class VFrame{
 		gbcProcess.weightx = 1.0;
 		gbcProcess.weighty = 1.0;
 		gbcProcess.fill = GridBagConstraints.BOTH;
+		gbcProcess.anchor = GridBagConstraints.NORTH;
+		gbcProcess.insets = new Insets(2,2,2,2);
 		outerProcessPanel.add(scrollPane, gbcProcess);
 		
 		gbc.gridx = 1;
@@ -246,6 +216,34 @@ public class VFrame{
 		contentPanel.add(outerProcessPanel, gbc);
 		
 		mainFrame.add(contentPanel);
+	}
+
+	// Sets up the graph pane depending on the number of cores running the application
+	private void setupGraphPanel(JPanel outerGraphPanel) {
+	
+		if (numCores == 4) {
+			outerGraphPanel.setLayout(new GridLayout(2,2));
+		} else if (numCores == 3) { 
+			outerGraphPanel.setLayout(new GridLayout(2,2));
+		} else if (numCores == 2) {
+			outerGraphPanel.setLayout(new GridLayout(1,2));
+		} else {
+			outerGraphPanel.setLayout(new GridLayout(1,1));
+		}
+		
+		for (int i = 0; i < numCores; i++) {
+			JPanel graphPanel = new JPanel();
+			graphPanel.setLayout(new BorderLayout());
+			graphPanel.setPreferredSize(new Dimension(300, 350));
+			Viewer viewer = new Viewer(taskGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+			View view = viewer.addDefaultView(false);
+			viewer.enableAutoLayout();
+			graphPanel.add((Component) view);
+			graphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph For Core " + (i+1)));
+			
+			taskGraphList.add(taskGraph);
+			outerGraphPanel.add(graphPanel);
+		}		
 	}
 
 	private void setNodeColour(int activityNumber, int task){
@@ -326,12 +324,14 @@ public class VFrame{
 		int earliestStartOnProc = procFinishTimes[proc];
 		int idleTime = startTime - earliestStartOnProc;
 		
+		String taskName = taskGraph.getNode(task).getId();
+		
 		if (idleTime > 0) {
 			model.addRow(new String[]{"Idle Time"});;
 			table.setRowHeight(table.getRowCount()-1, (idleTime * scalingFactor));
 		}
 		
-		model.addRow(new String[]{"" + task});
+		model.addRow(new String[]{taskName});
 		table.setRowHeight(table.getRowCount()-1, (nodeCost * scalingFactor));
 		procFinishTimes[proc]=startTime+nodeCost;
 	}
@@ -340,21 +340,21 @@ public class VFrame{
 	// Setting up the factor to which the rows in the processor tables need to be resized to 
 	public void setupScalingFactor() {
 		int[] nodeCostArray = input.getNodeCosts();
-		int min = 9999999;
+		int ave = 0;
 		
 		for (int i = 0; i < nodeCostArray.length; i++) {
-			if (nodeCostArray[i] < min) {
-				min = nodeCostArray[i];
-			}
+			ave += nodeCostArray[i];
 		}
 		
-		if (min == 1) {
+		ave = ave/nodeCostArray.length;
+				
+		if (ave <= 5) {
 			scalingFactor = 15;
-		} else if (min == 2) {
-			scalingFactor = 7;
-		} else if (min < 4) {
+		} else if (ave <= 10) {
+			scalingFactor = 10;
+		} else if (ave <= 15) {
 			scalingFactor = 5;
-		} else if (min < 10) {
+		} else if (ave <= 30){
 			scalingFactor = 3;
 		} else {
 			scalingFactor = 2;
