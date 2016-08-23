@@ -1,11 +1,11 @@
 digraph "src/test/resources/Nodes_7_OutTree-output.dot" {
-	0 [Start=0,Weight=5,Processor=1];
-	1 [Start=5,Weight=6,Processor=1];
-	2 [Start=16,Weight=5,Processor=3];
-	3 [Start=16,Weight=6,Processor=2];
-	4 [Start=18,Weight=4,Processor=1];
-	5 [Start=15,Weight=7,Processor=4];
-	6 [Start=11,Weight=7,Processor=1];
+	0 [Weight=5];
+	1 [Weight=6];
+	2 [Weight=5];
+	3 [Weight=6];
+	4 [Weight=4];
+	5 [Weight=7];
+	6 [Weight=7];
 	0 -> 1 [Weight=15];
 	0 -> 2 [Weight=11];
 	0 -> 3 [Weight=11];

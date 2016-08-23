@@ -11,6 +11,7 @@ public class Main {
     	String fileName = args[0];
     	int numProcessors = Integer.parseInt(args[1]);
     	boolean useVisualisation = false;
+    	System.out.println("GG");
     	
     	String[] splitName = fileName.split(".dot");
     	String outputName = splitName[0] + "-output.dot";
@@ -54,12 +55,20 @@ public class Main {
 //        System.out.println("Brute Force runtime: " + totalTime + "ms");
 //        System.out.println();
 
-        startTime = System.currentTimeMillis();
-        Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
-        endTime   = System.currentTimeMillis();
-        totalTime = endTime - startTime;
-        VFrame frame = VFrame.getInstance();
-        frame.printStuff();
+        if (useVisualisation){
+        	TableThreader tt = new TableThreader(taskGraph, outputName);
+        	tt.execute();
+        	
+        } else {
+        	 startTime = System.currentTimeMillis();
+             Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+             endTime   = System.currentTimeMillis();
+             totalTime = endTime - startTime;
+             new Output().createOutput(branchAndBoundSolution,outputName);
+//             VFrame frame = VFrame.getInstance();
+//             frame.printStuff();
+        }
+       
 
 
 //        startTime = System.currentTimeMillis();
@@ -71,7 +80,7 @@ public class Main {
 //        System.out.println("A* runtime: " + totalTime + "ms");
 //        System.out.println();
 
-        new Output().createOutput(branchAndBoundSolution,outputName);
+        
         
 //        InputParser lol = new InputParser(filename);
 //        Schedule =  scheduler.schedule(Graph.getGraph);

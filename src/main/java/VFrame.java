@@ -30,19 +30,19 @@ import org.graphstream.ui.view.Viewer;
  *
  */
 public class VFrame{
-	private static VFrame instance;
+	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
 	private JPanel contentPane;
 	//private Graph graph;
 	private JTable table;
-	private int totalProcessors = 0;
-	private int[] procFinishTimes;
-	private ArrayList<JTable> procTables = new ArrayList<JTable>();
-	private Input input;
+	public int totalProcessors = 0;
+	public int[] procFinishTimes;
+	public ArrayList<JTable> procTables = new ArrayList<JTable>();
+	public Input input;
 	private Graph taskGraph;
 	private ArrayList<Integer> listOfTasks;
-	private ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
+	public ArrayList<Schedule> currentBestScheduleList = new ArrayList<Schedule>();
 	
 	public VFrame() {}
 	
