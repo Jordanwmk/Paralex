@@ -164,7 +164,7 @@ public class VFrame {
 		color50.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color50.setBackground(Color.BLUE);
 		panel50.add(color50, BorderLayout.WEST);
-		panel50.add(new JLabel("0-50 touches"), BorderLayout.EAST);
+		panel50.add(new JLabel(" 0-50 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 0;
 		gbcKey.weightx = 0.2;
@@ -178,7 +178,7 @@ public class VFrame {
 		color150.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color150.setBackground(Color.BLUE);
 		panel150.add(color150, BorderLayout.WEST);
-		panel150.add(new JLabel("50-150 touches"), BorderLayout.EAST);
+		panel150.add(new JLabel(" 50-150 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 1;
 		graphKey.add(panel150, gbcKey);
@@ -189,7 +189,7 @@ public class VFrame {
 		color500.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color500.setBackground(Color.BLUE);
 		panel500.add(color500, BorderLayout.WEST);
-		panel500.add(new JLabel("150-500 touches"), BorderLayout.EAST);
+		panel500.add(new JLabel(" 150-500 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 2;
 		graphKey.add(panel500, gbcKey);
@@ -200,7 +200,7 @@ public class VFrame {
 		color1000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color1000.setBackground(Color.BLUE);
 		panel1000.add(color1000, BorderLayout.WEST);
-		panel1000.add(new JLabel("500-1000 touches"), BorderLayout.EAST);
+		panel1000.add(new JLabel(" 500-1000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 0;
 		graphKey.add(panel1000, gbcKey);
@@ -211,7 +211,7 @@ public class VFrame {
 		color5000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color5000.setBackground(Color.BLUE);
 		panel5000.add(color5000, BorderLayout.WEST);
-		panel5000.add(new JLabel("1000-5000 touches"), BorderLayout.EAST);
+		panel5000.add(new JLabel(" 1000-5000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 1;
 		graphKey.add(panel5000, gbcKey);
@@ -222,7 +222,7 @@ public class VFrame {
 		color10000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color10000.setBackground(Color.BLUE);
 		panel10000.add(color10000, BorderLayout.WEST);
-		panel10000.add(new JLabel("5000-10000 touches"), BorderLayout.EAST);
+		panel10000.add(new JLabel(" 5000-10000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 1;
 		graphKey.add(panel10000, gbcKey);
@@ -233,7 +233,7 @@ public class VFrame {
 		color50000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color50000.setBackground(Color.BLUE);
 		panel50000.add(color50000, BorderLayout.WEST);
-		panel50000.add(new JLabel("10000-50000 touches"), BorderLayout.EAST);
+		panel50000.add(new JLabel(" 10000-50000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 2;
 		graphKey.add(panel50000, gbcKey);
@@ -244,7 +244,7 @@ public class VFrame {
 		color300000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color300000.setBackground(Color.BLUE);
 		panel300000.add(color300000, BorderLayout.WEST);
-		panel300000.add(new JLabel("50,000-300,000 touches"), BorderLayout.EAST);
+		panel300000.add(new JLabel(" 50,000-300,000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
 		gbcKey.gridy = 0;
 		graphKey.add(panel300000, gbcKey);
@@ -255,9 +255,9 @@ public class VFrame {
 		color1000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color1000000.setBackground(Color.BLUE);
 		panel1000000.add(color1000000, BorderLayout.WEST);
-		panel1000000.add(new JLabel("300,000-1,000,000 visits"), BorderLayout.EAST);
+		panel1000000.add(new JLabel(" 300,000-1,000,000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
-		gbcKey.gridy = 0;
+		gbcKey.gridy = 1;
 		graphKey.add(panel1000000, gbcKey);
 		
 		JPanel panel3000000 = new JPanel();
@@ -266,9 +266,9 @@ public class VFrame {
 		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color3000000.setBackground(Color.BLUE);
 		panel3000000.add(color3000000, BorderLayout.WEST);
-		panel3000000.add(new JLabel("1,000,000-3,000,000 visits"), BorderLayout.EAST);
+		panel3000000.add(new JLabel(" 1,000,000-3,000,000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
-		gbcKey.gridy = 1;
+		gbcKey.gridy = 2;
 		graphKey.add(panel3000000, gbcKey);
 		
 //		JPanel panel0 = new JPanel();
@@ -316,7 +316,7 @@ public class VFrame {
 			DefaultTableModel model = new DefaultTableModel(){
 				@Override
 				public Class<?> getColumnClass(int columnIndex){
-					return String.class;
+					return String[].class;
 				}
 			};
 			
@@ -391,9 +391,9 @@ public class VFrame {
 
 			procTables.add(table);
 
-			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+//			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+//			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 			table.setDefaultRenderer(String[].class, new CustomTableRenderer());
 			
 			JPanel panel = new JPanel();
@@ -578,16 +578,23 @@ public class VFrame {
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			
+			setHorizontalAlignment(SwingConstants.CENTER);
+			
 			String valueAt = (String)table.getModel().getValueAt(row, column);
-			System.out.println(valueAt);
+			
 			if (valueAt.equals("Idle Time")){
 				c.setBackground(Color.BLACK);
+				c.setForeground(Color.BLACK);
+			} else {
+				c.setBackground(Color.WHITE);
 			}
 			
 			return c;
 		}
 
 	}
+
 }
 
 
