@@ -12,6 +12,7 @@ import java.lang.Thread;
 public class ParallelBranchAndBound implements Algorithm{
 	final int globalReadFrequency=10000;
 	final int globalUpdateFrequency=0;
+	final int startingIterations = 50;
 	
 	Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
 	int threadsCurrentlyRunning = 0;
@@ -27,10 +28,12 @@ public class ParallelBranchAndBound implements Algorithm{
 	public Schedule schedule(Graph taskGraph) {
 		//Do BFS for schedules to initialise the queue
 		processingQueue.add(Schedule.getEmptySchedule(taskGraph));
-		for(int i=0;i<50;i++){
+		for(int i=0;i<startingIterations;i++){
 			processingQueue.addAll(processingQueue.remove().generateChildren());
 		}
 		
+		
+		//uses the TASK identifier
 		TaskIDGroup g = new TaskIDGroup(coresToRunOn);
 		for (int i = 0; i< coresToRunOn; i++) {
 			TaskID id = startWorker();
@@ -41,6 +44,16 @@ public class ParallelBranchAndBound implements Algorithm{
 		} catch(Exception e3) {
 			e3.printStackTrace();
 		}
+		
+		
+		//uses the TASK(*) identifier
+		
+//		TaskIDGroup g = startWorkers();
+//		try {
+//			g.waitTillFinished();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		return currentBest;
 
 	}
@@ -48,7 +61,7 @@ public class ParallelBranchAndBound implements Algorithm{
 	class Worker{
 		Schedule localCurrentBest;
 		int localCurrentBestTime=Integer.MAX_VALUE;
-		Stack<Schedule> localStack=new Stack<Schedule>();
+		ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
 		
 		int schedulesTraversed=0;
 		int schedulesCompleted=0;
@@ -98,7 +111,7 @@ public class ParallelBranchAndBound implements Algorithm{
 					updateGlobalBest();
 					return;
 				}else{
-					localStack.add(nextSchedule);
+					localStack.push(nextSchedule);
 				}
 			}
 		}
@@ -142,6 +155,11 @@ public class ParallelBranchAndBound implements Algorithm{
 		new Worker().run();
 	}
 	
+	TASK(coresToRunOn) public void startWorkers() {
+		for (int i = 0; i< coresToRunOn; i++) {
+			new Worker().run();
+		}
+    }
 	
 	
 	

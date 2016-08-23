@@ -163,6 +163,13 @@ public class Schedule implements Comparable<Schedule>{
                 //updatedDoableTasks.remove(new Integer(taskYouAreTryingToSchedule));
                 updatedDoableTasks.remove(Integer.valueOf(taskYouAreTryingToSchedule));
 
+                
+                //need to update the start times of tasks
+                int[] updatedTaskStartTimes = new int[taskGraph.getTotalNumTasks()];
+                System.arraycopy(taskStartTimes, 0, updatedTaskStartTimes, 0, taskStartTimes.length);
+                updatedTaskStartTimes[taskYouAreTryingToSchedule] = startTime;
+                
+                
                 //###CONFUSING SO PAY ATTENTION###
                 //now looking at the task graph, NOT the partial schedule tree,
                 //all the children of the task we just scheduled have a chance to be doable now
@@ -171,7 +178,7 @@ public class Schedule implements Comparable<Schedule>{
                 for (int child:taskGraph.getChildren(taskYouAreTryingToSchedule)) {
                     boolean isDoable = true;
                     for (int dependency: taskGraph.getDependencies(child)) {
-                        if (taskStartTimes[dependency] == -1 && dependency != taskYouAreTryingToSchedule) {
+                        if (updatedTaskStartTimes[dependency] == -1) {
                             //as soon as a dependency is not met, break and go to the next child
                             isDoable = false;
                             break;
@@ -185,17 +192,8 @@ public class Schedule implements Comparable<Schedule>{
 
                 //nothing to do with doabletasks now, just updateing other fields
                 //update how many processors are occupied (not empty)
-                int updatedProcessorsUsed = processorsUsed;
-
                 //if the processor we scheduled on was an empty one, then the new value of processors used for the new child is incremented
-                if (processorWeAreTryingToScheduleOn == processorsUsed) {
-                    updatedProcessorsUsed ++;
-                }
-
-                //need to update the start times of tasks
-                int[] updatedTaskStartTimes = new int[taskGraph.getTotalNumTasks()];
-                System.arraycopy(taskStartTimes, 0, updatedTaskStartTimes, 0, taskStartTimes.length);
-                updatedTaskStartTimes[taskYouAreTryingToSchedule] = startTime;
+                int updatedProcessorsUsed = (processorWeAreTryingToScheduleOn == processorsUsed)?processorsUsed + 1: processorsUsed;
 
                 //need to update the processors each task is scheduled on
                 int[] updatedTaskProcessors=new int[taskGraph.getTotalNumTasks()];
