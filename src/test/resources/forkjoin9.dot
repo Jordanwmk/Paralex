@@ -1,0 +1,32 @@
+		digraph {
+		a	[Weight=2];
+		b	[Weight=5];
+		c	[Weight=6];
+		d	[Weight=3];
+		e	[Weight=3];
+		f	[Weight=6];
+		g	[Weight=6];
+		h	[Weight=1];
+		i	[Weight=4];
+		l	[Weight=1];
+		j	[Weight=3];
+		a -> b[label=2,Weight=2];
+		a -> c[label=3,Weight=3];
+		a -> d[label=5,Weight=5];
+		a -> e[label=7,Weight=7];
+		a -> f[label=2,Weight=2];
+		a -> g[label=4,Weight=4];
+		a -> h[label=9,Weight=9];
+		a -> i[label=8,Weight=8];
+		a -> j[label=2,Weight=2];
+		b -> l[label=4,Weight=4];
+		c -> l[label=7,Weight=7];
+		d -> l[label=1,Weight=1];
+		e -> l[label=4,Weight=4];
+		f -> l[label=8,Weight=8];
+		g -> l[label=11,Weight=11];
+		h -> l[label=4,Weight=4];
+		i -> l[label=40,Weight=40];
+		j -> l[label=1,Weight=1];
+}
+
