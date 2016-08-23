@@ -3,10 +3,10 @@ digraph "src/test/resources/Nodes_7_OutTree-output.dot" {
 	a [Processor=1,Start=0,Weight=5];
 	b [Processor=1,Start=5,Weight=6];
 	c [Processor=3,Start=16,Weight=5];
-	d [ui.class=partition50,Processor=2,Start=16,Weight=6];
-	e [ui.class=partition50,Processor=1,Start=18,Weight=4];
-	f [ui.class=partition50,Processor=4,Start=15,Weight=7];
-	g [ui.class=partition50,Processor=1,Start=11,Weight=7];
+	d [Processor=2,Start=16,Weight=6];
+	e [Processor=1,Start=18,Weight=4];
+	f [Processor=4,Start=15,Weight=7];
+	g [Processor=1,Start=11,Weight=7];
 	a -> b [Weight=15];
 	a -> c [Weight=11];
 	a -> d [Weight=11];

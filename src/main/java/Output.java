@@ -56,5 +56,7 @@ public class Output {
 		graph.getNode(task).addAttribute("Start", time);
 		graph.getNode(task).removeAttribute("ui.style");
 		graph.getNode(task).removeAttribute("ui.label");
+		graph.getNode(task).removeAttribute("ui.class");
+		graph.getNode(task).removeAttribute("ui.stylesheet");
     }
 }

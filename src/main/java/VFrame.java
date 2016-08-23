@@ -123,8 +123,6 @@ public class VFrame {
 			setNodeColour(currentCore.get(task), task);
 		}
 
-
-
 	}
 
 	public static VFrame getInstance() {
@@ -138,7 +136,7 @@ public class VFrame {
 	private void prepareGui() {
 
 		mainFrame = new JFrame("Paralex - Parallel Task Scheduling");
-		mainFrame.setSize(1000,700);
+		mainFrame.setSize(1200,900);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 		mainFrame.setMinimumSize(new Dimension (500, 500));
 
@@ -149,8 +147,8 @@ public class VFrame {
 		JPanel graphKey = new JPanel();		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
+		gbc.weightx = 0.8;
+		gbc.weighty = 0.8;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.NORTH;
 		graphKey.setBorder(BorderFactory.createTitledBorder("Graph Key"));
@@ -159,8 +157,8 @@ public class VFrame {
 		JPanel statusPanel = new JPanel();		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.weightx = 1.0;
-		gbc.weighty = 1.0;
+		gbc.weightx = 0.5;
+		gbc.weighty = 0.5;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.NORTH;
 		statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
@@ -187,7 +185,13 @@ public class VFrame {
 
 
 		for (int i = 0; i < totalProcessors; i++) {
-			DefaultTableModel model = new DefaultTableModel();
+			DefaultTableModel model = new DefaultTableModel(){
+				@Override
+				public Class<?> getColumnClass(int columnIndex){
+					return String.class;
+				}
+			};
+			
 			model.addColumn("P");
 			JTable table = new JTable(model);
 
@@ -262,12 +266,13 @@ public class VFrame {
 			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 			centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 			table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-
+			table.setDefaultRenderer(String[].class, new CustomTableRenderer());
+			
 			JPanel panel = new JPanel();
 			panel.setLayout(new BorderLayout());
 			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Processor "+ i, TitledBorder.CENTER, TitledBorder.TOP));
 			panel.add(table);
-			table.setDefaultRenderer(String.class, new CustomTableRenderer());
+			
 			processPanel.add(panel);
 
 		}
@@ -442,15 +447,14 @@ public class VFrame {
 	}
 
 	public class CustomTableRenderer extends DefaultTableCellRenderer {
-		private static final long serialVersionUID = 1L;
-		
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
-
 			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-			c.setForeground(Color.RED);
-			c.setBackground(Color.black);
+			String valueAt = (String)table.getModel().getValueAt(row, column);
+			System.out.println(valueAt);
+			if (valueAt.equals("Idle Time")){
+				c.setBackground(Color.BLACK);
+			}
 			
 			return c;
 		}
