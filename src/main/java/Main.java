@@ -56,7 +56,6 @@ public class Main {
 //        System.out.println("Brute Force runtime: " + totalTime + "ms");
 //        System.out.println();
 
-
         if (useVisualisation){
         	TableThreader tt = new TableThreader(taskGraph, outputName);
         	tt.execute();
