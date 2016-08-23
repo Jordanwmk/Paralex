@@ -3,10 +3,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Schedule implements Comparable<Schedule>{
-    private Graph taskGraph;
-
-    //pointer to the nodes parent
-    private Schedule parent;
+    
+	private Graph taskGraph;
 
     //the task that is scheduled (eg task = 0 means task A)
     private int task;
@@ -62,7 +60,7 @@ public class Schedule implements Comparable<Schedule>{
     public static Schedule getEmptySchedule(Graph taskGraph){
         int[] taskStartTime = new int[taskGraph.getTotalNumTasks()];
         Arrays.fill(taskStartTime, -1);
-        int[] taskProcessors = new int[taskGraph.getTotalNumTasks()];
+        int[] taskProcessors = new int[taskGraph.getNumProcessors()];
         Arrays.fill(taskProcessors,-1);
         int[] processFinishTime = new int[taskGraph.getNumProcessors()];
 
@@ -72,16 +70,6 @@ public class Schedule implements Comparable<Schedule>{
     //needed so that the priority queue can sort the schedules in terms of estimated finish time
     public int compareTo(Schedule other) {
         return this.estimate-other.estimate;
-    }
-
-    //not needed in the final implementation but for testing
-    public String toString() {
-
-        if (this.parent != null && this.parent.task!=-1) {
-            System.out.println(this.parent);
-        }
-
-        return ("Processor: " + processor + "  Time: " + time + "  Task: " + task );
     }
 
     public int getTotalTime(){
@@ -102,7 +90,6 @@ public class Schedule implements Comparable<Schedule>{
         //list used for storing all the children. will be returned
         List<Schedule> children = new ArrayList<Schedule>();
         //graph singleton that has all the edge costs and node weights, BLs etc.
-
 
         //for all the tasks that are valid to add as a child, we will generate a child by adding
         //it to each of the occupied processors, and 1 of the empty processors
@@ -162,13 +149,11 @@ public class Schedule implements Comparable<Schedule>{
                 //this line worked but might be slower so we use faster
                 //updatedDoableTasks.remove(new Integer(taskYouAreTryingToSchedule));
                 updatedDoableTasks.remove(Integer.valueOf(taskYouAreTryingToSchedule));
-
                 
                 //need to update the start times of tasks
                 int[] updatedTaskStartTimes = new int[taskGraph.getTotalNumTasks()];
                 System.arraycopy(taskStartTimes, 0, updatedTaskStartTimes, 0, taskStartTimes.length);
                 updatedTaskStartTimes[taskYouAreTryingToSchedule] = startTime;
-                
                 
                 //###CONFUSING SO PAY ATTENTION###
                 //now looking at the task graph, NOT the partial schedule tree,
@@ -215,10 +200,13 @@ public class Schedule implements Comparable<Schedule>{
         //return the final list of all the child nodes that were generated
         return children;
     }
-
-
-	public Schedule getParent() {
-		return parent;
+    
+    @Override
+	public String toString() {
+		for (int i = 0; i<taskGraph.getTotalNumTasks(); i++) {
+			System.out.println("Proc: " + taskProcessors[i] + ", Time: " + taskStartTimes[i] + ", Task: " + i);
+		}
+		return "";
 	}
 
 	public int getTask() {
@@ -248,5 +236,6 @@ public class Schedule implements Comparable<Schedule>{
 	public List<Integer> getDoableTasks() {
 		return doableTasks;
 	}
+	
 }
 

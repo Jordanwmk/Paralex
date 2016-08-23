@@ -55,7 +55,6 @@ public class ParallelBranchAndBound implements Algorithm{
 //			e.printStackTrace();
 //		}
 		return currentBest;
-
 	}
 	
 	class Worker{
