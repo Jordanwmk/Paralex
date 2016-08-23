@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.Stack;
 
-public class BranchAndBoundAlgorithm implements Algorithm{
+
+public class Visualisation implements Algorithm{
 	
 	Schedule currentBest=null;
 	

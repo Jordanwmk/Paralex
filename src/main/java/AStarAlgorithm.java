@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class AStarAlgorithm implements Algorithm{
-    /**
+	/**
      * Schedule tasks for the given task graph
      * @param taskGraph The graph of tasks to
      * @return

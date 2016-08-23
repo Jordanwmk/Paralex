@@ -102,14 +102,7 @@ public class VFrame{
 		ArrayList<Integer> currentCore = listOfAccess.get(0);
 
 		Integer value = currentCore.get(task); // get value
-		if (task == 4){
-			System.out.println("Value of task"+  task+ "is "+ value);
-		}
 		currentCore.set(task, value+1);
-		if (task == 4){
-			System.out.println("Value of new task "+  task+ "is "+  currentCore.get(task));
-		}
-
 		setNodeColour(currentCore.get(task),task);
 		
 		

@@ -31,10 +31,10 @@ public class Main {
     			}
     		}
     	}
-     	if (useVisualisation){
-     		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
-     		
-     	}
+     	
+//     	if (useVisualisation){
+//     		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+//     	}
 
 		TaskGraph taskGraph;
 		try {
@@ -47,29 +47,46 @@ public class Main {
 
         long startTime,endTime,totalTime;
 
-//        startTime = System.currentTimeMillis();
-//        Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(taskGraph);
-//        endTime   = System.currentTimeMillis();
-//        totalTime = endTime - startTime;
-//        System.out.println(bruteForceSolution);
-//        System.out.println("brute Force solution time: " + bruteForceSolution.getTotalTime());
-//        System.out.println("Brute Force runtime: " + totalTime + "ms");
-//        System.out.println();
+        startTime = System.currentTimeMillis();
+        BranchAndBoundAlgorithm algorithm = new BranchAndBoundAlgorithm();
 
         if (useVisualisation){
-        	TableThreader tt = new TableThreader(taskGraph, outputName);
+        	VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+        	TableThreader tt = new TableThreader(algorithm, frame);
+
         	tt.execute();
-        	
-        } else {
-        	 startTime = System.currentTimeMillis();
-             Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
-             endTime   = System.currentTimeMillis();
-             totalTime = endTime - startTime;
-             System.out.println(totalTime);
-             new Output().createOutput(branchAndBoundSolution,outputName);
+        }
+        Schedule branchAndBoundSolution = algorithm.schedule(taskGraph);
+        endTime   = System.currentTimeMillis();
+        totalTime = endTime - startTime;
+        
+        new Output().createOutput(branchAndBoundSolution,outputName);
+//        
+//
+//        if (useVisualisation){
+//        	
+//        	Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+//        	TableThreader tt = new TableThreader(branchAndBoundSolution);
+//        	tt.execute();
+//        	new Output().createOutput(branchAndBoundSolution,outputName);
+//        	
+//        } else {
+//        	 startTime = System.currentTimeMillis();
+//        	 
+//        	 Algorithm alg=new BranchAndBoundAlgorithm();
+//        	 
+//        	 timer.schedule(guiUpdater);
+//        	 
+//        	 Schedule solution=alg.schedule(taskGraph);
+//        	 
+//             Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+//             endTime   = System.currentTimeMillis();
+//             totalTime = endTime - startTime;
+//             System.out.println(totalTime);
+//             new Output().createOutput(branchAndBoundSolution,outputName);
 //             VFrame frame = VFrame.getInstance();
 //             frame.printStuff();
-        }
+//        }
 
 //        startTime = System.currentTimeMillis();
 //        Schedule aStarSolution=new AStarAlgorithm().schedule(taskGraph);
@@ -88,4 +105,6 @@ public class Main {
         
 
     }
+    
+    
 }
