@@ -1,16 +1,15 @@
 digraph "src/test/resources/Nodes_11_OutTree-output.dot" {
-	graph [ ui.stylesheet=url('src/main/java/graphStyleSheet.css')) ];
-	0 [Processor=1,Start=0,Weight=50];
-	1 [ui.class=partition5000,Processor=1,Start=50,Weight=70];
-	2 [ui.class=partition5000,Processor=2,Start=174,Weight=90];
-	3 [ui.class=partition50000,Processor=2,Start=54,Weight=100];
-	4 [ui.class=partition1000000,Processor=1,Start=240,Weight=40];
-	5 [ui.class=partition1000000,Processor=1,Start=220,Weight=20];
-	6 [ui.class=partition1000000,Processor=1,Start=120,Weight=100];
-	7 [ui.class=partition1000000,Processor=2,Start=264,Weight=80];
-	8 [ui.class=partition1000000,Processor=1,Start=300,Weight=50];
-	9 [ui.class=partition1000000,Processor=1,Start=280,Weight=20];
-	10 [ui.class=partition1000000,Processor=2,Start=154,Weight=20];
+	0 [Weight=50];
+	1 [Weight=70];
+	2 [Weight=90];
+	3 [Weight=100];
+	4 [Weight=40];
+	5 [Weight=20];
+	6 [Weight=100];
+	7 [Weight=80];
+	8 [Weight=50];
+	9 [Weight=20];
+	10 [Weight=20];
 	0 -> 1 [Weight=9];
 	0 -> 2 [Weight=7];
 	0 -> 3 [Weight=4];
