@@ -2,20 +2,23 @@
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Graph;
@@ -34,8 +37,6 @@ public class VFrame{
 	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfAccess;
 	private JFrame mainFrame;
-	private JPanel contentPane;
-	//private Graph graph;
 	private JTable table;
 	public int totalProcessors = 0;
 	public int[] procFinishTimes;
@@ -122,59 +123,121 @@ public class VFrame{
 		mainFrame = new JFrame("Paralex - Parallel Task Scheduling");
 		mainFrame.setSize(1000,700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-
-		JPanel contentPanel = new JPanel();
-		contentPanel.setLayout(new GridLayout(1, 2));
+		mainFrame.setMinimumSize(new Dimension (500, 500));
 		
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		JPanel graphKey = new JPanel();		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.NORTH;
+		graphKey.setBorder(BorderFactory.createTitledBorder("Graph Key"));
+		contentPanel.add(graphKey, gbc);
+		
+		JPanel statusPanel = new JPanel();		
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.NORTH;
+		statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
+		contentPanel.add(statusPanel, gbc);
+				
 		JPanel outerGraphPanel = new JPanel();
 		JPanel graphPanel = new JPanel();
-		JPanel outerProcessPanel = new JPanel();
-		JPanel processPanel = new JPanel();
-		JPanel statusPanel = new JPanel();
 		
-		outerGraphPanel.setLayout(new BorderLayout());
+		outerGraphPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbcGraph = new GridBagConstraints();
 		
-		//JLabel graphLabel = new JLabel("Task Graph", SwingConstants.CENTER);		
+		gbcGraph.gridx = 0;
+		gbcGraph.gridy = 0;
+		gbcGraph.weightx = 1.0;
+		gbcGraph.weighty = 1.0;
+		gbcGraph.fill = GridBagConstraints.BOTH;
+		gbcGraph.anchor = GridBagConstraints.NORTH;
+		outerGraphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph"));
+				
 		graphPanel.setLayout(new BorderLayout());
-		
+		graphPanel.setPreferredSize(new Dimension(300, 350));
 		Viewer viewer = new Viewer(taskGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		View view = viewer.addDefaultView(false);
 		viewer.enableAutoLayout();
+		graphPanel.add((Component) view);	
 		
-		graphPanel.add((Component) view, BorderLayout.CENTER);
-		//graphPanel.add(graphLabel, BorderLayout.NORTH);
+		gbcGraph.gridx = 0;
+		gbcGraph.gridy = 1;
+		gbcGraph.weightx = 1.0;
+		gbcGraph.weighty = 1.0;
+		gbcGraph.anchor = GridBagConstraints.CENTER;
+		outerGraphPanel.add(graphPanel, gbcGraph);
 		
-		outerGraphPanel.add(graphPanel, BorderLayout.CENTER);
-		outerGraphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph"));
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.anchor = GridBagConstraints.WEST;
+		contentPanel.add(outerGraphPanel, gbc);
 		
-		processPanel.setLayout(new GridLayout(1, totalProcessors));
-		// Creating JTable for each processor and adding it to the processors panel
+		JPanel outerProcessPanel = new JPanel();
+		outerProcessPanel.setLayout(new GridBagLayout());
+		outerProcessPanel.setBorder(BorderFactory.createTitledBorder("Current Best Schedule"));
+		GridBagConstraints gbcProcess = new GridBagConstraints();
+		
+		
+		JPanel processPanel = new JPanel();
+		processPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbcProcessPanel = new GridBagConstraints();
+		
+		gbcProcessPanel.gridx = 0;
+		gbcProcessPanel.gridy = 0;
+		gbcProcessPanel.weightx = 1.0;
+		gbcProcessPanel.weighty = 1.0;
+		gbcProcessPanel.fill = GridBagConstraints.BOTH;
+				
 		for (int i = 0; i < totalProcessors; i++) {
-
 			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("Process " + (i));
+			model.addColumn("P");
 			JTable table = new JTable(model);
 
 			table.setRowSelectionAllowed(false);
 			table.setEnabled(false);	// Disabling user edit
-				
+
 			procTables.add(table);
-			JPanel tablePanel = new JPanel();
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder (), ("Proc " + (i + 1)), TitledBorder.CENTER, TitledBorder.TOP));
-			tablePanel.add(table);
-			processPanel.add(tablePanel);
+
+			gbcProcessPanel.gridx = i;
+			gbcProcessPanel.gridy = 0;
+			gbcProcessPanel.weightx = 1.0;
+			gbcProcessPanel.weighty = 1.0;
+			gbcProcessPanel.fill = GridBagConstraints.BOTH;
+			gbcProcessPanel.insets = new Insets(0,5,0,5);
+			
+			processPanel.add(new JLabel("Processor " + i, SwingConstants.CENTER), gbcProcessPanel);
+			gbcProcessPanel.gridy = 1;
+			processPanel.add(table, gbcProcessPanel);
 		}
 		
 		JScrollPane scrollPane = new JScrollPane(processPanel);
-				
-		//JLabel processLabel = new JLabel("Current Best Schedule", SwingConstants.CENTER);
-		outerProcessPanel.setLayout(new BorderLayout());
-		outerProcessPanel.add(scrollPane);
-		outerProcessPanel.setBorder(BorderFactory.createTitledBorder("Current Best Schedule"));
 		
-		contentPanel.add(outerGraphPanel);
-		contentPanel.add(outerProcessPanel);
+		gbcProcess.gridx = 0;
+		gbcProcess.gridy = 0;
+		gbcProcess.weightx = 1.0;
+		gbcProcess.weighty = 1.0;
+		gbcProcess.fill = GridBagConstraints.BOTH;
+		outerProcessPanel.add(scrollPane, gbcProcess);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.weightx = 1.0;
+		gbc.weighty = 1.0;
+		gbc.anchor = GridBagConstraints.EAST;
+		contentPanel.add(outerProcessPanel, gbc);
+		
 		mainFrame.add(contentPanel);
 	}
 
