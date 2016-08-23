@@ -109,5 +109,11 @@ public class GraphTest {
 		assertEquals(23, solution.getTotalTime());
 	}
 	
+//	@Test
+//	public void test_10_middle_fork_join() throws IOException {
+//		Schedule solution = new ParallelBranchAndBound(4).schedule(new Graph("src/test/resources/forkjoin10.dot", 2));
+//		assertEquals(26, solution.getTotalTime());
+//	}
+	
 	
 }
