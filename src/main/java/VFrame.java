@@ -2,7 +2,6 @@
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,13 +9,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
@@ -118,43 +117,58 @@ public class VFrame{
 		mainFrame.setSize(1000,700);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
 
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new GridLayout(1, 2));
-
-		// Left panel to hold graph
-		JPanel graphPane = new JPanel();
-		graphPane.setLayout(new BorderLayout());
-		graphPane.setPreferredSize(new Dimension(500, 7));
-
+		JPanel contentPanel = new JPanel();
+		contentPanel.setLayout(new GridLayout(1, 2));
+		
+		JPanel outerGraphPanel = new JPanel();
+		JPanel graphPanel = new JPanel();
+		JPanel outerProcessPanel = new JPanel();
+		JPanel processPanel = new JPanel();
+		JPanel statusPanel = new JPanel();
+		
+		outerGraphPanel.setLayout(new BorderLayout());
+		
+		//JLabel graphLabel = new JLabel("Task Graph", SwingConstants.CENTER);		
+		graphPanel.setLayout(new BorderLayout());
+		
 		Viewer viewer = new Viewer(taskGraph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		View view = viewer.addDefaultView(false);
 		viewer.enableAutoLayout();
-		//((Component) view).setPreferredSize(new Dimension(500, 500));
-		graphPane.add((Component) view, BorderLayout.CENTER);
-
-		// Right panel to hold table of processors and tasks
-		JPanel processPanel = new JPanel();
+		
+		graphPanel.add((Component) view, BorderLayout.CENTER);
+		//graphPanel.add(graphLabel, BorderLayout.NORTH);
+		
+		outerGraphPanel.add(graphPanel, BorderLayout.CENTER);
+		outerGraphPanel.setBorder(BorderFactory.createTitledBorder("Task Graph"));
+		
 		processPanel.setLayout(new GridLayout(1, totalProcessors));
-
-
 		// Creating JTable for each processor and adding it to the processors panel
 		for (int i = 0; i < totalProcessors; i++) {
 
 			DefaultTableModel model = new DefaultTableModel();
-			model.addColumn("Proc " + i);
-//			model.addRow(new String[] {"Tasks"});
+			model.addColumn("Process " + (i));
 			JTable table = new JTable(model);
 
-			JScrollPane scrollPane = new JScrollPane(table);
 			table.setRowSelectionAllowed(false);
 			table.setEnabled(false);	// Disabling user edit
 			procTables.add(table);
-			processPanel.add(scrollPane);
+			JPanel tablePanel = new JPanel();
+			tablePanel.setLayout(new BorderLayout());
+			tablePanel.setBorder(BorderFactory.createTitledBorder("Proc " + (i + 1)));
+			tablePanel.add(table);
+			processPanel.add(tablePanel);
 		}
-
-		contentPane.add(graphPane);
-		contentPane.add(processPanel);
-		mainFrame.add(contentPane);
+		
+		JScrollPane scrollPane = new JScrollPane(processPanel);
+				
+		//JLabel processLabel = new JLabel("Current Best Schedule", SwingConstants.CENTER);
+		outerProcessPanel.setLayout(new BorderLayout());
+		outerProcessPanel.add(scrollPane);
+		outerProcessPanel.setBorder(BorderFactory.createTitledBorder("Current Best Schedule"));
+		
+		contentPanel.add(outerGraphPanel);
+		contentPanel.add(outerProcessPanel);
+		mainFrame.add(contentPanel);
 	}
 
 	private void setNodeColour(int activityNumber, int task){

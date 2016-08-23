@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
-
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;

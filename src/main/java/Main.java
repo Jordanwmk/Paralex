@@ -33,6 +33,7 @@ public class Main {
     	}
      	if (useVisualisation){
      		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+     		
      	}
 
 		TaskGraph taskGraph;
@@ -55,6 +56,7 @@ public class Main {
 //        System.out.println("Brute Force runtime: " + totalTime + "ms");
 //        System.out.println();
 
+
         if (useVisualisation){
         	TableThreader tt = new TableThreader(taskGraph, outputName);
         	tt.execute();
@@ -68,8 +70,6 @@ public class Main {
 //             VFrame frame = VFrame.getInstance();
 //             frame.printStuff();
         }
-       
-
 
 //        startTime = System.currentTimeMillis();
 //        Schedule aStarSolution=new AStarAlgorithm().schedule(taskGraph);
