@@ -13,7 +13,8 @@ public class Main {
 		String fileName = args[0];
 		int numProcessors = Integer.parseInt(args[1]);
 		boolean useVisualisation = false;
-
+		boolean darude = false;
+		
 		String[] splitName = fileName.split(".dot");
 		String outputName = splitName[0] + "-output.dot";
 
@@ -31,6 +32,8 @@ public class Main {
 														// extension as .dot
 						outputName = outputName + ".dot";
 					}
+				} else if(args[i].equals("-d")) {
+					darude=true;
 				}
 			}
 		}
@@ -60,7 +63,9 @@ public class Main {
 		Clip sandstorm = null;
 		if (useVisualisation) {
 			//play the music
-			sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
+			if(darude){
+				sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
+			}
 			
 			VFrame frame = new VFrame(numCores, fileName, numProcessors);
 			TableThreader tt = new TableThreader(algorithm, frame);
@@ -72,7 +77,7 @@ public class Main {
 		totalTime = endTime - startTime;
 		
 		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
-		if(useVisualisation){
+		if(useVisualisation && darude){
 			sandstorm.stop();
 		}
 		
