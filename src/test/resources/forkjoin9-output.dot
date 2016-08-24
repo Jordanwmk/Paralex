@@ -1,4 +1,4 @@
-digraph "src/test/resources/forkjoin_9middle-output.dot" {
+digraph "src/test/resources/forkjoin9-output.dot" {
 	a [Start=0,Weight=2,Processor=1];
 	b [Start=4,Weight=5,Processor=2];
 	c [Start=9,Weight=6,Processor=1];

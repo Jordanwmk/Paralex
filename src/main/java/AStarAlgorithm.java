@@ -22,4 +22,10 @@ public class AStarAlgorithm implements Algorithm{
         }
         return scheduleWeAreCurrentlyAt;
     }
+
+	@Override
+	public Schedule getCurrentBest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

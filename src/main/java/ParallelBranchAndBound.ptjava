@@ -57,6 +57,12 @@ public class ParallelBranchAndBound implements Algorithm{
 		return currentBest;
 	}
 	
+	public Schedule getCurrentBest(){
+		synchronized(this){
+			return currentBest;
+		}
+	}
+	
 	class Worker{
 		Schedule localCurrentBest;
 		int localCurrentBestTime=Integer.MAX_VALUE;
@@ -76,6 +82,10 @@ public class ParallelBranchAndBound implements Algorithm{
 				//Loop while there is something in the local stack
 				while(!localStack.isEmpty()){
 					scheduleWeAreCurrentlyAt=localStack.pop();
+					VFrame frame = VFrame.getInstance();
+          	 		if (scheduleWeAreCurrentlyAt.getTask() != -1){
+            			frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), id);
+         		    }
 					schedulesTraversed++;
 					if(schedulesTraversed>globalReadFrequency){
 						schedulesTraversed=0;

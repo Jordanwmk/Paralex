@@ -12,47 +12,26 @@ import javax.swing.table.DefaultTableModel;
 
 public class TableThreader extends SwingWorker<Void, Schedule> {
 
-	BranchAndBoundAlgorithm algorithm = null;
+	Algorithm algorithm = null;
 	VFrame frame;
 	Timer simpleTimer = null;
 	Schedule prev = null;
 
-	public TableThreader(BranchAndBoundAlgorithm algorithm, VFrame frame) {
+	public TableThreader(Algorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
-		simpleTimer = new Timer(10, new ActionListener() {
+		simpleTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				Schedule currentBest = algorithm.getCurrentBest();
-//				if (prev == null && currentBest !=null) {
-//					prev = currentBest;
-//					System.out.println(prev);
-//					frame.currentBestSchedule=currentBest;
-//					publish(currentBest);
-//					System.out.println("First Time publish");
-//				}
-//
-//				else if (!(prev.equals(currentBest)) && currentBest !=null) {
-//
-//					// clear the table
-//					Arrays.fill(frame.procFinishTimes, 0);
-//					for (int i = 0; i < frame.totalProcessors; i++) {
-//						JTable table = frame.procTables.get(i);
-//						DefaultTableModel model = (DefaultTableModel) table
-//								.getModel();
-//						model.setRowCount(0);
-//					}
-//					System.out.println("New Node");
-//					// set new currentBest
-//					frame.currentBestSchedule = currentBest;
-//
-//					publish(currentBest);
-//					System.out.println("publish more htne once");
-//					prev = currentBest;
-//				}
-				
+			
 				Schedule currentBest = algorithm.getCurrentBest();
-				//System.out.println(currentBest);
+				try {
+					frame.getCpuLabel().setText("CPU Usage: " + SystemQuery.getProcessCpuLoad());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				};
+
 				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
@@ -62,12 +41,11 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 								.getModel();
 						model.setRowCount(0);
 					}
-					//System.out.println("New Node");
+
 					// set new currentBest
 					frame.currentBestSchedule = currentBest;
 
 					publish(currentBest);
-					//System.out.println("publish more htne once");
 					prev = currentBest;
 				}
 			
@@ -82,9 +60,9 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	protected Void doInBackground() throws Exception {
 
 		simpleTimer.start();
-		while (!(algorithm.isDone())){
-			
-		}
+//		while (!(algorithm.isDone())){
+//			
+//		}
 
 		return null;
 	}
@@ -98,17 +76,17 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 		if (schedule != null) {
 			System.out.println("GOING INSIDE THE THING");
 
-			int[] startTimes=new int[frame.taskGraph.getNodeCount()];
+			int[] startTimes=new int[frame.graphStreamGraph.getNodeCount()];
 			
 			
 			System.arraycopy(schedule.getTaskStartTimes(), 0, startTimes, 0, startTimes.length);
 			
 			
-			for(int i=0;i<frame.taskGraph.getNodeCount();i++){
+			for(int i=0;i<frame.graphStreamGraph.getNodeCount();i++){
 				int earliestStartTime = Integer.MAX_VALUE;
 				int earliestStartTimeIndex = -1;
 				
-				for(int j=0;j<frame.taskGraph.getNodeCount();j++){
+				for(int j=0;j<frame.graphStreamGraph.getNodeCount();j++){
 					if(startTimes[j]<earliestStartTime){
 						earliestStartTime=startTimes[j];
 						earliestStartTimeIndex=j;
