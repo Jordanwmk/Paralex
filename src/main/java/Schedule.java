@@ -63,7 +63,6 @@ public class Schedule implements Comparable<Schedule>{
         int[] taskProcessors = new int[taskGraph.getNumProcessors()];
         Arrays.fill(taskProcessors,-1);
         int[] processFinishTime = new int[taskGraph.getNumProcessors()];
-
         return new Schedule(taskGraph,-1,-1,0,0,0,0, taskGraph.getEntryPoints(),taskStartTime,taskProcessors,processFinishTime);
     }
 
