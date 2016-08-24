@@ -97,6 +97,8 @@ public class VFrame {
 		}
 
 		taskGraph.addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
+		taskGraph.addAttribute("ui.quality");
+		taskGraph.addAttribute("ui.antialias");
 
 		for (Node node : taskGraph) {
 			node.addAttribute("ui.label", node.getId());
@@ -293,7 +295,7 @@ public class VFrame {
 		contentPanel.add(statusPanel, gbc);
 
 		JPanel outerGraphPanel = new JPanel();
-
+		outerGraphPanel.setBackground(Color.black);
 		setupGraphPanel(outerGraphPanel);
 
 		gbc.gridx = 0;

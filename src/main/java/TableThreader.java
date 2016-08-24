@@ -52,7 +52,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 //				}
 				
 				Schedule currentBest = algorithm.getCurrentBest();
-				System.out.println(currentBest);
+				//System.out.println(currentBest);
 				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
@@ -62,12 +62,12 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 								.getModel();
 						model.setRowCount(0);
 					}
-					System.out.println("New Node");
+					//System.out.println("New Node");
 					// set new currentBest
 					frame.currentBestSchedule = currentBest;
 
 					publish(currentBest);
-					System.out.println("publish more htne once");
+					//System.out.println("publish more htne once");
 					prev = currentBest;
 				}
 			
