@@ -1,13 +1,13 @@
 digraph "src/test/resources/Nodes_9_SeriesParallel-output.dot" {
 	0 [Start=0,Weight=10,Processor=1];
-	2 [Start=10,Weight=6,Processor=1];
-	3 [Start=16,Weight=7,Processor=1];
-	4 [Start=43,Weight=5,Processor=1];
+	2 [Start=22,Weight=6,Processor=1];
+	3 [Start=15,Weight=7,Processor=1];
+	4 [Start=10,Weight=5,Processor=1];
 	1 [Start=48,Weight=7,Processor=1];
-	6 [Start=32,Weight=2,Processor=1];
-	7 [Start=30,Weight=2,Processor=1];
-	8 [Start=23,Weight=7,Processor=1];
-	5 [Start=34,Weight=9,Processor=1];
+	6 [Start=37,Weight=2,Processor=1];
+	7 [Start=35,Weight=2,Processor=1];
+	8 [Start=28,Weight=7,Processor=1];
+	5 [Start=39,Weight=9,Processor=1];
 	0 -> 2 [Weight=51];
 	0 -> 3 [Weight=22];
 	0 -> 4 [Weight=44];

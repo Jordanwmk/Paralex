@@ -51,6 +51,11 @@ public class Main {
 			return;
 		}
 
+		//checking if there are any nodes in the input graph
+		if (taskGraph.getTotalNumTasks() == 0){
+			return;
+		}
+		
 		long startTime, endTime, totalTime;
 		startTime = System.currentTimeMillis();
 		Algorithm algorithm;
@@ -92,11 +97,11 @@ public class Main {
 		endTime = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		
-		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
 		if(useVisualisation && darude){
 			sandstorm.stop();
 		}
 		if (useVisualisation) {
+			VFrame.getInstance().playSound("src/main/resources/paralex.wav");
 			new Output(useVisualisation).createOutput(branchAndBoundSolution, outputName,
 					frame.getTaskGraphList().get(numCores));
 		} else {
@@ -135,7 +140,7 @@ public class Main {
 		// frame.printStuff();
 		// }
 
-
+		System.out.println(branchAndBoundSolution);
 
     }
     

@@ -33,7 +33,21 @@ public class ParallelBranchAndBound implements Algorithm{
 		//Do BFS for schedules to initialise the queue
 		processingQueue.add(Schedule.getEmptySchedule(taskGraph));
 		for(int i=0;i<startingIterations;i++){
-			processingQueue.addAll(processingQueue.remove().generateChildren());
+			if(processingQueue.isEmpty()){
+				break;
+			}
+			
+			Schedule schedule=processingQueue.remove();
+			List<Schedule> children=schedule.generateChildren();
+			
+			if(children.isEmpty()){
+				if(schedule.getTotalTime()<currentBestTime){
+					currentBest=schedule;
+					currentBestTime=schedule.getTotalTime();
+				}
+			}
+			
+			processingQueue.addAll(children);
 		}
 		
 		
