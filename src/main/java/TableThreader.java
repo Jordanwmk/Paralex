@@ -22,7 +22,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 		this.algorithm = algorithm;
 		this.frame = frame;
 		startTime = System.currentTimeMillis();
-		simpleTimer = new Timer(100, new ActionListener() {
+		simpleTimer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
@@ -34,7 +34,6 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 					frame.getMemoryLabel().setText(memUsage);
 
 					if (!algorithm.isDone()) {
-						
 						long currentTime = (System.currentTimeMillis() - startTime);
 						frame.getElapsedTimeLabel().setText("Elapsed Time: " + currentTime + " ms");
 					} else {

@@ -32,7 +32,7 @@ public class SystemQuery {
 	public static String getProcessMemLoad() throws Exception {
 		 	MemoryUsage heapMemory = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
 		 
-		 	String memUsage = String.valueOf(heapMemory.getUsed() / 1000000);
+		 	String memUsage = String.valueOf(heapMemory.getCommitted()/ 1000000);
 		 	
 	        return memUsage;
 	}
