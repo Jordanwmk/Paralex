@@ -59,7 +59,7 @@ public class ParallelBranchAndBound implements Algorithm {//####[12]####
         TaskIDGroup g = new TaskIDGroup(coresToRunOn);//####[37]####
         for (int i = 0; i < coresToRunOn; i++) //####[38]####
         {//####[38]####
-            TaskID id = startWorker();//####[39]####
+            TaskID id = startWorker(i);//####[39]####
             g.add(id);//####[40]####
         }//####[41]####
         try {//####[42]####
@@ -84,165 +84,169 @@ public class ParallelBranchAndBound implements Algorithm {//####[12]####
 //####[61]####
         Schedule localCurrentBest;//####[61]####
 //####[62]####
-        int localCurrentBestTime = Integer.MAX_VALUE;//####[62]####
+        int id;//####[62]####
 //####[63]####
-        ArrayDeque<Schedule> localStack = new ArrayDeque<Schedule>();//####[63]####
-//####[65]####
-        int schedulesTraversed = 0;//####[65]####
+        int localCurrentBestTime = Integer.MAX_VALUE;//####[63]####
+//####[64]####
+        ArrayDeque<Schedule> localStack = new ArrayDeque<Schedule>();//####[64]####
 //####[66]####
-        int schedulesCompleted = 0;//####[66]####
-//####[68]####
-        public void run() {//####[68]####
-            Schedule scheduleWeAreCurrentlyAt;//####[69]####
-            while (true) //####[70]####
-            {//####[70]####
-                while (!localStack.isEmpty()) //####[72]####
-                {//####[72]####
-                    scheduleWeAreCurrentlyAt = localStack.pop();//####[73]####
-                    schedulesTraversed++;//####[74]####
-                    if (schedulesTraversed > globalReadFrequency) //####[75]####
-                    {//####[75]####
-                        schedulesTraversed = 0;//####[76]####
-                        updateLocalBest();//####[77]####
-                    }//####[78]####
-                    if (scheduleWeAreCurrentlyAt.getFinishTimeEstimate() < localCurrentBestTime) //####[81]####
-                    {//####[81]####
-                        List<Schedule> childNodes = scheduleWeAreCurrentlyAt.generateChildren();//####[82]####
-                        for (Schedule s : childNodes) //####[85]####
-                        {//####[85]####
-                            if (s.getEstimate() < localCurrentBestTime) //####[86]####
-                            {//####[86]####
-                                localStack.push(s);//####[87]####
-                            }//####[88]####
-                        }//####[89]####
-                        if (childNodes.isEmpty()) //####[91]####
-                        {//####[91]####
-                            if (scheduleWeAreCurrentlyAt.getTotalTime() < localCurrentBestTime) //####[92]####
-                            {//####[92]####
-                                localCurrentBest = scheduleWeAreCurrentlyAt;//####[93]####
-                                localCurrentBestTime = scheduleWeAreCurrentlyAt.getTotalTime();//####[94]####
-                                schedulesCompleted++;//####[95]####
-                                if (schedulesCompleted > globalUpdateFrequency) //####[96]####
-                                {//####[96]####
-                                    schedulesCompleted = 0;//####[97]####
-                                    updateGlobalBest();//####[98]####
-                                    updateLocalBest();//####[99]####
-                                }//####[100]####
-                            }//####[101]####
-                        }//####[102]####
-                    }//####[103]####
-                }//####[104]####
-                Schedule nextSchedule = getFromSharedQueue();//####[107]####
-                if (nextSchedule == null) //####[109]####
-                {//####[109]####
-                    updateGlobalBest();//####[110]####
-                    return;//####[111]####
-                } else {//####[112]####
-                    localStack.push(nextSchedule);//####[113]####
-                }//####[114]####
-            }//####[115]####
-        }//####[116]####
-//####[118]####
-        private Schedule getFromSharedQueue() {//####[118]####
-            synchronized (ParallelBranchAndBound.this) {//####[119]####
-                if (!ParallelBranchAndBound.this.processingQueue.isEmpty()) //####[120]####
-                {//####[120]####
-                    return ParallelBranchAndBound.this.processingQueue.remove();//####[121]####
-                } else {//####[122]####
-                    return null;//####[123]####
-                }//####[124]####
-            }//####[125]####
-        }//####[126]####
-//####[131]####
+        int schedulesTraversed = 0;//####[66]####
+//####[67]####
+        int schedulesCompleted = 0;//####[67]####
+//####[69]####
+        public Worker(int id) {//####[69]####
+            this.id = id;//####[70]####
+        }//####[71]####
+//####[73]####
+        public void run() {//####[73]####
+            Schedule scheduleWeAreCurrentlyAt;//####[74]####
+            while (true) //####[75]####
+            {//####[75]####
+                while (!localStack.isEmpty()) //####[77]####
+                {//####[77]####
+                    scheduleWeAreCurrentlyAt = localStack.pop();//####[78]####
+                    schedulesTraversed++;//####[79]####
+                    if (schedulesTraversed > globalReadFrequency) //####[80]####
+                    {//####[80]####
+                        schedulesTraversed = 0;//####[81]####
+                        updateLocalBest();//####[82]####
+                    }//####[83]####
+                    if (scheduleWeAreCurrentlyAt.getFinishTimeEstimate() < localCurrentBestTime) //####[86]####
+                    {//####[86]####
+                        List<Schedule> childNodes = scheduleWeAreCurrentlyAt.generateChildren();//####[87]####
+                        for (Schedule s : childNodes) //####[90]####
+                        {//####[90]####
+                            if (s.getEstimate() < localCurrentBestTime) //####[91]####
+                            {//####[91]####
+                                localStack.push(s);//####[92]####
+                            }//####[93]####
+                        }//####[94]####
+                        if (childNodes.isEmpty()) //####[96]####
+                        {//####[96]####
+                            if (scheduleWeAreCurrentlyAt.getTotalTime() < localCurrentBestTime) //####[97]####
+                            {//####[97]####
+                                localCurrentBest = scheduleWeAreCurrentlyAt;//####[98]####
+                                localCurrentBestTime = scheduleWeAreCurrentlyAt.getTotalTime();//####[99]####
+                                schedulesCompleted++;//####[100]####
+                                if (schedulesCompleted > globalUpdateFrequency) //####[101]####
+                                {//####[101]####
+                                    schedulesCompleted = 0;//####[102]####
+                                    updateGlobalBest();//####[103]####
+                                    updateLocalBest();//####[104]####
+                                }//####[105]####
+                            }//####[106]####
+                        }//####[107]####
+                    }//####[108]####
+                }//####[109]####
+                Schedule nextSchedule = getFromSharedQueue();//####[112]####
+                if (nextSchedule == null) //####[114]####
+                {//####[114]####
+                    updateGlobalBest();//####[115]####
+                    return;//####[116]####
+                } else {//####[117]####
+                    localStack.push(nextSchedule);//####[118]####
+                }//####[119]####
+            }//####[120]####
+        }//####[121]####
+//####[123]####
+        private Schedule getFromSharedQueue() {//####[123]####
+            synchronized (ParallelBranchAndBound.this) {//####[124]####
+                if (!ParallelBranchAndBound.this.processingQueue.isEmpty()) //####[125]####
+                {//####[125]####
+                    return ParallelBranchAndBound.this.processingQueue.remove();//####[126]####
+                } else {//####[127]####
+                    return null;//####[128]####
+                }//####[129]####
+            }//####[130]####
+        }//####[131]####
+//####[136]####
         /**
 		 * Update the local best time and schedule with the global best if it is better
-		 *///####[131]####
-        private void updateLocalBest() {//####[131]####
-            synchronized (ParallelBranchAndBound.this) {//####[132]####
-                if (localCurrentBestTime > ParallelBranchAndBound.this.currentBestTime) //####[133]####
-                {//####[133]####
-                    localCurrentBest = ParallelBranchAndBound.this.currentBest;//####[134]####
-                    localCurrentBestTime = ParallelBranchAndBound.this.currentBestTime;//####[135]####
-                }//####[136]####
-            }//####[137]####
-        }//####[138]####
-//####[143]####
+		 *///####[136]####
+        private void updateLocalBest() {//####[136]####
+            synchronized (ParallelBranchAndBound.this) {//####[137]####
+                if (localCurrentBestTime > ParallelBranchAndBound.this.currentBestTime) //####[138]####
+                {//####[138]####
+                    localCurrentBest = ParallelBranchAndBound.this.currentBest;//####[139]####
+                    localCurrentBestTime = ParallelBranchAndBound.this.currentBestTime;//####[140]####
+                }//####[141]####
+            }//####[142]####
+        }//####[143]####
+//####[148]####
         /**
 		 * Update the global best time and schedule with the local best if it is better
-		 *///####[143]####
-        private void updateGlobalBest() {//####[143]####
-            synchronized (ParallelBranchAndBound.this) {//####[144]####
-                if (localCurrentBestTime < ParallelBranchAndBound.this.currentBestTime) //####[145]####
-                {//####[145]####
-                    ParallelBranchAndBound.this.currentBest = localCurrentBest;//####[146]####
-                    ParallelBranchAndBound.this.currentBestTime = localCurrentBestTime;//####[147]####
-                }//####[148]####
-            }//####[149]####
-        }//####[150]####
-    }//####[150]####
-//####[153]####
-    private static volatile Method __pt__startWorker__method = null;//####[153]####
-    private synchronized static void __pt__startWorker__ensureMethodVarSet() {//####[153]####
-        if (__pt__startWorker__method == null) {//####[153]####
-            try {//####[153]####
-                __pt__startWorker__method = ParaTaskHelper.getDeclaredMethod(new ParaTaskHelper.ClassGetter().getCurrentClass(), "__pt__startWorker", new Class[] {//####[153]####
-                    //####[153]####
-                });//####[153]####
-            } catch (Exception e) {//####[153]####
-                e.printStackTrace();//####[153]####
-            }//####[153]####
-        }//####[153]####
-    }//####[153]####
-    public TaskID<Void> startWorker() {//####[153]####
-        //-- execute asynchronously by enqueuing onto the taskpool//####[153]####
-        return startWorker(new TaskInfo());//####[153]####
-    }//####[153]####
-    public TaskID<Void> startWorker(TaskInfo taskinfo) {//####[153]####
-        // ensure Method variable is set//####[153]####
-        if (__pt__startWorker__method == null) {//####[153]####
-            __pt__startWorker__ensureMethodVarSet();//####[153]####
-        }//####[153]####
-        taskinfo.setParameters();//####[153]####
-        taskinfo.setMethod(__pt__startWorker__method);//####[153]####
-        taskinfo.setInstance(this);//####[153]####
-        return TaskpoolFactory.getTaskpool().enqueue(taskinfo);//####[153]####
-    }//####[153]####
-    public void __pt__startWorker() {//####[153]####
-        new Worker().run();//####[154]####
+		 *///####[148]####
+        private void updateGlobalBest() {//####[148]####
+            synchronized (ParallelBranchAndBound.this) {//####[149]####
+                if (localCurrentBestTime < ParallelBranchAndBound.this.currentBestTime) //####[150]####
+                {//####[150]####
+                    ParallelBranchAndBound.this.currentBest = localCurrentBest;//####[151]####
+                    ParallelBranchAndBound.this.currentBestTime = localCurrentBestTime;//####[152]####
+                }//####[153]####
+            }//####[154]####
+        }//####[155]####
     }//####[155]####
-//####[155]####
-//####[157]####
-    private static volatile Method __pt__startWorkers__method = null;//####[157]####
-    private synchronized static void __pt__startWorkers__ensureMethodVarSet() {//####[157]####
-        if (__pt__startWorkers__method == null) {//####[157]####
-            try {//####[157]####
-                __pt__startWorkers__method = ParaTaskHelper.getDeclaredMethod(new ParaTaskHelper.ClassGetter().getCurrentClass(), "__pt__startWorkers", new Class[] {//####[157]####
-                    //####[157]####
-                });//####[157]####
-            } catch (Exception e) {//####[157]####
-                e.printStackTrace();//####[157]####
-            }//####[157]####
-        }//####[157]####
-    }//####[157]####
-    public TaskIDGroup<Void> startWorkers() {//####[157]####
-        //-- execute asynchronously by enqueuing onto the taskpool//####[157]####
-        return startWorkers(new TaskInfo());//####[157]####
-    }//####[157]####
-    public TaskIDGroup<Void> startWorkers(TaskInfo taskinfo) {//####[157]####
-        // ensure Method variable is set//####[157]####
-        if (__pt__startWorkers__method == null) {//####[157]####
-            __pt__startWorkers__ensureMethodVarSet();//####[157]####
-        }//####[157]####
-        taskinfo.setParameters();//####[157]####
-        taskinfo.setMethod(__pt__startWorkers__method);//####[157]####
-        taskinfo.setInstance(this);//####[157]####
-        return TaskpoolFactory.getTaskpool().enqueueMulti(taskinfo, coresToRunOn);//####[157]####
-    }//####[157]####
-    public void __pt__startWorkers() {//####[157]####
-        for (int i = 0; i < coresToRunOn; i++) //####[158]####
-        {//####[158]####
-            new Worker().run();//####[159]####
-        }//####[160]####
-    }//####[161]####
-//####[161]####
-}//####[161]####
+//####[158]####
+    private static volatile Method __pt__startWorker_int_method = null;//####[158]####
+    private synchronized static void __pt__startWorker_int_ensureMethodVarSet() {//####[158]####
+        if (__pt__startWorker_int_method == null) {//####[158]####
+            try {//####[158]####
+                __pt__startWorker_int_method = ParaTaskHelper.getDeclaredMethod(new ParaTaskHelper.ClassGetter().getCurrentClass(), "__pt__startWorker", new Class[] {//####[158]####
+                    int.class//####[158]####
+                });//####[158]####
+            } catch (Exception e) {//####[158]####
+                e.printStackTrace();//####[158]####
+            }//####[158]####
+        }//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(int id) {//####[158]####
+        //-- execute asynchronously by enqueuing onto the taskpool//####[158]####
+        return startWorker(id, new TaskInfo());//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(int id, TaskInfo taskinfo) {//####[158]####
+        // ensure Method variable is set//####[158]####
+        if (__pt__startWorker_int_method == null) {//####[158]####
+            __pt__startWorker_int_ensureMethodVarSet();//####[158]####
+        }//####[158]####
+        taskinfo.setParameters(id);//####[158]####
+        taskinfo.setMethod(__pt__startWorker_int_method);//####[158]####
+        taskinfo.setInstance(this);//####[158]####
+        return TaskpoolFactory.getTaskpool().enqueue(taskinfo);//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(TaskID<Integer> id) {//####[158]####
+        //-- execute asynchronously by enqueuing onto the taskpool//####[158]####
+        return startWorker(id, new TaskInfo());//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(TaskID<Integer> id, TaskInfo taskinfo) {//####[158]####
+        // ensure Method variable is set//####[158]####
+        if (__pt__startWorker_int_method == null) {//####[158]####
+            __pt__startWorker_int_ensureMethodVarSet();//####[158]####
+        }//####[158]####
+        taskinfo.setTaskIdArgIndexes(0);//####[158]####
+        taskinfo.addDependsOn(id);//####[158]####
+        taskinfo.setParameters(id);//####[158]####
+        taskinfo.setMethod(__pt__startWorker_int_method);//####[158]####
+        taskinfo.setInstance(this);//####[158]####
+        return TaskpoolFactory.getTaskpool().enqueue(taskinfo);//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(BlockingQueue<Integer> id) {//####[158]####
+        //-- execute asynchronously by enqueuing onto the taskpool//####[158]####
+        return startWorker(id, new TaskInfo());//####[158]####
+    }//####[158]####
+    public TaskID<Void> startWorker(BlockingQueue<Integer> id, TaskInfo taskinfo) {//####[158]####
+        // ensure Method variable is set//####[158]####
+        if (__pt__startWorker_int_method == null) {//####[158]####
+            __pt__startWorker_int_ensureMethodVarSet();//####[158]####
+        }//####[158]####
+        taskinfo.setQueueArgIndexes(0);//####[158]####
+        taskinfo.setIsPipeline(true);//####[158]####
+        taskinfo.setParameters(id);//####[158]####
+        taskinfo.setMethod(__pt__startWorker_int_method);//####[158]####
+        taskinfo.setInstance(this);//####[158]####
+        return TaskpoolFactory.getTaskpool().enqueue(taskinfo);//####[158]####
+    }//####[158]####
+    public void __pt__startWorker(int id) {//####[158]####
+        new Worker(id).run();//####[159]####
+    }//####[160]####
+//####[160]####
+}//####[160]####
