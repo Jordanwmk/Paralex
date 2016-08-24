@@ -116,6 +116,13 @@ public class VFrame {
 			System.out.println();
 		}
 	}
+	public void resetSize(){
+		for (int i = 0 ; i<this.numCores; i++){
+			for (int j=0; j< taskGraphList.get(i).getNodeCount();j++){
+				taskGraphList.get(i).getNode(j).setAttribute("ui.style","size:30px;");
+			}
+		}
+	}
 
 	public void incrementTask(int task, int coreID) {
 
@@ -128,7 +135,7 @@ public class VFrame {
 		
 		setNodeColour(currentCoreNodeFrequencies.get(task), task, coreID);
 		 if (currentCoreNodeFrequencies.get(task) % 200000 == 0) {
-			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:60px;");
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:45px;");
 		 }else if (currentCoreNodeFrequencies.get(task) % 100000 == 0){
 			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:30px;");
 		 }

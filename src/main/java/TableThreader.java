@@ -17,7 +17,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	Timer simpleTimer = null;
 	Schedule prev = null;
 	long startTime;
-
+	
 	public TableThreader(Algorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
@@ -34,6 +34,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 						frame.getElapsedTimeLabel().setText("Elapsed Time: " + currentTime + " ms");
 					} else {
 						frame.getRunningLabel().setText("Finished");
+						frame.resetSize();
 					}
 					
 					frame.getCpuLabel().setText("CPU Usage: " + SystemQuery.getProcessCpuLoad());
