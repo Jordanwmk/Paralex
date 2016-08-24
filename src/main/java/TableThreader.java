@@ -18,10 +18,9 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	Schedule prev = null;
 	long startTime;
 	
-	public TableThreader(Algorithm algorithm, VFrame frame) {
+	public TableThreader(Algorithm algorithm, VFrame frame, long startTime) {
 		this.algorithm = algorithm;
 		this.frame = frame;
-		startTime = System.currentTimeMillis();
 		simpleTimer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
