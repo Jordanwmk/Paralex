@@ -112,7 +112,6 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 			}
 		}
 		done=true;
-		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
 		return this.currentBest;
 	}
 	

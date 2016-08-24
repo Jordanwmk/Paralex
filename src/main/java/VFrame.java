@@ -116,18 +116,29 @@ public class VFrame {
 			System.out.println();
 		}
 	}
+	public void resetSize(){
+		for (int i = 0 ; i<this.numCores; i++){
+			for (int j=0; j< taskGraphList.get(i).getNodeCount();j++){
+				taskGraphList.get(i).getNode(j).setAttribute("ui.style","size:30px;");
+			}
+		}
+	}
 
 	public void incrementTask(int task, int coreID) {
 
-		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies
-				.get(coreID);
-
+		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies.get(coreID);
+		
 		Integer value = currentCoreNodeFrequencies.get(task); // get value
 		currentCoreNodeFrequencies.set(task, value + 1);
 
-		// if (currentCore.get(task) % 50 == 0) {
+		
+		
 		setNodeColour(currentCoreNodeFrequencies.get(task), task, coreID);
-		// }
+		 if (currentCoreNodeFrequencies.get(task) % 200000 == 0) {
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:45px;");
+		 }else if (currentCoreNodeFrequencies.get(task) % 100000 == 0){
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:30px;");
+		 }
 
 	}
 
@@ -153,8 +164,8 @@ public class VFrame {
 		JPanel graphKey = new JPanel();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.weightx = 0.2;
-		gbc.weighty = 0.2;
+		gbc.weightx = 0.1;
+		gbc.weighty = 0.1;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.NORTH;
 		graphKey.setBorder(BorderFactory.createTitledBorder("Graph Key"));
@@ -292,10 +303,7 @@ public class VFrame {
 
 		
 		JPanel statusPanel = new JPanel();
-//		statusPanel.setLayout(new GridBagLayout());
-//		GridBagConstraints gbcStatus = new GridBagConstraints();
 		statusPanel.setLayout(new GridLayout(2, 1));
-		
 
 		runningLabel = new JLabel("Running...");
 		runningLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -323,8 +331,8 @@ public class VFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.weightx = 0.5;
-		gbc.weighty = 0.5;
+		gbc.weightx = 0.1;
+		gbc.weighty = 0.1;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.NORTH;
 		statusPanel.setBorder(BorderFactory.createTitledBorder("Status"));
@@ -539,37 +547,7 @@ public class VFrame {
 		mainFrame.setVisible(true);
 	}
 
-	//	public void addToBestSchedule(Schedule currentBest) {
-	//		Arrays.fill(procFinishTimes, 0);
-	//
-	//		for (int i = 0; i < totalProcessors; i++) {
-	//			JTable table = procTables.get(i);
-	//			DefaultTableModel model = (DefaultTableModel) table.getModel();
-	//			model.setRowCount(0);
-	//		}
-	//
-	//		currentBestSchedule = currentBest;
-	//		// while (currentBest.getTask() != -1) {
-	//		// // System.out.println(currentBest.getTask());
-	//		// currentBestScheduleList.add(currentBest);
-	//		// currentBest = currentBest.getParent();
-	//		// }
-	//
-	//		for (int i = 0; i < graphStreamGra.getNodeCount(); i++) {
-	//			int startTime = currentBestSchedule.getTaskStartTimes()[i];
-	//			int processor = currentBestSchedule.getTaskProcessors()[i];
-	//			int task = i;
-	//			int[] nodeCostArray = input.getNodeCosts();
-	//			// if (task != -1) {
-	//			int nodeCost = nodeCostArray[task];
-	//			instance.addTaskToProcessor(processor, task, nodeCost, startTime);
-	//			// }
-	//
-	//		}
-	//	}
-
-	public void addTaskToProcessor(int proc, int task, int nodeCost,
-			int startTime) {
+	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
 
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -660,16 +638,18 @@ public class VFrame {
 	 * Reference: http://stackoverflow.com/tags/javasound/info
 	 * @param fileName
 	 */
-	public void playSound(final String fileName){
+	public Clip playSound(String fileName){
 		try {
 			Clip audioClip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/paralex.wav"));
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(fileName));
 			audioClip.open(inputStream);
 			audioClip.start();
+			return audioClip;
 		}catch(Exception e){
 			System.err.println("Error playing file " + fileName);
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 

@@ -6,6 +6,8 @@ node{
 	stroke-width: 15px;
 	fill-mode: dyn-plain; 
 	size-mode: fit;
+	text-mode: normal;
+	text-visibility-mode: normal;
 }
 
 edge{
@@ -18,6 +20,13 @@ node.partition50{
 	
 }
 
+node.selected{
+		size: 60px;
+}
+
+node.unselected{
+	size:30px;
+}
 node.partition150{
 	fill-color: #0066ff;
 	

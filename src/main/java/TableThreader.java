@@ -16,10 +16,12 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	VFrame frame;
 	Timer simpleTimer = null;
 	Schedule prev = null;
-
+	long startTime;
+	
 	public TableThreader(Algorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
+		startTime = System.currentTimeMillis();
 		simpleTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -30,14 +32,24 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 					String memUsage = "Memory Usage:  " + SystemQuery.getProcessMemLoad() + " MB";
 					frame.getCpuLabel().setText(cpuUsage);
 					frame.getMemoryLabel().setText(memUsage);
-					
-					System.out.println(memUsage);
+
+					if (!algorithm.isDone()) {
+						
+						long currentTime = (System.currentTimeMillis() - startTime);
+						frame.getElapsedTimeLabel().setText("Elapsed Time: " + currentTime + " ms");
+					} else {
+						frame.getRunningLabel().setText("Finished");
+						frame.resetSize();
+					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				};
 
 				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
+					int totalTime = currentBest.getTotalTime();
+					frame.getTotalScheduleTimeLabel().setText("Total Schedule Time: " + totalTime);
+					
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
 					for (int i = 0; i < frame.totalProcessors; i++) {
