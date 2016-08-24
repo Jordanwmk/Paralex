@@ -1,0 +1,10 @@
+digraph "src/test/resources/test-output.dot" {
+	b [Start=17,Weight=5,Processor=1];
+	d [Start=6,Weight=11,Processor=1];
+	e [Start=3,Weight=3,Processor=1];
+	f [Start=16,Weight=7,Processor=2];
+	g [Start=0,Weight=3,Processor=1];
+	0 [Start=0,Weight=6,Processor=2];
+	3 [Start=6,Weight=10,Processor=2];
+	0 -> 3 [Weight=34];
+}
