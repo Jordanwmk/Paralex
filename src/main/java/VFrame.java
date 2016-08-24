@@ -205,7 +205,7 @@ public class VFrame {
 		color1000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color1000.setBackground(new Color(0, 0, 255));
 		panel1000.add(color1000, BorderLayout.WEST);
-		panel1000.add(new JLabel("  500 - 1000 visits"), BorderLayout.EAST);
+		panel1000.add(new JLabel("  500 - 999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 0;
 		graphKey.add(panel1000, gbcKey);
@@ -216,7 +216,7 @@ public class VFrame {
 		color5000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color5000.setBackground(new Color(102, 0, 255));
 		panel5000.add(color5000, BorderLayout.WEST);
-		panel5000.add(new JLabel("  1000 - 5000 visits"), BorderLayout.EAST);
+		panel5000.add(new JLabel("  1,000 - 4,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 1;
 		graphKey.add(panel5000, gbcKey);
@@ -227,7 +227,7 @@ public class VFrame {
 		color10000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color10000.setBackground(new Color(153, 51, 255));
 		panel10000.add(color10000, BorderLayout.WEST);
-		panel10000.add(new JLabel("  5000 - 10000 visits"), BorderLayout.EAST);
+		panel10000.add(new JLabel("  5,000 - 9,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 2;
 		graphKey.add(panel10000, gbcKey);
@@ -238,7 +238,7 @@ public class VFrame {
 		color50000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color50000.setBackground(new Color(204, 0, 255));
 		panel50000.add(color50000, BorderLayout.WEST);
-		panel50000.add(new JLabel("  10000 - 50000 visits"), BorderLayout.EAST);
+		panel50000.add(new JLabel("  10,000 - 49,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
 		gbcKey.gridy = 0;
 		graphKey.add(panel50000, gbcKey);
@@ -249,7 +249,7 @@ public class VFrame {
 		color300000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color300000.setBackground(new Color(255, 0, 102));
 		panel300000.add(color300000, BorderLayout.WEST);
-		panel300000.add(new JLabel("  50,000 - 300,000 visits"),
+		panel300000.add(new JLabel("  50,000 - 299,999 visits"),
 				BorderLayout.EAST);
 		gbcKey.gridx = 2;
 		gbcKey.gridy = 1;
@@ -261,7 +261,7 @@ public class VFrame {
 		color1000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color1000000.setBackground(new Color(255, 0, 0));
 		panel1000000.add(color1000000, BorderLayout.WEST);
-		panel1000000.add(new JLabel("  300,000 - 1,000,000 visits"),
+		panel1000000.add(new JLabel("  300,000 - 999,999 visits"),
 				BorderLayout.EAST);
 		gbcKey.gridx = 2;
 		gbcKey.gridy = 2;
@@ -273,7 +273,7 @@ public class VFrame {
 		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color3000000.setBackground(new Color(128, 0, 0));
 		panel3000000.add(color3000000, BorderLayout.WEST);
-		panel3000000.add(new JLabel("  1,000,000 - 3,000,000 visits"),
+		panel3000000.add(new JLabel("  1,000,000 - 2,999,999 visits"),
 				BorderLayout.EAST);
 		gbcKey.gridx = 3;
 		gbcKey.gridy = 0;
@@ -342,7 +342,6 @@ public class VFrame {
 
 		JPanel processPanel = new JPanel();
 		processPanel.setLayout(new GridLayout(1, totalProcessors));
-
 		for (int i = 0; i < totalProcessors; i++) {
 			DefaultTableModel model = new DefaultTableModel() {
 				@Override
@@ -353,7 +352,7 @@ public class VFrame {
 
 			model.addColumn("P");
 			JTable table = new JTable(model);
-
+			table.setBackground(new Color(239, 239, 245));
 			table.setRowSelectionAllowed(false);
 			table.setEnabled(false); // Disabling user edit
 			table.addMouseMotionListener(new MouseMotionListener() {
@@ -365,7 +364,10 @@ public class VFrame {
 					if (row != -1) {
 						if (table.getValueAt(row, col) != null) {
 							String value = (String) table.getValueAt(row, col);
-
+							if (value != "Idle Time") {
+								String[] split = value.split("\\s+");
+								value = split[1];
+							}
 							// Checks if nothing has been hovered over and you
 							// are
 							// not hovering over
@@ -432,7 +434,7 @@ public class VFrame {
 
 			JPanel panel = new JPanel();
 			panel.setLayout(new BorderLayout());
-			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Processor " + i, TitledBorder.CENTER, TitledBorder.TOP));
+			panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Processor " + (i+1), TitledBorder.CENTER, TitledBorder.TOP));
 			panel.add(table);
 			processPanel.add(panel);
 		}
@@ -540,16 +542,19 @@ public class VFrame {
 		int earliestStartOnProc = procFinishTimes[proc];
 		int idleTime = startTime - earliestStartOnProc;
 
-		String taskName = graphStreamGraph.getNode(task).getId();
-
+		if (task != -1){
+		String taskName = "Node: " + graphStreamGraph.getNode(task).getId();
+		taskName = taskName + "     (Task Time: "+ graphStreamGraph.getNode(task).getAttribute("Weight") + ")";
+		
 		if (idleTime > 0) {
 			model.addRow(new String[] { "Idle Time" });
-			;
+			
 			table.setRowHeight(table.getRowCount() - 1,
 					(idleTime * scalingFactor));
 		}
 
 		model.addRow(new String[] { taskName });
+		}
 		table.setRowHeight(table.getRowCount() - 1, (nodeCost * scalingFactor));
 		procFinishTimes[proc] = startTime + nodeCost;
 	}
@@ -641,21 +646,19 @@ public class VFrame {
 
 	public class CustomTableRenderer extends DefaultTableCellRenderer {
 		@Override
-		public Component getTableCellRendererComponent(JTable table,
-				Object value, boolean isSelected, boolean hasFocus, int row,
-				int column) {
-			Component c = super.getTableCellRendererComponent(table, value,
-					isSelected, hasFocus, row, column);
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 			setHorizontalAlignment(SwingConstants.CENTER);
-
+				 
 			String valueAt = (String) table.getModel().getValueAt(row, column);
 
 			if (valueAt.equals("Idle Time")) {
-				c.setBackground(Color.BLACK);
-				c.setForeground(Color.BLACK);
+				c.setBackground(new Color(239, 239, 245));
+				c.setForeground(new Color(239, 239, 245));
 			} else {
-				c.setBackground(Color.WHITE);
+				c.setBackground(new Color(208, 208, 225));
+				c.setForeground(Color.BLACK);
 			}
 
 			return c;
