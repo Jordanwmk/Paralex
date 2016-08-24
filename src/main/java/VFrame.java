@@ -162,9 +162,9 @@ public class VFrame {
 		panel50.setLayout(new BorderLayout());
 		JPanel color50 = new JPanel();
 		color50.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color50.setBackground(Color.BLUE);
+		color50.setBackground(new Color(128,212,255));
 		panel50.add(color50, BorderLayout.WEST);
-		panel50.add(new JLabel(" 0-50 visits"), BorderLayout.EAST);
+		panel50.add(new JLabel("  0 - 50 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 0;
 		gbcKey.weightx = 0.2;
@@ -176,9 +176,9 @@ public class VFrame {
 		panel150.setLayout(new BorderLayout());
 		JPanel color150 = new JPanel();
 		color150.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color150.setBackground(Color.BLUE);
+		color150.setBackground(new Color(51,153,255));
 		panel150.add(color150, BorderLayout.WEST);
-		panel150.add(new JLabel(" 50-150 visits"), BorderLayout.EAST);
+		panel150.add(new JLabel("  50 - 150 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 1;
 		graphKey.add(panel150, gbcKey);
@@ -187,9 +187,9 @@ public class VFrame {
 		panel500.setLayout(new BorderLayout());
 		JPanel color500 = new JPanel();
 		color500.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color500.setBackground(Color.BLUE);
+		color500.setBackground(new Color(0,102,255));
 		panel500.add(color500, BorderLayout.WEST);
-		panel500.add(new JLabel(" 150-500 visits"), BorderLayout.EAST);
+		panel500.add(new JLabel("  150 - 500 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
 		gbcKey.gridy = 2;
 		graphKey.add(panel500, gbcKey);
@@ -198,9 +198,9 @@ public class VFrame {
 		panel1000.setLayout(new BorderLayout());
 		JPanel color1000 = new JPanel();
 		color1000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color1000.setBackground(Color.BLUE);
+		color1000.setBackground(new Color(0,0,255));
 		panel1000.add(color1000, BorderLayout.WEST);
-		panel1000.add(new JLabel(" 500-1000 visits"), BorderLayout.EAST);
+		panel1000.add(new JLabel("  500 - 1000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 0;
 		graphKey.add(panel1000, gbcKey);
@@ -209,9 +209,9 @@ public class VFrame {
 		panel5000.setLayout(new BorderLayout());
 		JPanel color5000 = new JPanel();
 		color5000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color5000.setBackground(Color.BLUE);
+		color5000.setBackground(new Color(102,0,255));
 		panel5000.add(color5000, BorderLayout.WEST);
-		panel5000.add(new JLabel(" 1000-5000 visits"), BorderLayout.EAST);
+		panel5000.add(new JLabel("  1000 - 5000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
 		gbcKey.gridy = 1;
 		graphKey.add(panel5000, gbcKey);
@@ -220,67 +220,67 @@ public class VFrame {
 		panel10000.setLayout(new BorderLayout());
 		JPanel color10000 = new JPanel();
 		color10000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color10000.setBackground(Color.BLUE);
+		color10000.setBackground(new Color(153,51,255));
 		panel10000.add(color10000, BorderLayout.WEST);
-		panel10000.add(new JLabel(" 5000-10000 visits"), BorderLayout.EAST);
+		panel10000.add(new JLabel("  5000 - 10000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
-		gbcKey.gridy = 1;
+		gbcKey.gridy = 2;
 		graphKey.add(panel10000, gbcKey);
 		
 		JPanel panel50000 = new JPanel();
 		panel50000.setLayout(new BorderLayout());
 		JPanel color50000 = new JPanel();
 		color50000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color50000.setBackground(Color.BLUE);
+		color50000.setBackground(new Color(204,0,255));
 		panel50000.add(color50000, BorderLayout.WEST);
-		panel50000.add(new JLabel(" 10000-50000 visits"), BorderLayout.EAST);
-		gbcKey.gridx = 1;
-		gbcKey.gridy = 2;
+		panel50000.add(new JLabel("  10000 - 50000 visits"), BorderLayout.EAST);
+		gbcKey.gridx = 2;
+		gbcKey.gridy = 0;
 		graphKey.add(panel50000, gbcKey);
 		
 		JPanel panel300000 = new JPanel();
 		panel300000.setLayout(new BorderLayout());
 		JPanel color300000 = new JPanel();
 		color300000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color300000.setBackground(Color.BLUE);
+		color300000.setBackground(new Color(255,0,102));
 		panel300000.add(color300000, BorderLayout.WEST);
-		panel300000.add(new JLabel(" 50,000-300,000 visits"), BorderLayout.EAST);
+		panel300000.add(new JLabel("  50,000 - 300,000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
-		gbcKey.gridy = 0;
+		gbcKey.gridy = 1;
 		graphKey.add(panel300000, gbcKey);
 		
 		JPanel panel1000000 = new JPanel();
 		panel1000000.setLayout(new BorderLayout());
 		JPanel color1000000 = new JPanel();
 		color1000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color1000000.setBackground(Color.BLUE);
+		color1000000.setBackground(new Color(255,0,0));
 		panel1000000.add(color1000000, BorderLayout.WEST);
-		panel1000000.add(new JLabel(" 300,000-1,000,000 visits"), BorderLayout.EAST);
+		panel1000000.add(new JLabel("  300,000 - 1,000,000 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
-		gbcKey.gridy = 1;
+		gbcKey.gridy = 2;
 		graphKey.add(panel1000000, gbcKey);
 		
 		JPanel panel3000000 = new JPanel();
 		panel3000000.setLayout(new BorderLayout());
 		JPanel color3000000 = new JPanel();
 		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color3000000.setBackground(Color.BLUE);
+		color3000000.setBackground(new Color(128,0,0));
 		panel3000000.add(color3000000, BorderLayout.WEST);
-		panel3000000.add(new JLabel(" 1,000,000-3,000,000 visits"), BorderLayout.EAST);
-		gbcKey.gridx = 2;
-		gbcKey.gridy = 2;
+		panel3000000.add(new JLabel("  1,000,000 - 3,000,000 visits"), BorderLayout.EAST);
+		gbcKey.gridx = 3;
+		gbcKey.gridy = 0;
 		graphKey.add(panel3000000, gbcKey);
-		
-//		JPanel panel0 = new JPanel();
-//		panel0.setLayout(new BorderLayout());
-//		JPanel color3000000 = new JPanel();
-//		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//		color3000000.setBackground(Color.BLUE);
-//		panel0.add(color3000000, BorderLayout.WEST);
-//		panel0.add(new JLabel("0-50 visits"), BorderLayout.EAST);
-//		gbcKey.gridx = 2;
-//		gbcKey.gridy = 2;
-//		graphKey.add(panel0, gbcKey);
+				
+		JPanel panel3000000plus = new JPanel();
+		panel3000000plus.setLayout(new BorderLayout());
+		JPanel color3000000plus = new JPanel();
+		color3000000plus.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		color3000000plus.setBackground(Color.black);
+		panel3000000plus.add(color3000000plus, BorderLayout.WEST);
+		panel3000000plus.add(new JLabel("  3,000,000 + visits"), BorderLayout.EAST);
+		gbcKey.gridx = 3;
+		gbcKey.gridy = 1;
+		graphKey.add(panel3000000plus, gbcKey);
 		
 		JPanel statusPanel = new JPanel();		
 		gbc.gridx = 1;
@@ -454,38 +454,34 @@ public class VFrame {
 
 
 	private void setNodeColour(int activityNumber, int task) {
-		if (activityNumber == 3000000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
-			taskGraph.getNode(task)
-					.setAttribute("ui.class", "partition3000000");
-
-		} else if (activityNumber == 1000000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
-			taskGraph.getNode(task)
-					.setAttribute("ui.class", "partition1000000");
-		} else if (activityNumber == 300000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+		if (activityNumber == 3000000) { // 3,000,000 +
+			taskGraph.getNode(task).setAttribute("ui.class", "partition3000000");
+			
+		} else if (activityNumber == 1000000) { // 1,000,000 to 2,999,999
+			taskGraph.getNode(task).setAttribute("ui.class", "partition1000000");
+			
+		} else if (activityNumber == 300000) { // 300,000 to 999,999
 			taskGraph.getNode(task).setAttribute("ui.class", "partition300000");
-		} else if (activityNumber == 50000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 50000) { // 50,000 to 299,999
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50000");
-		} else if (activityNumber == 10000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 10000) { // 10,000 to 49,999
 			taskGraph.getNode(task).setAttribute("ui.class", "partition10000");
-		} else if (activityNumber == 5000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 5000) { // 5,000 to 9,999
 			taskGraph.getNode(task).setAttribute("ui.class", "partition5000");
-		} else if (activityNumber == 1000) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 1000) { // 1,000 to 4,999 
 			taskGraph.getNode(task).setAttribute("ui.class", "partition1000");
-		} else if (activityNumber == 500) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 500) { // 500 to 999
 			taskGraph.getNode(task).setAttribute("ui.class", "partition500");
-		} else if (activityNumber == 150) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 150) { // 150 to 499
 			taskGraph.getNode(task).setAttribute("ui.class", "partition150");
-		} else if (activityNumber == 50) {
-			// taskGraph.getNode(task).removeAttribute("ui.class");
+			
+		} else if (activityNumber == 50) { // 50 to 149
 			taskGraph.getNode(task).setAttribute("ui.class", "partition50");
 		}
 	}
