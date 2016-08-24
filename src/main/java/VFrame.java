@@ -116,18 +116,29 @@ public class VFrame {
 			System.out.println();
 		}
 	}
+	public void resetSize(){
+		for (int i = 0 ; i<this.numCores; i++){
+			for (int j=0; j< taskGraphList.get(i).getNodeCount();j++){
+				taskGraphList.get(i).getNode(j).setAttribute("ui.style","size:30px;");
+			}
+		}
+	}
 
 	public void incrementTask(int task, int coreID) {
 
-		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies
-				.get(coreID);
-
+		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies.get(coreID);
+		
 		Integer value = currentCoreNodeFrequencies.get(task); // get value
 		currentCoreNodeFrequencies.set(task, value + 1);
 
-		// if (currentCore.get(task) % 50 == 0) {
+		
+		
 		setNodeColour(currentCoreNodeFrequencies.get(task), task, coreID);
-		// }
+		 if (currentCoreNodeFrequencies.get(task) % 200000 == 0) {
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:45px;");
+		 }else if (currentCoreNodeFrequencies.get(task) % 100000 == 0){
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:30px;");
+		 }
 
 	}
 
@@ -305,6 +316,9 @@ public class VFrame {
 		innerStatusPanel.add(cpuLabel);
 
 		memoryLabel = new JLabel("Memory Usage: ");
+		//Set size of label so no jittering
+		memoryLabel.setMinimumSize(new Dimension(250,22));
+		memoryLabel.setMaximumSize(new Dimension(250,22));
 		innerStatusPanel.add(memoryLabel);
 
 		elapsedTimeLabel = new JLabel("Elapsed Time: ");
