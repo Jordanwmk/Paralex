@@ -12,7 +12,7 @@ import org.graphstream.stream.file.FileSourceFactory;
 
 public class Input {
 	
-	private static Graph inputG;
+	private Graph inputG;
 	private ArrayList<ArrayList<Integer>> adjList = new ArrayList<ArrayList<Integer>>();
 	private ArrayList<ArrayList<Integer>> dependencyList = new ArrayList<ArrayList<Integer>>();
 	private int[] nodeCosts;
@@ -56,7 +56,7 @@ public class Input {
 	public void setBotLevels(int[] botLevels) {
 		this.botLevels = botLevels;
 	}
-    public static Graph getInputG() {
+    public Graph getInputG() {
 		return inputG;
 	}
 	private void setInputG(Graph inputG) {
@@ -74,7 +74,6 @@ public class Input {
         //creating the array of node costs
         this.createNodeCosts();
         
-
 
         //finding all of the source nodes
         this.createSourceNodes();

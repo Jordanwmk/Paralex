@@ -9,10 +9,10 @@ public class Output {
 
     //String fileName = "src/test2.dot";
 	//String fileName = Main.fileName;
-    public void createOutput(Schedule solution, String outputName){
+    public void createOutput(Schedule solution, String outputName, Input input){
 
         //Get created graph from input dot file
-    	Graph graph = Input.getInputG();
+    	Graph graph = input.getInputG();
     	for (int i = 0; i<solution.getTaskStartTimes().length; i++) {
     		int time = solution.getTaskStartTimes()[i];
 			int processor = solution.getTaskProcessors()[i];

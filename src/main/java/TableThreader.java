@@ -12,15 +12,15 @@ import javax.swing.table.DefaultTableModel;
 
 public class TableThreader extends SwingWorker<Void, Schedule> {
 
-	BranchAndBoundAlgorithm algorithm = null;
+	Algorithm algorithm = null;
 	VFrame frame;
 	Timer simpleTimer = null;
 	Schedule prev = null;
 
-	public TableThreader(BranchAndBoundAlgorithm algorithm, VFrame frame) {
+	public TableThreader(Algorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
-		simpleTimer = new Timer(10, new ActionListener() {
+		simpleTimer = new Timer(5, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 //				Schedule currentBest = algorithm.getCurrentBest();
@@ -52,7 +52,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 //				}
 				
 				Schedule currentBest = algorithm.getCurrentBest();
-				System.out.println(currentBest);
+//				System.out.println(currentBest);
 				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
@@ -82,9 +82,9 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	protected Void doInBackground() throws Exception {
 
 		simpleTimer.start();
-		while (!(algorithm.isDone())){
-			
-		}
+//		while (!(algorithm.isDone())){
+//			
+//		}
 
 		return null;
 	}
@@ -98,17 +98,17 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 		if (schedule != null) {
 			System.out.println("GOING INSIDE THE THING");
 
-			int[] startTimes=new int[frame.taskGraph.getNodeCount()];
+			int[] startTimes=new int[frame.graphStreamGraph.getNodeCount()];
 			
 			
 			System.arraycopy(schedule.getTaskStartTimes(), 0, startTimes, 0, startTimes.length);
 			
 			
-			for(int i=0;i<frame.taskGraph.getNodeCount();i++){
+			for(int i=0;i<frame.graphStreamGraph.getNodeCount();i++){
 				int earliestStartTime = Integer.MAX_VALUE;
 				int earliestStartTimeIndex = -1;
 				
-				for(int j=0;j<frame.taskGraph.getNodeCount();j++){
+				for(int j=0;j<frame.graphStreamGraph.getNodeCount();j++){
 					if(startTimes[j]<earliestStartTime){
 						earliestStartTime=startTimes[j];
 						earliestStartTimeIndex=j;

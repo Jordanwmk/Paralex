@@ -1,12 +1,11 @@
 digraph "src/test/resources/Nodes_7_OutTree-output.dot" {
-	graph [ ui.stylesheet=url('src/main/java/graphStyleSheet.css')) ];
-	a [Processor=1,ui.label=a,Start=0,Weight=5];
-	b [Processor=1,ui.label=b,Start=11,Weight=6];
-	c [ui.class=partition50,Processor=2,ui.label=c,Start=16,Weight=5];
-	d [Processor=1,ui.label=d,Start=5,Weight=6];
-	e [ui.class=partition50,Processor=1,ui.label=e,Start=24,Weight=4];
-	f [ui.class=partition50,Processor=2,ui.label=f,Start=21,Weight=7];
-	g [Processor=1,ui.label=g,Start=17,Weight=7];
+	a [Start=0,Weight=5,Processor=1];
+	b [Start=5,Weight=6,Processor=1];
+	c [Start=11,Weight=5,Processor=1];
+	d [Start=22,Weight=6,Processor=2];
+	e [Start=23,Weight=4,Processor=1];
+	f [Start=15,Weight=7,Processor=2];
+	g [Start=16,Weight=7,Processor=1];
 	a -> b [Weight=15];
 	a -> c [Weight=11];
 	a -> d [Weight=11];

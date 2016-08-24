@@ -23,4 +23,10 @@ public class BruteForceAlgorithm implements Algorithm {
         return currentBest;
     }
 
+	@Override
+	public Schedule getCurrentBest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

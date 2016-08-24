@@ -75,7 +75,7 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 			//visuallisation
 			VFrame frame = VFrame.getInstance();
             if (scheduleWeAreCurrentlyAt.getTask() != -1){
-            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask());
+            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
             }
 			
 			// if estimate >= current best, then prune the subtree (don't
