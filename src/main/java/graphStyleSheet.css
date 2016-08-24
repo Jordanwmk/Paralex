@@ -4,51 +4,65 @@ node{
 	stroke-mode: plain;
 	stroke-color: black;
 	stroke-width: 15px;
+	fill-mode: dyn-plain; 
+	size-mode: fit;
 }
 
 edge{
 	fill-color:blue;
+	
 }
 
 node.partition50{
 	fill-color: #3399ff;
+	
 }
 
 node.partition150{
 	fill-color: #0066ff;
+	
 }
 
 node.partition500{
 	fill-color: #0000ff;
+	
 }
 
 node.partition1000{
 	fill-color: #6600ff;
+	
 }
 
 node.partition5000{
 	fill-color: #9933ff;
+	
 }
 
 node.partition10000{
 	fill-color: #cc00ff;
+	
 }
 
 node.partition50000{
 	fill-color: #ff0066;
+	
 }
 
 node.partition300000{
 	fill-color: #ff0000;
+	
 }
 
 node.partition1000000{
 	fill-color: #800000;
+	
 }
 
 node.partition3000000{
 	fill-color: #000000;
+	
 }
 node.highlighted{
 	fill-color: #ffff00;	
+	
 }
