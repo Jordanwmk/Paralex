@@ -14,10 +14,11 @@ public class Main {
 		int numProcessors = Integer.parseInt(args[1]);
 		boolean useVisualisation = false;
 		boolean darude = false;
+		String outputName ="";
 		
+		try{
 		String[] splitName = fileName.split(".dot");
-		String outputName = splitName[0] + "-output.dot";
-
+		outputName = splitName[0] + "-output.dot";
 		// Check when additional options are added.
 		if (args.length > 2) {
 			for (int i = 2; i < args.length; i++) {
@@ -36,6 +37,9 @@ public class Main {
 					darude=true;
 				}
 			}
+		}
+		}catch (Exception e){
+			System.out.println("Invalid Input");
 		}
 
 		// if (useVisualisation){
