@@ -35,7 +35,7 @@ public class TaskGraph {
         entryPoints=input.getSrcNodes();
 
         if(useVisualisation){
-            input.showVisualisation();
+            
         }
     }
 

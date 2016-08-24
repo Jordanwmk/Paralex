@@ -5,8 +5,9 @@ public class Main {
     public static void main(String[] args){
 //    	//Check for what options are enabled in executing the jar.
 //    	
+
     	//Default values when no additional option is added.
-    	int threadsUsed = 0;
+    	int threadsUsed = 1;
     	String fileName = args[0];
     	int numProcessors = Integer.parseInt(args[1]);
     	boolean useVisualisation = false;
@@ -29,7 +30,11 @@ public class Main {
     			}
     		}
     	}
- 
+     	
+//     	if (useVisualisation){
+//     		VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+//     	}
+     	
 		TaskGraph taskGraph;
 		try {
 			taskGraph = new TaskGraph(fileName,numProcessors,useVisualisation);
@@ -41,24 +46,46 @@ public class Main {
 
         long startTime,endTime,totalTime;
 
-//        startTime = System.currentTimeMillis();
-//        Schedule bruteForceSolution=new BruteForceAlgorithm().schedule(taskGraph);
-//        endTime   = System.currentTimeMillis();
-//        totalTime = endTime - startTime;
-//        System.out.println(bruteForceSolution);
-//        System.out.println("brute Force solution time: " + bruteForceSolution.getTotalTime());
-//        System.out.println("Brute Force runtime: " + totalTime + "ms");
-//        System.out.println();
-
         startTime = System.currentTimeMillis();
-        Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+        BranchAndBoundAlgorithm algorithm = new BranchAndBoundAlgorithm();
+
+        if (useVisualisation){
+        	VFrame frame = new VFrame(threadsUsed, fileName, numProcessors);
+        	TableThreader tt = new TableThreader(algorithm, frame);
+
+        	tt.execute();
+        }
+        Schedule branchAndBoundSolution = algorithm.schedule(taskGraph);
         endTime   = System.currentTimeMillis();
         totalTime = endTime - startTime;
-        System.out.println(branchAndBoundSolution);
-        System.out.println("Branch & Bound solution time: "+branchAndBoundSolution.getTotalTime());
-        System.out.println("Branch & Bound runtime: " + totalTime + "ms");
-        System.out.println();
-
+        
+        new Output().createOutput(branchAndBoundSolution,outputName);
+//        
+//
+//        if (useVisualisation){
+//        	
+//        	Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+//        	TableThreader tt = new TableThreader(branchAndBoundSolution);
+//        	tt.execute();
+//        	new Output().createOutput(branchAndBoundSolution,outputName);
+//        	
+//        } else {
+//        	 startTime = System.currentTimeMillis();
+//        	 
+//        	 Algorithm alg=new BranchAndBoundAlgorithm();
+//        	 
+//        	 timer.schedule(guiUpdater);
+//        	 
+//        	 Schedule solution=alg.schedule(taskGraph);
+//        	 
+//             Schedule branchAndBoundSolution=new BranchAndBoundAlgorithm().schedule(taskGraph);
+//             endTime   = System.currentTimeMillis();
+//             totalTime = endTime - startTime;
+//             System.out.println(totalTime);
+//             new Output().createOutput(branchAndBoundSolution,outputName);
+//             VFrame frame = VFrame.getInstance();
+//             frame.printStuff();
+//        }
 
 //        startTime = System.currentTimeMillis();
 //        Schedule aStarSolution=new AStarAlgorithm().schedule(taskGraph);
@@ -69,7 +96,7 @@ public class Main {
 //        System.out.println("A* runtime: " + totalTime + "ms");
 //        System.out.println();
 
-        new Output().createOutput(branchAndBoundSolution,outputName);
+        
         
 //        InputParser lol = new InputParser(filename);
 //        Schedule =  scheduler.schedule(Graph.getGraph);
@@ -77,4 +104,6 @@ public class Main {
         
 
     }
+    
+    
 }

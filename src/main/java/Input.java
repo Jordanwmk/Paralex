@@ -1,13 +1,14 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.stream.file.FileSource;
 import org.graphstream.stream.file.FileSourceFactory;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Input {
 	
@@ -73,12 +74,8 @@ public class Input {
         //creating the array of node costs
         this.createNodeCosts();
         
-        // Adding labels to the graph so they display
-        for (Node node : this.getInputG()) {
-        	node.addAttribute("ui.label", node.getId());
-        	node.addAttribute("ui.style", "fill-color: red;");
-        }
-        
+
+
         //finding all of the source nodes
         this.createSourceNodes();
         
@@ -114,6 +111,7 @@ public class Input {
         } catch( IOException e) {
             e.printStackTrace();
         }
+        
         try {
             fs.end();
         } catch( IOException e) {
@@ -123,7 +121,14 @@ public class Input {
         }
         
         //setting the nodes and edges to be Integer values
+        List<String> attributes=new ArrayList<String>(inputGraph.getAttributeKeySet());
+        for(String attribute:attributes){
+        	inputGraph.removeAttribute(attribute);
+        }
+        
+        //System.out.println(inputGraph.getAttributeCount());
         for(Node node: inputGraph){
+        	//System.out.println(node.getId());
         	node.setAttribute("Weight", (((Double) (node.getAttribute("Weight"))).intValue()));
         }
         for(Edge e : inputGraph.getEachEdge()){

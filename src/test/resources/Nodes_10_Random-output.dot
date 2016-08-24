@@ -1,10 +1,4 @@
-digraph "src/tests/Nodes_10_Random-output.dot" {
-	graph [ No of edges=19.0 ];
-	graph [ Total sequential time=63.0 ];
-	graph [ No of nodes=10.0 ];
-	graph [ CCR=10.0 ];
-	graph [ Density=1.9 ];
-	graph [ Node concurrency=-1.0 ];
+digraph "src/test/resources/Nodes_10_Random-output.dot" {
 	0 [Start=0,Weight=6,Processor=1];
 	3 [Start=40,Weight=10,Processor=2];
 	4 [Start=6,Weight=3,Processor=1];

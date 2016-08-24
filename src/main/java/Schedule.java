@@ -31,7 +31,7 @@ public class Schedule implements Comparable<Schedule>{
     //array that stores the start times for each of the tasks, -1 if the task has not been scheduled yet
     private int[] taskStartTimes;
 
-    //array that stores which processors tasks have been scheduled on
+	//array that stores which processors tasks have been scheduled on
     private int[] taskProcessors;
 
     //Array that stores the earliest free time a task can be scheduled on each processor
@@ -40,7 +40,7 @@ public class Schedule implements Comparable<Schedule>{
     //CONSTRUCTOR
     public Schedule(TaskGraph taskGraph, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] taskProcessors, int[] processorFinishTimes) {
         this.taskGraph = taskGraph;
-        //this.task = task;
+        this.task = task;
         //this.time = time;
         //this.processor = processor;
         this.idleTime = idleTime;
@@ -211,7 +211,7 @@ public class Schedule implements Comparable<Schedule>{
 
     @Override
     public boolean equals(Object other){
-        return true;
+    	return other instanceof Schedule && Arrays.equals(taskStartTimes, ((Schedule)other).taskStartTimes) && Arrays.equals(taskProcessors, ((Schedule)other).taskProcessors); 
     }
 
 
@@ -241,6 +241,14 @@ public class Schedule implements Comparable<Schedule>{
 
 	public List<Integer> getDoableTasks() {
 		return doableTasks;
+	}
+	
+    public int[] getTaskStartTimes() {
+		return taskStartTimes;
+	}
+    
+    public int[] getTaskProcessors() {
+		return taskProcessors;
 	}
 	
 }

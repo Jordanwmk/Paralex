@@ -11,22 +11,15 @@ public class Output {
 	//String fileName = Main.fileName;
     public void createOutput(Schedule solution, String outputName){
 
-    	while (solution.getTask() != -1){
-    		
-    		int task = solution.getTask();
-    		int processor = solution.getProcessor();
-    		int time = solution.getTime();
-    		Graph graph = Input.getInputG();
-    		
+        //Get created graph from input dot file
+    	Graph graph = Input.getInputG();
+    	for (int i = 0; i<solution.getTaskStartTimes().length; i++) {
+    		int time = solution.getTaskStartTimes()[i];
+			int processor = solution.getTaskProcessors()[i];
+			int task = i;
     		formatAttributes(graph, task, processor, time);
-    		//THIS IS BROKEN NEED FIX
-    		//##############################################################################################################
-    		solution = solution;
     	}
     	
-        //Get created graph from input dot file
-        Graph graph = Input.getInputG();
-
         //Create the dot file writer for output. Constructor parameter "true" indicates that graph is directed
         FileSinkDOT writer = new FileSinkDOT(true);
 
@@ -57,6 +50,8 @@ public class Output {
     	graph.getNode(task).addAttribute("Processor", processor + 1);
 		graph.getNode(task).addAttribute("Start", time);
 		graph.getNode(task).removeAttribute("ui.style");
-		graph.getNode(task).removeAttribute("ui.label");
+//		graph.getNode(task).removeAttribute("ui.label");
+//		graph.getNode(task).removeAttribute("ui.class");
+//		graph.getNode(task).removeAttribute("ui.stylesheet");
     }
 }

@@ -4,13 +4,20 @@ import java.util.List;
 import java.util.Stack;
 
 public class BranchAndBoundAlgorithm implements Algorithm {
+	
+	Schedule currentBest = null;
+	boolean done=false;
+	public boolean isDone() {
+		return done;
+	}
+
 	@Override
 	public Schedule schedule(TaskGraph taskGraph) {
 		ArrayDeque<Schedule> stack = new ArrayDeque<Schedule>();
 		stack.push(Schedule.getEmptySchedule(taskGraph));
-		Schedule currentBest = null;
 		int currentBestTime = Integer.MAX_VALUE;
 		Schedule scheduleWeAreCurrentlyAt = null;
+
 
 		/*
 		 * Bens first schedule algorithm (schedule to most free processor int[]
@@ -32,11 +39,18 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		 * scheduleWeAreCurrentlyAt.getTotalTime();
 		 * currentBest=scheduleWeAreCurrentlyAt;
 		 */
+		
 		int currentLimit = 0;
 		stack = new ArrayDeque<>();
 		stack.push(Schedule.getEmptySchedule(taskGraph));
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			scheduleWeAreCurrentlyAt = stack.pop();
 			List<Schedule> childNodes = scheduleWeAreCurrentlyAt.generateChildren();
 
@@ -49,7 +63,7 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		}
 
 		currentBestTime = scheduleWeAreCurrentlyAt.getTotalTime();
-		currentBest = scheduleWeAreCurrentlyAt;
+		this.currentBest = scheduleWeAreCurrentlyAt;
 
 		// actual algorithm
 		stack = new ArrayDeque<>();
@@ -57,6 +71,13 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
 			scheduleWeAreCurrentlyAt = stack.pop();
+			
+			//visuallisation
+			VFrame frame = VFrame.getInstance();
+            if (scheduleWeAreCurrentlyAt.getTask() != -1){
+            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask());
+            }
+			
 			// if estimate >= current best, then prune the subtree (don't
 			// traverse it)
 			if (scheduleWeAreCurrentlyAt.getFinishTimeEstimate() < currentBestTime) {
@@ -74,13 +95,18 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 
 				if (childNodes.isEmpty()) {
 					if (scheduleWeAreCurrentlyAt.getTotalTime() < currentBestTime) {
-						currentBest = scheduleWeAreCurrentlyAt;
+						this.currentBest = scheduleWeAreCurrentlyAt;
 						currentBestTime = scheduleWeAreCurrentlyAt.getTotalTime();
 					}
 				}
 			}
 		}
-
-		return currentBest;
+		done=true;
+		return this.currentBest;
 	}
+	
+	public Schedule getCurrentBest(){
+    	return this.currentBest;
+    }
 }
+
