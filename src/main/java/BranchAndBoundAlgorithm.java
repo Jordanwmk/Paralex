@@ -39,6 +39,7 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		stack.push(Schedule.getEmptySchedule(taskGraph));
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
+
 			scheduleWeAreCurrentlyAt = stack.pop();
 			List<Schedule> childNodes = scheduleWeAreCurrentlyAt.generateChildren();
 

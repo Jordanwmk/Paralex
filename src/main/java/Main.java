@@ -46,8 +46,8 @@ public class Main {
 		try {
 			taskGraph = new TaskGraph(fileName, numProcessors, useVisualisation);
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("IOException while reading graph file");
+//			e.printStackTrace();
+//			System.out.println("IOException while reading graph file");
 			return;
 		}
 

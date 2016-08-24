@@ -97,7 +97,6 @@ public class VFrame{
 			taskGraphList.get(i).addAttribute("ui.antialias");
 		}
 
-		System.out.println(numOfCores);
 		for (int i = 0; i < numOfCores; i++) {
 			for (Node node : taskGraphList.get(i)) {
 				node.addAttribute("ui.label", node.getId());
@@ -675,8 +674,8 @@ public class VFrame{
 			audioClip.start();
 			return audioClip;
 		}catch(Exception e){
-			System.err.println("Error playing file " + fileName);
-			e.printStackTrace();
+//			System.err.println("Error playing file " + fileName);
+//			e.printStackTrace();
 		}
 		return null;
 
