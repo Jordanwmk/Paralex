@@ -40,7 +40,7 @@ public class Schedule implements Comparable<Schedule>{
     //CONSTRUCTOR
     public Schedule(TaskGraph taskGraph, int task, int time, int processor, int idleTime, int estimate, int processorsUsed, List<Integer> doableTasks, int[] taskStartTimes, int[] taskProcessors, int[] processorFinishTimes) {
         this.taskGraph = taskGraph;
-        //this.task = task;
+        this.task = task;
         //this.time = time;
         //this.processor = processor;
         this.idleTime = idleTime;
@@ -211,7 +211,7 @@ public class Schedule implements Comparable<Schedule>{
 
     @Override
     public boolean equals(Object other){
-        return true;
+    	return other instanceof Schedule && Arrays.equals(taskStartTimes, ((Schedule)other).taskStartTimes) && Arrays.equals(taskProcessors, ((Schedule)other).taskProcessors); 
     }
 
 
