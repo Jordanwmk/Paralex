@@ -1,39 +1,23 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 
@@ -666,6 +650,24 @@ public class VFrame {
 
 	public void setElapsedTimeLabel(JLabel elapsedTimeLabel) {
 		this.elapsedTimeLabel = elapsedTimeLabel;
+	}
+
+	/**
+	 * Play a sound clip (must be wav file)
+	 * Reference: http://stackoverflow.com/tags/javasound/info
+	 * @param fileName
+	 */
+	public void playSound(final String fileName){
+		try {
+			Clip audioClip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/main/resources/paralex.wav"));
+			audioClip.open(inputStream);
+			audioClip.start();
+		}catch(Exception e){
+			System.err.println("Error playing file " + fileName);
+			e.printStackTrace();
+		}
+
 	}
 
 	public class CustomTableRenderer extends DefaultTableCellRenderer {

@@ -1,12 +1,20 @@
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class BranchAndBoundAlgorithm implements Algorithm {
 	
 	Schedule currentBest = null;
 	boolean done=false;
+	boolean useVisualisation;
+	
+	public BranchAndBoundAlgorithm(){
+		this(false);
+	}
+	
+	public BranchAndBoundAlgorithm(boolean visualise){
+		this.useVisualisation=visualise;
+	}
+	
 	public boolean isDone() {
 		return done;
 	}
@@ -72,11 +80,13 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		while (!stack.isEmpty()) {
 			scheduleWeAreCurrentlyAt = stack.pop();
 			
-			//visuallisation
-			VFrame frame = VFrame.getInstance();
-            if (scheduleWeAreCurrentlyAt.getTask() != -1){
-            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
-            }
+			if(useVisualisation){
+				//visuallisation
+				VFrame frame = VFrame.getInstance();
+	            if (scheduleWeAreCurrentlyAt.getTask() != -1){
+	            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
+	            }
+			}
 			
 			// if estimate >= current best, then prune the subtree (don't
 			// traverse it)
@@ -102,6 +112,7 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 			}
 		}
 		done=true;
+		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
 		return this.currentBest;
 	}
 	
