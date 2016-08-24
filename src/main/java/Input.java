@@ -132,7 +132,6 @@ public class Input {
         for(Edge e : inputGraph.getEachEdge()){
         	e.setAttribute("Weight", ((Double)e.getAttribute("Weight")).intValue());
         }
-
         this.setInputG(inputGraph);
 	}
 	
