@@ -1,5 +1,5 @@
 node{ 
-	fill-color: #80d4ff;
+	fill-color: #F5F575;
 	size: 30px;
 	stroke-mode: plain;
 	stroke-color: black;
@@ -15,11 +15,6 @@ edge{
 	
 }
 
-node.partition50{
-	fill-color: #3399ff;
-	
-}
-
 node.selected{
 		size: 60px;
 }
@@ -27,51 +22,57 @@ node.selected{
 node.unselected{
 	size:30px;
 }
+
+node.partition50{
+	fill-color: #F5DF6B;
+	
+}
+
 node.partition150{
-	fill-color: #0066ff;
+	fill-color: #F5C962;
 	
 }
 
 node.partition500{
-	fill-color: #0000ff;
+	fill-color: #F6B359;
 	
 }
 
 node.partition1000{
-	fill-color: #6600ff;
+	fill-color: #F69D50;
 	
 }
 
 node.partition5000{
-	fill-color: #9933ff;
+	fill-color: #F78747;
 	
 }
 
 node.partition10000{
-	fill-color: #cc00ff;
+	fill-color: #F85C34;
 	
 }
 
 node.partition50000{
-	fill-color: #ff0066;
+	fill-color: #F93022;
 	
 }
 
 node.partition300000{
-	fill-color: #ff0000;
+	fill-color: #F91A19;
 	
 }
 
 node.partition1000000{
-	fill-color: #800000;
+	fill-color: #FA0510;
 	
 }
 
 node.partition3000000{
-	fill-color: #000000;
+	fill-color: #AA030B;
 	
 }
 node.highlighted{
-	fill-color: #ffff00;	
+	fill-color: #22B7F1;	
 	
 }
