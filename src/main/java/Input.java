@@ -126,9 +126,7 @@ public class Input {
         	inputGraph.removeAttribute(attribute);
         }
         
-        System.out.println(inputGraph.getAttributeCount());
         for(Node node: inputGraph){
-        	System.out.println(node.getId());
         	node.setAttribute("Weight", (((Double) (node.getAttribute("Weight"))).intValue()));
         }
         for(Edge e : inputGraph.getEachEdge()){
