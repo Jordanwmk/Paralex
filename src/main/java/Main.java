@@ -85,7 +85,7 @@ public class Main {
 		if (useVisualisation) {
 			//play the music
 			if(darude){
-				sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
+				sandstorm=VFrame.getInstance().playSound("sandstorm.wav");
 			}
 			
 			frame = new VFrame(numCores, fileName, numProcessors);
@@ -97,11 +97,11 @@ public class Main {
 		endTime = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		
-		if(useVisualisation && darude){
+		if(useVisualisation && sandstorm != null){
 			sandstorm.stop();
 		}
 		if (useVisualisation) {
-			VFrame.getInstance().playSound("src/main/resources/paralex.wav");
+			VFrame.getInstance().playSound("paralex.wav");
 			new Output(useVisualisation).createOutput(branchAndBoundSolution, outputName,
 					frame.getTaskGraphList().get(numCores));
 		} else {
