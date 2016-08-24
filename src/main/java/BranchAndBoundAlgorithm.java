@@ -1,7 +1,5 @@
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class BranchAndBoundAlgorithm implements Algorithm {
 	
@@ -114,6 +112,7 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 			}
 		}
 		done=true;
+		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
 		return this.currentBest;
 	}
 	
