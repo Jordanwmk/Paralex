@@ -36,7 +36,7 @@ public class ParallelBranchAndBound implements Algorithm{
 		//uses the TASK identifier
 		TaskIDGroup g = new TaskIDGroup(coresToRunOn);
 		for (int i = 0; i< coresToRunOn; i++) {
-			TaskID id = startWorker();
+			TaskID id = startWorker(i);
 			g.add(id);
 		}
 		try {
@@ -62,8 +62,13 @@ public class ParallelBranchAndBound implements Algorithm{
 		int localCurrentBestTime=Integer.MAX_VALUE;
 		ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
 		
+		int id;
 		int schedulesTraversed=0;
 		int schedulesCompleted=0;
+		
+		public Worker(int id) {
+			this.id = id;
+		}
 		
 		public void run(){
 			Schedule scheduleWeAreCurrentlyAt;
@@ -150,16 +155,16 @@ public class ParallelBranchAndBound implements Algorithm{
 		}
 	}
 	
-	TASK public void startWorker() {
-		new Worker().run();
+	TASK public void startWorker(int id) {
+		new Worker(id).run();
 	}
 	
-	TASK(coresToRunOn) public void startWorkers() {
-		for (int i = 0; i< coresToRunOn; i++) {
-			new Worker().run();
-		}
-    }
-	
+//	TASK(coresToRunOn) public void startWorkers() {
+//		for (int i = 0; i< coresToRunOn; i++) {
+//			new Worker().run();
+//		}
+//    }
+//	
 	
 	
 }
