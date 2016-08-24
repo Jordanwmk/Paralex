@@ -35,6 +35,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 					} else {
 						frame.getRunningLabel().setText("Finished");
 					}
+					
 					frame.getCpuLabel().setText("CPU Usage: " + SystemQuery.getProcessCpuLoad());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -42,6 +43,9 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 				};
 
 				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
+					int totalTime = currentBest.getTotalTime();
+					frame.getTotalScheduleTimeLabel().setText("Total Schedule Time: " + totalTime);
+					
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
 					for (int i = 0; i < frame.totalProcessors; i++) {

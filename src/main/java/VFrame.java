@@ -533,37 +533,7 @@ public class VFrame {
 		mainFrame.setVisible(true);
 	}
 
-	//	public void addToBestSchedule(Schedule currentBest) {
-	//		Arrays.fill(procFinishTimes, 0);
-	//
-	//		for (int i = 0; i < totalProcessors; i++) {
-	//			JTable table = procTables.get(i);
-	//			DefaultTableModel model = (DefaultTableModel) table.getModel();
-	//			model.setRowCount(0);
-	//		}
-	//
-	//		currentBestSchedule = currentBest;
-	//		// while (currentBest.getTask() != -1) {
-	//		// // System.out.println(currentBest.getTask());
-	//		// currentBestScheduleList.add(currentBest);
-	//		// currentBest = currentBest.getParent();
-	//		// }
-	//
-	//		for (int i = 0; i < graphStreamGra.getNodeCount(); i++) {
-	//			int startTime = currentBestSchedule.getTaskStartTimes()[i];
-	//			int processor = currentBestSchedule.getTaskProcessors()[i];
-	//			int task = i;
-	//			int[] nodeCostArray = input.getNodeCosts();
-	//			// if (task != -1) {
-	//			int nodeCost = nodeCostArray[task];
-	//			instance.addTaskToProcessor(processor, task, nodeCost, startTime);
-	//			// }
-	//
-	//		}
-	//	}
-
-	public void addTaskToProcessor(int proc, int task, int nodeCost,
-			int startTime) {
+	public void addTaskToProcessor(int proc, int task, int nodeCost, int startTime) {
 
 		JTable table = procTables.get(proc);
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
