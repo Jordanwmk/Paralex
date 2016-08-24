@@ -26,7 +26,12 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 			
 				Schedule currentBest = algorithm.getCurrentBest();
 				try {
-					frame.getCpuLabel().setText("CPU Usage: " + SystemQuery.getProcessCpuLoad());
+					String cpuUsage = "CPU Usage: " + SystemQuery.getProcessCpuLoad() + " %";
+					String memUsage = "Memory Usage:  " + SystemQuery.getProcessMemLoad() + " MB";
+					frame.getCpuLabel().setText(cpuUsage);
+					frame.getMemoryLabel().setText(memUsage);
+					
+					System.out.println(memUsage);
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -308,6 +308,9 @@ public class VFrame {
 		innerStatusPanel.add(cpuLabel);
 
 		memoryLabel = new JLabel("Memory Usage: ");
+		//Set size of label so no jittering
+		memoryLabel.setMinimumSize(new Dimension(250,22));
+		memoryLabel.setMaximumSize(new Dimension(250,22));
 		innerStatusPanel.add(memoryLabel);
 
 		elapsedTimeLabel = new JLabel("Elapsed Time: ");

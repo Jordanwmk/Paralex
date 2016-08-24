@@ -1,4 +1,5 @@
 import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
 
 import javax.management.Attribute;
 import javax.management.AttributeList;
@@ -27,4 +28,12 @@ public class SystemQuery {
 
         return (String.valueOf(usage));
     }
+	
+	public static String getProcessMemLoad() throws Exception {
+		 	MemoryUsage heapMemory = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+		 
+		 	String memUsage = String.valueOf(heapMemory.getUsed() / 1000000);
+		 	
+	        return memUsage;
+	}
 }
