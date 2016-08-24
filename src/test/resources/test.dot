@@ -1,3 +1,10 @@
 digraph{
 b	[Weight=5];
+d	[Weight=11];
+e	[Weight=3];
+f	[Weight=7];
+g	[Weight=3];
+0	 [Weight=6];
+3	 [Weight=10];
+0 -> 3	 [Weight=34];
 }
