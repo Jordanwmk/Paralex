@@ -1,18 +1,30 @@
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
 import org.graphstream.stream.file.FileSinkDOT;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class Output {
 
+	boolean useVisualisation = false;
+	
+	public Output(){
+		
+	}
+	
+	public Output(boolean useVisualisation){
+		this.useVisualisation = useVisualisation;
+	}
+	
     //String fileName = "src/test2.dot";
 	//String fileName = Main.fileName;
-    public void createOutput(Schedule solution, String outputName, Input input){
+    public void createOutput(Schedule solution, String outputName, Graph graph){
 
-        //Get created graph from input dot file
-    	Graph graph = input.getInputG();
     	for (int i = 0; i<solution.getTaskStartTimes().length; i++) {
     		int time = solution.getTaskStartTimes()[i];
 			int processor = solution.getTaskProcessors()[i];
@@ -49,9 +61,12 @@ public class Output {
     public void formatAttributes(Graph graph, int task, int processor, int time){
     	graph.getNode(task).addAttribute("Processor", processor + 1);
 		graph.getNode(task).addAttribute("Start", time);
-		graph.getNode(task).removeAttribute("ui.style");
-		graph.getNode(task).removeAttribute("ui.label");
-		graph.getNode(task).removeAttribute("ui.class");
-		graph.getNode(task).removeAttribute("ui.stylesheet");
+
+		
+		
+//		graph.getNode(task).removeAttribute("ui.style");
+//		graph.getNode(task).removeAttribute("ui.label");
+//		graph.getNode(task).removeAttribute("ui.class");
+//		graph.getNode(task).removeAttribute("ui.stylesheet");
     }
 }

@@ -9,7 +9,7 @@ import java.util.EmptyStackException;
 import java.lang.Thread;
 
 
-public class ParallelBranchAndBound implements Algorithm{
+public class ParallelBranchAndBoundVisualisation implements Algorithm{
 	final int globalReadFrequency=10000;
 	final int globalUpdateFrequency=0;
 	final int startingIterations = 50;
@@ -19,13 +19,16 @@ public class ParallelBranchAndBound implements Algorithm{
 	Schedule currentBest;
 	int currentBestTime=Integer.MAX_VALUE;
 	int coresToRunOn = 0;
+	boolean useVisualisation;
+	boolean done=false;
 	
-	public ParallelBranchAndBound(int coresToRunOn){
+	public ParallelBranchAndBoundVisualisation(int coresToRunOn){
 		this(coresToRunOn,false);
 	}
 	
-	public ParallelBranchAndBound(int coresToRunOn, boolean useVisualisation){
+	public ParallelBranchAndBoundVisualisation(int coresToRunOn, boolean useVisualisation){
 		this.coresToRunOn = coresToRunOn;
+		this.useVisualisation=useVisualisation;
 	}
 	
 	@Override
@@ -58,6 +61,7 @@ public class ParallelBranchAndBound implements Algorithm{
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
+		done=true;
 		return currentBest;
 	}
 	
@@ -68,7 +72,7 @@ public class ParallelBranchAndBound implements Algorithm{
 	}
 	
 	public boolean isDone(){
-		return false;
+		return done;
 	}
 	
 	class Worker{
@@ -91,6 +95,13 @@ public class ParallelBranchAndBound implements Algorithm{
 				while(!localStack.isEmpty()){
 					scheduleWeAreCurrentlyAt=localStack.pop();
 					
+					if(useVisualisation){
+						VFrame frame = VFrame.getInstance();
+	          	 		if (scheduleWeAreCurrentlyAt.getTask() != -1){
+	            			frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), id);
+	         		    }
+	         		}
+	         		
 					schedulesTraversed++;
 					if(schedulesTraversed>globalReadFrequency){
 						schedulesTraversed=0;
@@ -136,9 +147,9 @@ public class ParallelBranchAndBound implements Algorithm{
 		}
 		
 		private Schedule getFromSharedQueue(){
-			synchronized(ParallelBranchAndBound.this){
-				if(!ParallelBranchAndBound.this.processingQueue.isEmpty()){
-					return ParallelBranchAndBound.this.processingQueue.remove();
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(!ParallelBranchAndBoundVisualisation.this.processingQueue.isEmpty()){
+					return ParallelBranchAndBoundVisualisation.this.processingQueue.remove();
 				}else{
 					return null;
 				}
@@ -149,10 +160,10 @@ public class ParallelBranchAndBound implements Algorithm{
 		 * Update the local best time and schedule with the global best if it is better
 		 */
 		private void updateLocalBest(){
-			synchronized(ParallelBranchAndBound.this){
-				if(localCurrentBestTime>ParallelBranchAndBound.this.currentBestTime){
-					localCurrentBest=ParallelBranchAndBound.this.currentBest;
-					localCurrentBestTime=ParallelBranchAndBound.this.currentBestTime;
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(localCurrentBestTime>ParallelBranchAndBoundVisualisation.this.currentBestTime){
+					localCurrentBest=ParallelBranchAndBoundVisualisation.this.currentBest;
+					localCurrentBestTime=ParallelBranchAndBoundVisualisation.this.currentBestTime;
 				}
 			}
 		}
@@ -161,10 +172,10 @@ public class ParallelBranchAndBound implements Algorithm{
 		 * Update the global best time and schedule with the local best if it is better
 		 */
 		private void updateGlobalBest(){
-			synchronized(ParallelBranchAndBound.this){
-				if(localCurrentBestTime<ParallelBranchAndBound.this.currentBestTime){
-					ParallelBranchAndBound.this.currentBest=localCurrentBest;
-					ParallelBranchAndBound.this.currentBestTime=localCurrentBestTime;
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(localCurrentBestTime<ParallelBranchAndBoundVisualisation.this.currentBestTime){
+					ParallelBranchAndBoundVisualisation.this.currentBest=localCurrentBest;
+					ParallelBranchAndBoundVisualisation.this.currentBestTime=localCurrentBestTime;
 				}
 			}
 		}
@@ -173,5 +184,13 @@ public class ParallelBranchAndBound implements Algorithm{
 	TASK public void startWorker(int id) {
 		new Worker(id).run();
 	}
+	
+//	TASK(coresToRunOn) public void startWorkers() {
+//		for (int i = 0; i< coresToRunOn; i++) {
+//			new Worker().run();
+//		}
+//    }
+//	
+	
 	
 }

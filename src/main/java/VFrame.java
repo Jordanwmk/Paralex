@@ -26,7 +26,7 @@ import java.util.List;
  * @author Ammar Bagasrawala
  *
  */
-public class VFrame {
+public class VFrame{
 	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfCoreNodeFrequencies;
 	private JFrame mainFrame;
@@ -64,7 +64,7 @@ public class VFrame {
 	private void setup(int numOfCores, String fileName, int processors) {
 
 		numCores = numOfCores;
-		for (int a=0; a < numOfCores; a++) {
+		for (int a=0; a <= numOfCores; a++) {
 			try {
 				input = new Input(fileName);
 				graphStreamGraph = input.getInputG();
@@ -95,7 +95,6 @@ public class VFrame {
 			taskGraphList.get(i).addAttribute("ui.antialias");
 		}
 
-		System.out.println(numOfCores);
 		for (int i = 0; i < numOfCores; i++) {
 			for (Node node : taskGraphList.get(i)) {
 				node.addAttribute("ui.label", node.getId());
@@ -387,7 +386,6 @@ public class VFrame {
 							// not hovering over
 							// idle time
 							if (currentHoveredCell == null && (!(value.equals("Idle Time")))) {
-								System.out.println("Frst time in");
 								for (int i=0; i<numCores; i++){
 									currentColour[i] = taskGraphList.get(i).getNode(value).getAttribute("ui.class");
 									taskGraphList.get(i).getNode(value).setAttribute("ui.class", "highlighted");
@@ -637,6 +635,10 @@ public class VFrame {
 	public void setElapsedTimeLabel(JLabel elapsedTimeLabel) {
 		this.elapsedTimeLabel = elapsedTimeLabel;
 	}
+	
+	public ArrayList<Graph> getTaskGraphList() {
+		return taskGraphList;
+	}
 
 	/**
 	 * Play a sound clip (must be wav file)
@@ -651,8 +653,8 @@ public class VFrame {
 			audioClip.start();
 			return audioClip;
 		}catch(Exception e){
-			System.err.println("Error playing file " + fileName);
-			e.printStackTrace();
+//			System.err.println("Error playing file " + fileName);
+//			e.printStackTrace();
 		}
 		return null;
 

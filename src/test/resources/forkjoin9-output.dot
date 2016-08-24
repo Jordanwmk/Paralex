@@ -1,15 +1,15 @@
 digraph "src/test/resources/forkjoin9-output.dot" {
 	a [Start=0,Weight=2,Processor=1];
-	b [Start=4,Weight=5,Processor=2];
-	c [Start=9,Weight=6,Processor=1];
-	d [Start=18,Weight=3,Processor=1];
-	e [Start=15,Weight=3,Processor=1];
-	f [Start=3,Weight=6,Processor=1];
-	g [Start=16,Weight=6,Processor=2];
-	h [Start=2,Weight=1,Processor=1];
-	i [Start=12,Weight=4,Processor=2];
-	l [Start=22,Weight=1,Processor=2];
-	j [Start=9,Weight=3,Processor=2];
+	b [Start=13,Weight=5,Processor=2];
+	c [Start=16,Weight=6,Processor=1];
+	d [Start=18,Weight=3,Processor=2];
+	e [Start=13,Weight=3,Processor=1];
+	f [Start=7,Weight=6,Processor=2];
+	g [Start=7,Weight=6,Processor=1];
+	h [Start=6,Weight=1,Processor=1];
+	i [Start=2,Weight=4,Processor=1];
+	l [Start=22,Weight=1,Processor=1];
+	j [Start=4,Weight=3,Processor=2];
 	a -> b [Weight=2,label=2.0];
 	a -> c [Weight=3,label=3.0];
 	a -> d [Weight=5,label=5.0];

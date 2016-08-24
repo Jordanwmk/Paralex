@@ -88,9 +88,7 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	protected void process(List<Schedule> schedules) {
 
 		Schedule schedule = schedules.get(schedules.size() - 1);
-		System.out.println("cool");
 		if (schedule != null) {
-			System.out.println("GOING INSIDE THE THING");
 
 			int[] startTimes=new int[frame.graphStreamGraph.getNodeCount()];
 			
@@ -127,7 +125,6 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 
 	@Override
 	protected void done() {
-		System.out.println("DONE");
 	}
 
 }
