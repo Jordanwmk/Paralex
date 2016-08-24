@@ -20,6 +20,7 @@ public class ParallelBranchAndBound implements Algorithm{
 	int currentBestTime=Integer.MAX_VALUE;
 	int coresToRunOn = 0;
 	boolean useVisualisation;
+	boolean done=false;
 	
 	public ParallelBranchAndBound(int coresToRunOn){
 		this(coresToRunOn,false);
@@ -60,6 +61,7 @@ public class ParallelBranchAndBound implements Algorithm{
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
+		done=true;
 		return currentBest;
 	}
 	
@@ -67,6 +69,10 @@ public class ParallelBranchAndBound implements Algorithm{
 		synchronized(this){
 			return currentBest;
 		}
+	}
+	
+	public boolean isDone(){
+		return done;
 	}
 	
 	class Worker{

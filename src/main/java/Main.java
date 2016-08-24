@@ -1,10 +1,6 @@
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
+import javax.sound.sampled.Clip;
 
 public class Main {
 
@@ -61,7 +57,11 @@ public class Main {
 			algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
 		}
 		
+		Clip sandstorm = null;
 		if (useVisualisation) {
+			//play the music
+			sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
+			
 			VFrame frame = new VFrame(numCores, fileName, numProcessors);
 			TableThreader tt = new TableThreader(algorithm, frame);
 
@@ -71,6 +71,10 @@ public class Main {
 		endTime = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		
+		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
+		if(useVisualisation){
+			sandstorm.stop();
+		}
 		
 		new Output().createOutput(branchAndBoundSolution, outputName,
 				taskGraph.getInput());

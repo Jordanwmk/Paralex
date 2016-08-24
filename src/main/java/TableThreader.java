@@ -16,16 +16,25 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	VFrame frame;
 	Timer simpleTimer = null;
 	Schedule prev = null;
+	long startTime;
 
 	public TableThreader(Algorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
+		startTime = System.currentTimeMillis();
 		simpleTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			
 				Schedule currentBest = algorithm.getCurrentBest();
 				try {
+					if (!algorithm.isDone()) {
+						
+						long currentTime = (System.currentTimeMillis() - startTime);
+						frame.getElapsedTimeLabel().setText("Elapsed Time: " + currentTime + " ms");
+					} else {
+						frame.getRunningLabel().setText("Finished");
+					}
 					frame.getCpuLabel().setText("CPU Usage: " + SystemQuery.getProcessCpuLoad());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
