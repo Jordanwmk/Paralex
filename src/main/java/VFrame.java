@@ -119,15 +119,19 @@ public class VFrame {
 
 	public void incrementTask(int task, int coreID) {
 
-		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies
-				.get(coreID);
-
+		ArrayList<Integer> currentCoreNodeFrequencies = listOfCoreNodeFrequencies.get(coreID);
+		
 		Integer value = currentCoreNodeFrequencies.get(task); // get value
 		currentCoreNodeFrequencies.set(task, value + 1);
 
-		// if (currentCore.get(task) % 50 == 0) {
+		
+		
 		setNodeColour(currentCoreNodeFrequencies.get(task), task, coreID);
-		// }
+		 if (currentCoreNodeFrequencies.get(task) % 200000 == 0) {
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:60px;");
+		 }else if (currentCoreNodeFrequencies.get(task) % 100000 == 0){
+			 taskGraphList.get(coreID).getNode(task).setAttribute("ui.style","size:30px;");
+		 }
 
 	}
 

@@ -4,6 +4,9 @@ node{
 	stroke-mode: plain;
 	stroke-color: black;
 	stroke-width: 15px;
+	size-mode: fit;
+	text-mode: normal;
+	text-visibility-mode: normal;
 }
 
 edge{
@@ -14,6 +17,13 @@ node.partition50{
 	fill-color: #3399ff;
 }
 
+node.selected{
+		size: 60px;
+}
+
+node.unselected{
+	size:30px;
+}
 node.partition150{
 	fill-color: #0066ff;
 }
