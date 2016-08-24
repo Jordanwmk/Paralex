@@ -302,12 +302,10 @@ public class VFrame{
 		statusPanel.add(runningLabel);
 		
 		JPanel innerStatusPanel = new JPanel();
-//		innerStatusPanel.setLayout(new GridLayout(2,2));
 		innerStatusPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbcStatus = new GridBagConstraints();
 	
 		innerStatusPanel.setBorder(new EmptyBorder(0,50,0,50));
-		//gbcStatus.insets = new Insets(0,5,0,5);
 		
 		gbcStatus.gridx = 0;
 		gbcStatus.gridy = 0;
