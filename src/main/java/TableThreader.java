@@ -20,25 +20,40 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	public TableThreader(BranchAndBoundAlgorithm algorithm, VFrame frame) {
 		this.algorithm = algorithm;
 		this.frame = frame;
-		System.out.println("GG123");
-		simpleTimer = new Timer(1000, new ActionListener() {
+		simpleTimer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+//				Schedule currentBest = algorithm.getCurrentBest();
+//				if (prev == null && currentBest !=null) {
+//					prev = currentBest;
+//					System.out.println(prev);
+//					frame.currentBestSchedule=currentBest;
+//					publish(currentBest);
+//					System.out.println("First Time publish");
+//				}
+//
+//				else if (!(prev.equals(currentBest)) && currentBest !=null) {
+//
+//					// clear the table
+//					Arrays.fill(frame.procFinishTimes, 0);
+//					for (int i = 0; i < frame.totalProcessors; i++) {
+//						JTable table = frame.procTables.get(i);
+//						DefaultTableModel model = (DefaultTableModel) table
+//								.getModel();
+//						model.setRowCount(0);
+//					}
+//					System.out.println("New Node");
+//					// set new currentBest
+//					frame.currentBestSchedule = currentBest;
+//
+//					publish(currentBest);
+//					System.out.println("publish more htne once");
+//					prev = currentBest;
+//				}
+				
 				Schedule currentBest = algorithm.getCurrentBest();
-				Schedule temp = currentBest;
-				if (prev == null) {
-					prev = temp;
-					// while (currentBest.getTask() != -1) {
-					// // System.out.println(currentBest.getTask());
-					// frame.currentBestScheduleList.add(currentBest);
-					// currentBest = currentBest.getParent();
-					// }
-					publish(frame.currentBestSchedule);
-
-				}
-
-				if (!(prev.equals(currentBest))) {
-
+				System.out.println(currentBest);
+				if(currentBest!=null && (prev==null || !prev.equals(currentBest))){
 					// clear the table
 					Arrays.fill(frame.procFinishTimes, 0);
 					for (int i = 0; i < frame.totalProcessors; i++) {
@@ -47,18 +62,15 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 								.getModel();
 						model.setRowCount(0);
 					}
-					System.out.println("GG123");
+					System.out.println("New Node");
 					// set new currentBest
 					frame.currentBestSchedule = currentBest;
-					// while (currentBest.getTask() != -1) {
-					// // System.out.println(currentBest.getTask());
-					// frame.currentBestScheduleList.add(currentBest);
-					// currentBest = currentBest.getParent();
-					// }
 
-					publish(frame.currentBestSchedule);
-					prev = temp;
+					publish(currentBest);
+					System.out.println("publish more htne once");
+					prev = currentBest;
 				}
+			
 
 			}
 		});
@@ -70,6 +82,9 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 	protected Void doInBackground() throws Exception {
 
 		simpleTimer.start();
+		while (!(algorithm.isDone())){
+			
+		}
 
 		return null;
 	}
@@ -81,18 +96,37 @@ public class TableThreader extends SwingWorker<Void, Schedule> {
 		Schedule schedule = schedules.get(schedules.size() - 1);
 		System.out.println("cool");
 		if (schedule != null) {
+			System.out.println("GOING INSIDE THE THING");
 
-			for (int i = 0; i < frame.taskGraph.getNodeCount(); i++) {
-				int startTime = frame.currentBestSchedule.getTaskStartTimes()[i];
-				int processor = frame.currentBestSchedule.getTaskProcessors()[i];
-				int task = i;
+			int[] startTimes=new int[frame.taskGraph.getNodeCount()];
+			
+			
+			System.arraycopy(schedule.getTaskStartTimes(), 0, startTimes, 0, startTimes.length);
+			
+			
+			for(int i=0;i<frame.taskGraph.getNodeCount();i++){
+				int earliestStartTime = Integer.MAX_VALUE;
+				int earliestStartTimeIndex = -1;
+				
+				for(int j=0;j<frame.taskGraph.getNodeCount();j++){
+					if(startTimes[j]<earliestStartTime){
+						earliestStartTime=startTimes[j];
+						earliestStartTimeIndex=j;
+					}
+				}
+				
+				startTimes[earliestStartTimeIndex]=Integer.MAX_VALUE;
+				
+				int startTime = frame.currentBestSchedule.getTaskStartTimes()[earliestStartTimeIndex];
+				int processor = frame.currentBestSchedule.getTaskProcessors()[earliestStartTimeIndex];
+				int task = earliestStartTimeIndex;
 				int[] nodeCostArray = frame.input.getNodeCosts();
-				// if (task != -1) {
+				
 				int nodeCost = nodeCostArray[task];
 				frame.addTaskToProcessor(processor, task, nodeCost, startTime);
-				// }
-
+				
 			}
+			
 		}
 
 	}
