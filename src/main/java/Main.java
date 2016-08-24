@@ -50,9 +50,9 @@ public class Main {
 		startTime = System.currentTimeMillis();
 		Algorithm algorithm;
 		if (numCores == 1) {
-			algorithm = new BranchAndBoundAlgorithm();
+			algorithm = new BranchAndBoundAlgorithm(useVisualisation);
 		} else {
-			algorithm = new ParallelBranchAndBound(numCores);
+			algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
 		}
 		if (useVisualisation) {
 			VFrame frame = new VFrame(numCores, fileName, numProcessors);
