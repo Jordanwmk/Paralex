@@ -36,9 +36,6 @@ public class TaskGraph {
  
         entryPoints=input.getSrcNodes();
 
-        if(useVisualisation){
-            
-        }
     }
 
     int getNodeCost(int node){

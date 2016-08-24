@@ -54,20 +54,36 @@ public class Main {
 		long startTime, endTime, totalTime;
 		startTime = System.currentTimeMillis();
 		Algorithm algorithm;
-		if (numCores == 1) {
-			algorithm = new BranchAndBoundAlgorithm(useVisualisation);
-		} else {
-			algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
-		}
-		
 		Clip sandstorm = null;
+		VFrame frame = null;
+		if (useVisualisation) {
+			if (numCores == 1) {
+				algorithm = new BranchAndBoundVisualisation(useVisualisation);
+			} else {
+				algorithm = new ParallelBranchAndBoundVisualisation(numCores,useVisualisation);
+			}
+		} else {
+			if (numCores == 1) {
+				algorithm = new BranchAndBoundAlgorithm();
+			} else {
+				algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
+			}
+		}
+//		if (numCores == 1) {
+//			algorithm = new BranchAndBoundVisualisation(useVisualisation);
+//		} else {
+//			algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
+//		}
+		
+//		Clip sandstorm = null;
+		
 		if (useVisualisation) {
 			//play the music
 			if(darude){
 				sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
 			}
 			
-			VFrame frame = new VFrame(numCores, fileName, numProcessors);
+			frame = new VFrame(numCores, fileName, numProcessors);
 			TableThreader tt = new TableThreader(algorithm, frame);
 
 			tt.execute();
@@ -80,9 +96,15 @@ public class Main {
 		if(useVisualisation && darude){
 			sandstorm.stop();
 		}
-		
-		new Output().createOutput(branchAndBoundSolution, outputName,
-				taskGraph.getInput());
+		if (useVisualisation) {
+			new Output(useVisualisation).createOutput(branchAndBoundSolution, outputName,
+					frame.getTaskGraphList().get(numCores));
+		} else {
+			new Output().createOutput(branchAndBoundSolution, outputName,
+					taskGraph.getInput().getInputG());
+			
+		}
+
 
 		//
 		//

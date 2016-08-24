@@ -1,9 +1,23 @@
 import java.util.ArrayDeque;
 import java.util.List;
 
-public class BranchAndBoundAlgorithm implements Algorithm {
+public class BranchAndBoundVisualisation implements Algorithm {
 	
 	Schedule currentBest = null;
+	boolean done=false;
+	boolean useVisualisation;
+	
+	public BranchAndBoundVisualisation(){
+		this(false);
+	}
+	
+	public BranchAndBoundVisualisation(boolean visualise){
+		this.useVisualisation=visualise;
+	}
+	
+	public boolean isDone() {
+		return done;
+	}
 
 	@Override
 	public Schedule schedule(TaskGraph taskGraph) {
@@ -39,6 +53,12 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		stack.push(Schedule.getEmptySchedule(taskGraph));
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			scheduleWeAreCurrentlyAt = stack.pop();
 			List<Schedule> childNodes = scheduleWeAreCurrentlyAt.generateChildren();
 
@@ -59,6 +79,14 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
 			scheduleWeAreCurrentlyAt = stack.pop();
+			
+			if(useVisualisation){
+				//visuallisation
+				VFrame frame = VFrame.getInstance();
+	            if (scheduleWeAreCurrentlyAt.getTask() != -1){
+	            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
+	            }
+			}
 			
 			// if estimate >= current best, then prune the subtree (don't
 			// traverse it)
@@ -83,16 +111,12 @@ public class BranchAndBoundAlgorithm implements Algorithm {
 				}
 			}
 		}
+		done=true;
 		return this.currentBest;
 	}
 	
 	public Schedule getCurrentBest(){
     	return this.currentBest;
     }
-
-	@Override
-	public boolean isDone() {
-		return false;
-	}
 }
 

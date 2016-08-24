@@ -26,7 +26,7 @@ import java.util.List;
  * @author Ammar Bagasrawala
  *
  */
-public class VFrame {
+public class VFrame{
 	public static VFrame instance;
 	private List<ArrayList<Integer>> listOfCoreNodeFrequencies;
 	private JFrame mainFrame;
@@ -64,7 +64,7 @@ public class VFrame {
 	private void setup(int numOfCores, String fileName, int processors) {
 
 		numCores = numOfCores;
-		for (int a=0; a < numOfCores; a++) {
+		for (int a=0; a <= numOfCores; a++) {
 			try {
 				input = new Input(fileName);
 				graphStreamGraph = input.getInputG();
@@ -636,6 +636,10 @@ public class VFrame {
 
 	public void setElapsedTimeLabel(JLabel elapsedTimeLabel) {
 		this.elapsedTimeLabel = elapsedTimeLabel;
+	}
+	
+	public ArrayList<Graph> getTaskGraphList() {
+		return taskGraphList;
 	}
 
 	/**
