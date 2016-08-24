@@ -11,29 +11,35 @@ public class SystemQuery {
 
 	public static String getProcessCpuLoad() throws Exception {
 
-        MBeanServer mbs    = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name    = ObjectName.getInstance("java.lang:type=OperatingSystem");
-        AttributeList list = mbs.getAttributes(name, new String[]{ "ProcessCpuLoad" });
+		//Factory to get information about the system
+		MBeanServer mbs    = ManagementFactory.getPlatformMBeanServer();
+		ObjectName name    = ObjectName.getInstance("java.lang:type=OperatingSystem");
+		AttributeList list = mbs.getAttributes(name, new String[]{ "ProcessCpuLoad" });
 
-        if (list.isEmpty())     return "";
+		if (list.isEmpty())     return "";
 
-        Attribute att = (Attribute)list.get(0);
-        Double value  = (Double)att.getValue();
+		//first attribute is cpu load
+		Attribute att = (Attribute)list.get(0);
 
-        // usually takes a couple of seconds before we get real values
-        if (value == -1.0)      return "";
-        // returns a percentage value with 1 decimal point precision
-       
-        double usage = Math.round((value * 1000) / 10.0);
+		//Convert to double
+		Double value  = (Double)att.getValue();
 
-        return (String.valueOf(usage));
-    }
-	
+		//some time for initialization. in this time the value will be -1
+		if (value == -1.0)      return "";
+
+		double usage = Math.round((value * 1000) / 10.0);
+
+		return (String.valueOf(usage));
+	}
+
 	public static String getProcessMemLoad() throws Exception {
-		 	MemoryUsage heapMemory = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
-		 
-		 	String memUsage = String.valueOf(heapMemory.getCommitted()/ 1000000);
-		 	
-	        return memUsage;
+
+		//Factory to get information about the system
+		MemoryUsage heapMemory = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+
+		//Get memory usage of the JVM
+		String memUsage = String.valueOf(heapMemory.getCommitted()/ 1000000);
+
+		return memUsage;
 	}
 }
