@@ -89,7 +89,7 @@ public class Main {
 			}
 			
 			frame = new VFrame(numCores, fileName, numProcessors);
-			TableThreader tt = new TableThreader(algorithm, frame);
+			TableThreader tt = new TableThreader(algorithm, frame, startTime);
 
 			tt.execute();
 		}

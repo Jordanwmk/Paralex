@@ -7,9 +7,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -98,7 +100,6 @@ public class VFrame{
 		for (int i = 0; i < numOfCores; i++) {
 			for (Node node : taskGraphList.get(i)) {
 				node.addAttribute("ui.label", node.getId());
-//				node.setAttribute("ui.class", "partition50");
 			}
 		}
 
@@ -107,14 +108,6 @@ public class VFrame{
 
 	}
 
-	public void printStuff() {
-		for (int i = 0; i < listOfCoreNodeFrequencies.size(); i++) {
-			for (int j = 0; j < listOfTasks.size(); j++) {
-				System.out.print(listOfTasks.get(j) + " ");
-			}
-			System.out.println();
-		}
-	}
 	public void resetSize(){
 		for (int i = 0 ; i<this.numCores; i++){
 			for (int j=0; j< taskGraphList.get(i).getNodeCount();j++){
@@ -283,8 +276,7 @@ public class VFrame{
 		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		color3000000.setBackground(new Color(128, 0, 0));
 		panel3000000.add(color3000000, BorderLayout.WEST);
-		panel3000000.add(new JLabel("  1,000,000 - 2,999,999 visits"),
-				BorderLayout.EAST);
+		panel3000000.add(new JLabel("  1,000,000 - 2,999,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 3;
 		gbcKey.gridy = 0;
 		graphKey.add(panel3000000, gbcKey);
@@ -305,27 +297,53 @@ public class VFrame{
 		statusPanel.setLayout(new GridLayout(2, 1));
 
 		runningLabel = new JLabel("Running...");
+		runningLabel.setFont(new Font("Sans-serif", Font.BOLD, 20));
 		runningLabel.setHorizontalAlignment(JLabel.CENTER);
 		statusPanel.add(runningLabel);
 		
 		JPanel innerStatusPanel = new JPanel();
-		innerStatusPanel.setLayout(new GridLayout(2,2));
-
+		innerStatusPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbcStatus = new GridBagConstraints();
+	
+		innerStatusPanel.setBorder(new EmptyBorder(0,50,0,50));
+		
+		gbcStatus.gridx = 0;
+		gbcStatus.gridy = 0;
+		gbcStatus.weightx = 0.1;
+		gbcStatus.weighty = 0.1;
+		gbcStatus.fill = GridBagConstraints.BOTH;
+		gbcStatus.anchor = GridBagConstraints.WEST;
 		cpuLabel = new JLabel("CPU Usage: ");
-		innerStatusPanel.add(cpuLabel);
+		innerStatusPanel.add(cpuLabel, gbcStatus);
 
+		gbcStatus.gridx = 1;
+		gbcStatus.gridy = 0;
+		gbcStatus.weightx = 0.1;
+		gbcStatus.weighty = 0.1;
+		gbcStatus.fill = GridBagConstraints.BOTH;
 		memoryLabel = new JLabel("Memory Usage: ");
-		//Set size of label so no jittering
-		memoryLabel.setMinimumSize(new Dimension(250,22));
-		memoryLabel.setMaximumSize(new Dimension(250,22));
-		innerStatusPanel.add(memoryLabel);
+		innerStatusPanel.add(memoryLabel, gbcStatus);
 
-		elapsedTimeLabel = new JLabel("Elapsed Time: ");
-		innerStatusPanel.add(elapsedTimeLabel);
+		gbcStatus.gridx = 2;
+		gbcStatus.gridy = 0;
+		gbcStatus.weightx = 0.1;
+		gbcStatus.weighty = 0.1;
+		gbcStatus.fill = GridBagConstraints.BOTH;
+		elapsedTimeLabel = new JLabel("Elapsed Time: 0 s");
+		innerStatusPanel.add(elapsedTimeLabel, gbcStatus);
 
+		gbcStatus.insets = new Insets(5,5,5,5);
+		
+		gbcStatus.gridx = 3;
+		gbcStatus.gridy = 0;
+		gbcStatus.weightx = 0.1;
+		gbcStatus.weighty = 0.1;
+		gbcStatus.fill = GridBagConstraints.BOTH;
 		totalScheduleTimeLabel = new JLabel("Total Schedule Time: ");
 		innerStatusPanel.add(totalScheduleTimeLabel);
+			
 		statusPanel.add(innerStatusPanel);
+		
 		
 		
 		gbc.gridx = 1;
@@ -342,7 +360,7 @@ public class VFrame{
 
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.weightx = 1.0;
+		gbc.weightx = 0.2;
 		gbc.weighty = 1.0;
 		gbc.anchor = GridBagConstraints.WEST;
 		contentPanel.add(outerGraphPanel, gbc);
@@ -379,7 +397,7 @@ public class VFrame{
 							String value = (String) table.getValueAt(row, col);
 							if (value != "Idle Time") {
 								String[] split = value.split("\\s+");
-								value = split[1];
+								value = split[0];
 							}
 							// Checks if nothing has been hovered over and you
 							// are
@@ -470,6 +488,7 @@ public class VFrame{
 		contentPanel.add(outerProcessPanel, gbc);
 		
 		mainFrame.add(contentPanel);
+		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 	// Sets up the graph pane depending on the number of cores running the
@@ -555,8 +574,8 @@ public class VFrame{
 		int idleTime = startTime - earliestStartOnProc;
 
 		if (task != -1){
-		String taskName = "Node: " + graphStreamGraph.getNode(task).getId();
-		taskName = taskName + "     (Task Time: "+ graphStreamGraph.getNode(task).getAttribute("Weight") + ")";
+		String taskName = "" + graphStreamGraph.getNode(task).getId();
+		taskName = taskName + " (Weight: "+ graphStreamGraph.getNode(task).getAttribute("Weight") + ")";
 		
 		if (idleTime > 0) {
 			model.addRow(new String[] { "Idle Time" });
