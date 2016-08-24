@@ -1,10 +1,6 @@
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
+import javax.sound.sampled.Clip;
 
 public class Main {
 
@@ -17,7 +13,8 @@ public class Main {
 		String fileName = args[0];
 		int numProcessors = Integer.parseInt(args[1]);
 		boolean useVisualisation = false;
-
+		boolean darude = false;
+		
 		String[] splitName = fileName.split(".dot");
 		String outputName = splitName[0] + "-output.dot";
 
@@ -35,6 +32,8 @@ public class Main {
 														// extension as .dot
 						outputName = outputName + ".dot";
 					}
+				} else if(args[i].equals("-d")) {
+					darude=true;
 				}
 			}
 		}
@@ -61,7 +60,13 @@ public class Main {
 			algorithm = new ParallelBranchAndBound(numCores,useVisualisation);
 		}
 		
+		Clip sandstorm = null;
 		if (useVisualisation) {
+			//play the music
+			if(darude){
+				sandstorm=VFrame.getInstance().playSound("src/main/resources/sandstorm.wav");
+			}
+			
 			VFrame frame = new VFrame(numCores, fileName, numProcessors);
 			TableThreader tt = new TableThreader(algorithm, frame);
 
@@ -71,6 +76,10 @@ public class Main {
 		endTime = System.currentTimeMillis();
 		totalTime = endTime - startTime;
 		
+		VFrame.getInstance().playSound("src/main/resources/paralex.wav");
+		if(useVisualisation && darude){
+			sandstorm.stop();
+		}
 		
 		new Output().createOutput(branchAndBoundSolution, outputName,
 				taskGraph.getInput());
