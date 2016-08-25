@@ -8,26 +8,46 @@ import pt.runtime.*;
 import java.util.EmptyStackException;
 import java.lang.Thread;
 
-
+/**
+ * Parallel implementation of the branch and bound algorithm
+ */
 public class ParallelBranchAndBound implements Algorithm{
-	final int globalReadFrequency=10000;
-	final int globalUpdateFrequency=0;
-	final int startingIterations = 50;
+	private final int globalReadFrequency=10000;
+	private final int globalUpdateFrequency=0;
+	private final int startingIterations = 50;
 	
-	Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
-	int threadsCurrentlyRunning = 0;
-	Schedule currentBest;
-	int currentBestTime=Integer.MAX_VALUE;
-	int coresToRunOn = 0;
+	private Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
+	private int threadsCurrentlyRunning = 0;
+	private Schedule currentBest;
+	private int currentBestTime=Integer.MAX_VALUE;
+	private int coresToRunOn = 0;
 	
+	/**
+	 * Initialise the algorithm with the number of cores to run on
+	 * 
+	 * @param coresToRunOn the number of cores to use
+	 */
 	public ParallelBranchAndBound(int coresToRunOn){
 		this(coresToRunOn,false);
 	}
 	
+	/**
+	 * Initialise the algorithm with the number of cores to run on and whether to use visualisation
+	 * 
+	 * @param coresToRunOn the number of cores to use
+	 * @param useVisualisation whether to enable visualisation
+	 */
 	public ParallelBranchAndBound(int coresToRunOn, boolean useVisualisation){
 		this.coresToRunOn = coresToRunOn;
 	}
 	
+
+	/**
+	 * Finds the optimal schedule for a given task graph
+	 * 
+	 * @param taskGraph the input graph
+	 * @return an optimal schedule for the given input
+	 */
 	@Override
 	public Schedule schedule(TaskGraph taskGraph) {
 		//Do BFS for schedules to initialise the queue
@@ -63,15 +83,6 @@ public class ParallelBranchAndBound implements Algorithm{
 			e3.printStackTrace();
 		}
 		
-		
-		//uses the TASK(*) identifier
-		
-//		TaskIDGroup g = startWorkers();
-//		try {
-//			g.waitTillFinished();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		return currentBest;
 	}
 	
@@ -85,14 +96,17 @@ public class ParallelBranchAndBound implements Algorithm{
 		return false;
 	}
 	
+	/**
+	 * A worker class which runs on a single core
+	 */
 	class Worker{
-		Schedule localCurrentBest;
-		int localCurrentBestTime=Integer.MAX_VALUE;
-		ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
+		private Schedule localCurrentBest;
+		private int localCurrentBestTime=Integer.MAX_VALUE;
+		private ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
 		
-		int id;
-		int schedulesTraversed=0;
-		int schedulesCompleted=0;
+		private int id;
+		private int schedulesTraversed=0;
+		private int schedulesCompleted=0;
 		
 		public Worker(int id) {
 			this.id = id;
@@ -106,6 +120,8 @@ public class ParallelBranchAndBound implements Algorithm{
 					scheduleWeAreCurrentlyAt=localStack.pop();
 					
 					schedulesTraversed++;
+					
+					//Synchronise the local best value with the global one once every X traversals
 					if(schedulesTraversed>globalReadFrequency){
 						schedulesTraversed=0;
 						updateLocalBest();
@@ -149,6 +165,11 @@ public class ParallelBranchAndBound implements Algorithm{
 			}
 		}
 		
+		/**
+		 * Get a new schedule (subtree root) from the global queue
+		 * 
+		 * @return a schedule to work on
+		 */
 		private Schedule getFromSharedQueue(){
 			synchronized(ParallelBranchAndBound.this){
 				if(!ParallelBranchAndBound.this.processingQueue.isEmpty()){
@@ -184,7 +205,12 @@ public class ParallelBranchAndBound implements Algorithm{
 		}
 	}
 	
-	TASK public void startWorker(int id) {
+	/**
+	 * Starts a new worker (on a new core) to process the state tree
+	 * 
+	 * @param id the id of the worker
+	 */
+	TASK private void startWorker(int id) {
 		new Worker(id).run();
 	}
 	
