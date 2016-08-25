@@ -8,19 +8,22 @@ import pt.runtime.*;
 import java.util.EmptyStackException;
 import java.lang.Thread;
 
-
+/**
+ * Parallel implementation of branch and bound algorithm with visualisation
+ * (Note: this is exactly the same as the ParallelBranchAndBound class except it updates the visualiser each time it traverses a node)
+ */
 public class ParallelBranchAndBoundVisualisation implements Algorithm{
-	final int globalReadFrequency=10000;
-	final int globalUpdateFrequency=0;
-	final int startingIterations = 50;
+	private final int globalReadFrequency=10000;
+	private final int globalUpdateFrequency=0;
+	private final int startingIterations = 50;
 	
-	Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
-	int threadsCurrentlyRunning = 0;
-	Schedule currentBest;
-	int currentBestTime=Integer.MAX_VALUE;
-	int coresToRunOn = 0;
-	boolean useVisualisation;
-	boolean done=false;
+	private Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
+	private int threadsCurrentlyRunning = 0;
+	private Schedule currentBest;
+	private int currentBestTime=Integer.MAX_VALUE;
+	private int coresToRunOn = 0;
+	private boolean useVisualisation;
+	private boolean done=false;
 	
 	public ParallelBranchAndBoundVisualisation(int coresToRunOn){
 		this(coresToRunOn,false);
@@ -66,15 +69,6 @@ public class ParallelBranchAndBoundVisualisation implements Algorithm{
 			e3.printStackTrace();
 		}
 		
-		
-		//uses the TASK(*) identifier
-		
-//		TaskIDGroup g = startWorkers();
-//		try {
-//			g.waitTillFinished();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		done=true;
 		return currentBest;
 	}
@@ -90,13 +84,13 @@ public class ParallelBranchAndBoundVisualisation implements Algorithm{
 	}
 	
 	class Worker{
-		Schedule localCurrentBest;
-		int localCurrentBestTime=Integer.MAX_VALUE;
-		ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
+		private Schedule localCurrentBest;
+		private int localCurrentBestTime=Integer.MAX_VALUE;
+		private ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
 		
-		int id;
-		int schedulesTraversed=0;
-		int schedulesCompleted=0;
+		private int id;
+		private int schedulesTraversed=0;
+		private int schedulesCompleted=0;
 		
 		public Worker(int id) {
 			this.id = id;
