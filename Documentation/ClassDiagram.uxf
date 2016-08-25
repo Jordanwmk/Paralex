@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>250</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>400</y>
+      <w>140</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>180</y>
+      <w>300</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Main
+--
+
+--
++main(args: String[]): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>330</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>TaskGraph
+--
+
+--
+TaskGraph(input: Input): TaskGraph
+--
+Responsibilities
+- Takes an input file containing a DAG and
+stores it as a graph. Oliver's graph.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>330</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Input
+--
+
+--
+Input(fileName: String): TaskGraph
+--
+Responsibilities
+- Takes an input file containing a DAG and
+stores it as a graph.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>570</x>
+      <y>510</y>
+      <w>300</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>Schedule
+--
+-parent:Schedule
+-task: int
+-startTime: int
+-processor: int
+-estimatedFinishTime: int
+-processorsUsed: int
+-idleTime: int
+-doableTasks: List&lt;int&gt;
+--
+-generateChildren(): List&lt;Schedule&gt;
+--
+Responsibilities
+- Data structure that represents a partial or 
+completed schedule. </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>610</y>
+      <w>300</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>BranchAndBoundAlgorithm
+--
++schedule(taskGraph: TaskGraph):Schedule
+--
+Responsibilities
+- Takes in the task graph and uses branch 
+and bound to generate an optimal schedule.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>590</y>
+      <w>300</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>Output
+--
+
+--
+generateOutput(schedule:Schedule): void
+--
+Responsibilities
+- Generates the output file containing the 
+optimal schedule.</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>470</y>
+      <w>30</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>670</y>
+      <w>140</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>860</x>
+      <y>660</y>
+      <w>150</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>130.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
