@@ -60,10 +60,9 @@ public class Schedule implements Comparable<Schedule>{
     public static Schedule getEmptySchedule(TaskGraph taskGraph){
         int[] taskStartTime = new int[taskGraph.getTotalNumTasks()];
         Arrays.fill(taskStartTime, -1);
-        int[] taskProcessors = new int[taskGraph.getNumProcessors()];
+        int[] taskProcessors = new int[taskGraph.getTotalNumTasks()];
         Arrays.fill(taskProcessors,-1);
         int[] processFinishTime = new int[taskGraph.getNumProcessors()];
-
         return new Schedule(taskGraph,-1,-1,0,0,0,0, taskGraph.getEntryPoints(),taskStartTime,taskProcessors,processFinishTime);
     }
 

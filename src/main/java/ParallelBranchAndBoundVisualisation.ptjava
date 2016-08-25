@@ -1,0 +1,206 @@
+import java.util.List;
+import java.util.Queue;
+import java.util.ArrayDeque;
+import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+
+import pt.runtime.*;
+import java.util.EmptyStackException;
+import java.lang.Thread;
+
+/**
+ * Parallel implementation of branch and bound algorithm with visualisation
+ * (Note: this is exactly the same as the ParallelBranchAndBound class except it updates the visualiser each time it traverses a node)
+ */
+public class ParallelBranchAndBoundVisualisation implements Algorithm{
+	private final int globalReadFrequency=10000;
+	private final int globalUpdateFrequency=0;
+	private final int startingIterations = 50;
+	
+	private Queue<Schedule> processingQueue=new ArrayDeque<Schedule>();
+	private int threadsCurrentlyRunning = 0;
+	private Schedule currentBest;
+	private int currentBestTime=Integer.MAX_VALUE;
+	private int coresToRunOn = 0;
+	private boolean useVisualisation;
+	private boolean done=false;
+	
+	public ParallelBranchAndBoundVisualisation(int coresToRunOn){
+		this(coresToRunOn,false);
+	}
+	
+	public ParallelBranchAndBoundVisualisation(int coresToRunOn, boolean useVisualisation){
+		this.coresToRunOn = coresToRunOn;
+		this.useVisualisation=useVisualisation;
+	}
+	
+	@Override
+	public Schedule schedule(TaskGraph taskGraph) {
+		//Do BFS for schedules to initialise the queue
+		processingQueue.add(Schedule.getEmptySchedule(taskGraph));
+		for(int i=0;i<startingIterations;i++){
+			if(processingQueue.isEmpty()){
+				break;
+			}
+			
+			Schedule schedule=processingQueue.remove();
+			List<Schedule> children=schedule.generateChildren();
+			
+			if(children.isEmpty()){
+				if(schedule.getTotalTime()<currentBestTime){
+					currentBest=schedule;
+					currentBestTime=schedule.getTotalTime();
+				}
+			}
+			
+			processingQueue.addAll(children);
+		}
+		
+		
+		//uses the TASK identifier
+		TaskIDGroup g = new TaskIDGroup(coresToRunOn);
+		for (int i = 0; i< coresToRunOn; i++) {
+			TaskID id = startWorker(i);
+			g.add(id);
+		}
+		try {
+			g.waitTillFinished();
+		} catch(Exception e3) {
+			e3.printStackTrace();
+		}
+		
+		done=true;
+		return currentBest;
+	}
+	
+	public Schedule getCurrentBest(){
+		synchronized(this){
+			return currentBest;
+		}
+	}
+	
+	public boolean isDone(){
+		return done;
+	}
+	
+	class Worker{
+		private Schedule localCurrentBest;
+		private int localCurrentBestTime=Integer.MAX_VALUE;
+		private ArrayDeque<Schedule> localStack=new ArrayDeque<Schedule>();
+		
+		private int id;
+		private int schedulesTraversed=0;
+		private int schedulesCompleted=0;
+		
+		public Worker(int id) {
+			this.id = id;
+		}
+		
+		public void run(){
+			Schedule scheduleWeAreCurrentlyAt;
+			while(true){
+				//Loop while there is something in the local stack
+				while(!localStack.isEmpty()){
+					scheduleWeAreCurrentlyAt=localStack.pop();
+
+					if(useVisualisation){
+						VFrame frame = VFrame.getInstance();
+	          	 		if (scheduleWeAreCurrentlyAt.getTask() != -1){
+	          	 			
+	          	 			//Increment the number of times this task has been looked at
+	            			frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), id);
+	         		    }
+	         		}
+	         		
+					schedulesTraversed++;
+					if(schedulesTraversed>globalReadFrequency){
+						schedulesTraversed=0;
+						updateLocalBest();
+					}
+					
+					//Only look at schedules which have a better estimate than the current best schedule
+					if(scheduleWeAreCurrentlyAt.getFinishTimeEstimate()<localCurrentBestTime){
+						List<Schedule> childNodes=scheduleWeAreCurrentlyAt.generateChildren();
+						
+						//Only push schedules which have a better estimate than the current best schedule
+						for(Schedule s : childNodes){
+							if(s.getEstimate()<localCurrentBestTime){
+								localStack.push(s);
+							}
+						}
+						
+						if(childNodes.isEmpty()){
+							if(scheduleWeAreCurrentlyAt.getTotalTime()<localCurrentBestTime){
+								localCurrentBest=scheduleWeAreCurrentlyAt;
+								localCurrentBestTime=scheduleWeAreCurrentlyAt.getTotalTime();
+								schedulesCompleted++;
+								if(schedulesCompleted>globalUpdateFrequency){
+									schedulesCompleted=0;
+									updateGlobalBest();
+									updateLocalBest();
+								}
+							}
+						}
+					}
+				}
+				
+				//When there is nothing on the local stack, go get something from the global (shared) queue
+				Schedule nextSchedule=getFromSharedQueue();
+				//if there is nothing else on the processing queue, the thread is done
+				if(nextSchedule==null){
+					updateGlobalBest();
+					return;
+				}else{
+					localStack.push(nextSchedule);
+				}
+			}
+		}
+		
+		private Schedule getFromSharedQueue(){
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(!ParallelBranchAndBoundVisualisation.this.processingQueue.isEmpty()){
+					return ParallelBranchAndBoundVisualisation.this.processingQueue.remove();
+				}else{
+					return null;
+				}
+			}
+		}
+		
+		/**
+		 * Update the local best time and schedule with the global best if it is better
+		 */
+		private void updateLocalBest(){
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(localCurrentBestTime>ParallelBranchAndBoundVisualisation.this.currentBestTime){
+					localCurrentBest=ParallelBranchAndBoundVisualisation.this.currentBest;
+					localCurrentBestTime=ParallelBranchAndBoundVisualisation.this.currentBestTime;
+				}
+			}
+		}
+		
+		/**
+		 * Update the global best time and schedule with the local best if it is better
+		 */
+		private void updateGlobalBest(){
+			synchronized(ParallelBranchAndBoundVisualisation.this){
+				if(localCurrentBestTime<ParallelBranchAndBoundVisualisation.this.currentBestTime){
+					ParallelBranchAndBoundVisualisation.this.currentBest=localCurrentBest;
+					ParallelBranchAndBoundVisualisation.this.currentBestTime=localCurrentBestTime;
+				}
+			}
+		}
+	}
+	
+	TASK public void startWorker(int id) {
+		new Worker(id).run();
+	}
+	
+//	TASK(coresToRunOn) public void startWorkers() {
+//		for (int i = 0; i< coresToRunOn; i++) {
+//			new Worker().run();
+//		}
+//    }
+//	
+	
+	
+}

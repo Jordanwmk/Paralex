@@ -12,6 +12,7 @@ public class TaskGraph {
     private int totalTaskTime;
     private int totalNumTasks;
     private List<Integer> entryPoints;
+    private Input input;
 
     public TaskGraph(String inputFile, int numProcessors) throws IOException {
         this(inputFile,numProcessors,false);
@@ -19,6 +20,7 @@ public class TaskGraph {
 
     public TaskGraph(String inputFile, int numProcessors, boolean useVisualisation) throws IOException{
         Input input = new Input(inputFile);
+        this.input = input;
         this.numProcessors=numProcessors;
  
     	nodeCosts= input.getNodeCosts();
@@ -34,16 +36,17 @@ public class TaskGraph {
  
         entryPoints=input.getSrcNodes();
 
-        if(useVisualisation){
-            
-        }
     }
 
     int getNodeCost(int node){
         return nodeCosts[node];
     }
 
-    int getBottomLevel(int node){
+    public Input getInput() {
+		return input;
+	}
+
+	int getBottomLevel(int node){
         return nodeBL[node];
     }
 
