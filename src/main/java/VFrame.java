@@ -197,7 +197,7 @@ public class VFrame{
 		panel50.setLayout(new BorderLayout());
 		JPanel color50 = new JPanel();
 		color50.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color50.setBackground(new Color(128, 212, 255));
+		color50.setBackground(new Color(245,223,107));
 		panel50.add(color50, BorderLayout.WEST);
 		panel50.add(new JLabel("  0 - 50 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
@@ -212,7 +212,7 @@ public class VFrame{
 		panel150.setLayout(new BorderLayout());
 		JPanel color150 = new JPanel();
 		color150.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color150.setBackground(new Color(51, 153, 255));
+		color150.setBackground(new Color(245,201,98));
 		panel150.add(color150, BorderLayout.WEST);
 		panel150.add(new JLabel("  50 - 149 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
@@ -224,7 +224,7 @@ public class VFrame{
 		panel500.setLayout(new BorderLayout());
 		JPanel color500 = new JPanel();
 		color500.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color500.setBackground(new Color(0, 102, 255));
+		color500.setBackground(new Color(246,179,89));
 		panel500.add(color500, BorderLayout.WEST);
 		panel500.add(new JLabel("  150 - 499 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 0;
@@ -236,7 +236,7 @@ public class VFrame{
 		panel1000.setLayout(new BorderLayout());
 		JPanel color1000 = new JPanel();
 		color1000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color1000.setBackground(new Color(0, 0, 255));
+		color1000.setBackground(new Color(246,157,80));
 		panel1000.add(color1000, BorderLayout.WEST);
 		panel1000.add(new JLabel("  500 - 999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
@@ -248,7 +248,7 @@ public class VFrame{
 		panel5000.setLayout(new BorderLayout());
 		JPanel color5000 = new JPanel();
 		color5000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color5000.setBackground(new Color(102, 0, 255));
+		color5000.setBackground(new Color(247,135,71));
 		panel5000.add(color5000, BorderLayout.WEST);
 		panel5000.add(new JLabel("  1,000 - 4,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
@@ -260,7 +260,7 @@ public class VFrame{
 		panel10000.setLayout(new BorderLayout());
 		JPanel color10000 = new JPanel();
 		color10000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color10000.setBackground(new Color(153, 51, 255));
+		color10000.setBackground(new Color(248,92,52));
 		panel10000.add(color10000, BorderLayout.WEST);
 		panel10000.add(new JLabel("  5,000 - 9,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 1;
@@ -272,7 +272,7 @@ public class VFrame{
 		panel50000.setLayout(new BorderLayout());
 		JPanel color50000 = new JPanel();
 		color50000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color50000.setBackground(new Color(204, 0, 255));
+		color50000.setBackground(new Color(221, 51, 8));
 		panel50000.add(color50000, BorderLayout.WEST);
 		panel50000.add(new JLabel("  10,000 - 49,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 2;
@@ -284,7 +284,7 @@ public class VFrame{
 		panel300000.setLayout(new BorderLayout());
 		JPanel color300000 = new JPanel();
 		color300000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color300000.setBackground(new Color(255, 0, 102));
+		color300000.setBackground(new Color(249,26,25));
 		panel300000.add(color300000, BorderLayout.WEST);
 		panel300000.add(new JLabel("  50,000 - 299,999 visits"),
 				BorderLayout.EAST);
@@ -297,7 +297,7 @@ public class VFrame{
 		panel1000000.setLayout(new BorderLayout());
 		JPanel color1000000 = new JPanel();
 		color1000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color1000000.setBackground(new Color(255, 0, 0));
+		color1000000.setBackground(new Color(250,5,16));
 		panel1000000.add(color1000000, BorderLayout.WEST);
 		panel1000000.add(new JLabel("  300,000 - 999,999 visits"),
 				BorderLayout.EAST);
@@ -310,7 +310,7 @@ public class VFrame{
 		panel3000000.setLayout(new BorderLayout());
 		JPanel color3000000 = new JPanel();
 		color3000000.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color3000000.setBackground(new Color(128, 0, 0));
+		color3000000.setBackground(new Color(170,3,11));
 		panel3000000.add(color3000000, BorderLayout.WEST);
 		panel3000000.add(new JLabel("  1,000,000 - 2,999,999 visits"), BorderLayout.EAST);
 		gbcKey.gridx = 3;
@@ -322,7 +322,7 @@ public class VFrame{
 		panel3000000plus.setLayout(new BorderLayout());
 		JPanel color3000000plus = new JPanel();
 		color3000000plus.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		color3000000plus.setBackground(Color.black);
+		color3000000plus.setBackground(new Color(126,2,8));
 		panel3000000plus.add(color3000000plus, BorderLayout.WEST);
 		panel3000000plus.add(new JLabel("  3,000,000 + visits"), BorderLayout.EAST);
 		gbcKey.gridx = 3;

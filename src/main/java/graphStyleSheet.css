@@ -1,5 +1,5 @@
 node{ 
-	fill-color: #F5F575;
+	fill-color: #F5DF6B;
 	size: 30px;
 	stroke-mode: plain;
 	stroke-color: black;
@@ -24,52 +24,52 @@ node.unselected{
 }
 
 node.partition50{
-	fill-color: #F5DF6B;
-	
-}
-
-node.partition150{
 	fill-color: #F5C962;
 	
 }
 
-node.partition500{
+node.partition150{
 	fill-color: #F6B359;
 	
 }
 
-node.partition1000{
+node.partition500{
 	fill-color: #F69D50;
 	
 }
 
-node.partition5000{
+node.partition1000{
 	fill-color: #F78747;
 	
 }
 
-node.partition10000{
+node.partition5000{
 	fill-color: #F85C34;
 	
 }
 
-node.partition50000{
-	fill-color: #F93022;
+node.partition10000{
+	fill-color: #dd3308;
 	
 }
 
-node.partition300000{
+node.partition50000{
 	fill-color: #F91A19;
 	
 }
 
-node.partition1000000{
+node.partition300000{
 	fill-color: #FA0510;
 	
 }
 
-node.partition3000000{
+node.partition1000000{
 	fill-color: #AA030B;
+	
+}
+
+node.partition3000000{
+	fill-color: #7e0208;
 	
 }
 node.highlighted{
