@@ -1,24 +1,30 @@
 import java.util.ArrayDeque;
 import java.util.List;
-
+/**
+ * This class contains the implementation for visualising the branch and bound 
+ * algorithm in serial.
+ * @author jwon223
+ *
+ */
 public class BranchAndBoundVisualisation implements Algorithm {
-	
+
+	//Variable to hold the current best schedule that will be painted on the GUI
 	Schedule currentBest = null;
-	boolean done=false;
-	boolean useVisualisation;
 	
+	//Variable to hold when the algorithm is done
+	boolean done = false;
+	
+	boolean useVisualisation;
+
 	public BranchAndBoundVisualisation(){
 		this(false);
 	}
-	
+
 	public BranchAndBoundVisualisation(boolean visualise){
 		this.useVisualisation=visualise;
 	}
-	
-	public boolean isDone() {
-		return done;
-	}
 
+	
 	@Override
 	public Schedule schedule(TaskGraph taskGraph) {
 		ArrayDeque<Schedule> stack = new ArrayDeque<Schedule>();
@@ -26,28 +32,6 @@ public class BranchAndBoundVisualisation implements Algorithm {
 		int currentBestTime = Integer.MAX_VALUE;
 		Schedule scheduleWeAreCurrentlyAt = null;
 
-
-		/*
-		 * Bens first schedule algorithm (schedule to most free processor int[]
-		 * 
-		 * processorStates = new int[taskGraph.getNumProcessors()]; int
-		 * minProcessor =0; int minProcessorValue = Integer.MAX_VALUE;
-		 * while(!stack.isEmpty()){ scheduleWeAreCurrentlyAt=stack.pop();
-		 * List<Schedule>
-		 * childNodes=scheduleWeAreCurrentlyAt.generateChildren();
-		 * minProcessorValue = Integer.MAX_VALUE; for( int i =0; i<
-		 * processorStates.length; i++){ if (processorStates[i] <
-		 * minProcessorValue){ minProcessor = i; minProcessorValue =
-		 * processorStates[i]; } }
-		 * 
-		 * if (!childNodes.isEmpty()){ stack.add(childNodes.get(minProcessor));
-		 * int newTaskWeight =
-		 * taskGraph.getNodeCost(childNodes.get(minProcessor).getTask());
-		 * processorStates[minProcessor] += newTaskWeight; } } currentBestTime =
-		 * scheduleWeAreCurrentlyAt.getTotalTime();
-		 * currentBest=scheduleWeAreCurrentlyAt;
-		 */
-		
 		int currentLimit = 0;
 		stack = new ArrayDeque<>();
 		stack.push(Schedule.getEmptySchedule(taskGraph));
@@ -79,15 +63,17 @@ public class BranchAndBoundVisualisation implements Algorithm {
 		scheduleWeAreCurrentlyAt = null;
 		while (!stack.isEmpty()) {
 			scheduleWeAreCurrentlyAt = stack.pop();
-			
+
 			if(useVisualisation){
-				//visuallisation
+				//visualisation
 				VFrame frame = VFrame.getInstance();
-	            if (scheduleWeAreCurrentlyAt.getTask() != -1){
-	            	frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
-	            }
+				if (scheduleWeAreCurrentlyAt.getTask() != -1){
+					
+					//Increment the number of times this task has been looked at
+					frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), 0);
+				}
 			}
-			
+
 			// if estimate >= current best, then prune the subtree (don't
 			// traverse it)
 			if (scheduleWeAreCurrentlyAt.getFinishTimeEstimate() < currentBestTime) {
@@ -114,9 +100,14 @@ public class BranchAndBoundVisualisation implements Algorithm {
 		done=true;
 		return this.currentBest;
 	}
-	
+
 	public Schedule getCurrentBest(){
-    	return this.currentBest;
-    }
+		return this.currentBest;
+	}
+	
+	public boolean isDone() {
+		return done;
+	}
+
 }
 

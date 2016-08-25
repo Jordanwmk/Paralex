@@ -108,10 +108,12 @@ public class ParallelBranchAndBoundVisualisation implements Algorithm{
 				//Loop while there is something in the local stack
 				while(!localStack.isEmpty()){
 					scheduleWeAreCurrentlyAt=localStack.pop();
-					
+
 					if(useVisualisation){
 						VFrame frame = VFrame.getInstance();
 	          	 		if (scheduleWeAreCurrentlyAt.getTask() != -1){
+	          	 			
+	          	 			//Increment the number of times this task has been looked at
 	            			frame.incrementTask(scheduleWeAreCurrentlyAt.getTask(), id);
 	         		    }
 	         		}
