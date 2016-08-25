@@ -1,25 +1,42 @@
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.ui.view.View;
-import org.graphstream.ui.view.Viewer;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.*;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Line.Info;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.ui.view.View;
+import org.graphstream.ui.view.Viewer;
 
 /**
  * This class is used in order to visualise how the program functions.
@@ -112,7 +129,7 @@ public class VFrame{
 
 		// Adding a style sheet to the input graph
 		for (int i = 0; i < numOfCores; i++) {
-			taskGraphList.get(i).addAttribute("ui.stylesheet", "url('src/main/java/graphStyleSheet.css'))");
+			taskGraphList.get(i).addAttribute("ui.stylesheet", "url('"+this.getClass().getResource("graphStyleSheet.css")+"'))");
 			taskGraphList.get(i).addAttribute("ui.quality");
 			taskGraphList.get(i).addAttribute("ui.antialias");
 		}
@@ -666,7 +683,7 @@ public class VFrame{
 		}
 	}
 	
-
+	
 	/**
 	 * Play a sound clip (must be wav file)
 	 * Reference: http://stackoverflow.com/tags/javasound/info
@@ -675,11 +692,21 @@ public class VFrame{
 	public Clip playSound(String fileName){
 		try {
 			Clip audioClip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(fileName));
+			URL soundUrl=getClass().getClassLoader().getResource(fileName);
+			Info lineInfo=new Line.Info(Clip.class);
+			
+			Line line=AudioSystem.getLine(lineInfo);
+			
+			audioClip=(Clip)line;
+			
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(soundUrl);
 			audioClip.open(inputStream);
 			audioClip.start();
 			return audioClip;
-		}catch(Exception e){}
+		}catch(Exception e){
+			System.err.println("Error playing file " + fileName);
+			e.printStackTrace();
+		}
 		return null;
 
 	}
@@ -756,4 +783,5 @@ public class VFrame{
 	public ArrayList<Graph> getTaskGraphList() {
 		return taskGraphList;
 	}
+
 }
